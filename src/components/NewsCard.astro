@@ -1,0 +1,50 @@
+---
+export interface Props {
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
+  image: string;
+  url: string;
+}
+
+const { title, excerpt, date, category, image, url } = Astro.props;
+
+// Format date
+const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+// Déterminer la couleur de la catégorie
+let categoryColor = "bg-yam-red";
+if (category === "Karibu") categoryColor = "bg-karibu-green";
+if (category === "LTC") categoryColor = "bg-black";
+---
+
+<article class="group">
+  <a href={url} class="block">
+    <div class="card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+      <div class="relative h-48 overflow-hidden">
+        <img 
+          src={image || "/placeholder.svg"} 
+          alt={title} 
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div class="absolute top-0 left-0 px-3 py-1 text-sm font-medium text-white" class:list={[categoryColor]}>
+          {category}
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
+      <div class="p-6">
+        <time datetime={date} class="text-sm text-gray-500">{formattedDate}</time>
+        <h3 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors">{title}</h3>
+        <p class="text-gray-600 mb-4">{excerpt}</p>
+        <div class="flex justify-end">
+          <span class="text-yam-red font-medium group-hover:underline">Lire la suite →</span>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

@@ -1,0 +1,53 @@
+---
+export interface Props {
+  number: string;
+  label: string;
+  color?: string;
+}
+
+const { number, label, color = "yam-red" } = Astro.props;
+---
+
+<div class="counter-item bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-all">
+  <div class="text-4xl md:text-6xl font-bold mb-2" class:list={[`text-${color}`]} data-count={number}>0</div>
+  <p class="text-lg text-gray-700">{label}</p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.counter-item [data-count]');
+    
+    const animateCounter = (counter, target) => {
+      let current = 0;
+      const increment = target > 1000 ? 1000 : 1;
+      const duration = 2000; // 2 secondes
+      const steps = Math.ceil(duration / 16);
+      const step = Math.ceil(target / steps);
+      
+      const timer = setInterval(() => {
+        current += step;
+        if (current > target) {
+          counter.textContent = target.toLocaleString();
+          clearInterval(timer);
+        } else {
+          counter.textContent = current.toLocaleString();
+        }
+      }, 16);
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counter = entry.target;
+          const target = parseInt(counter.getAttribute('data-count'));
+          animateCounter(counter, target);
+          observer.unobserve(counter);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    counters.forEach(counter => {
+      observer.observe(counter);
+    });
+  });
+</script>

@@ -1,0 +1,235 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import NewsCard from '../components/NewsCard.astro';
+
+// Simuler des données d'actualités
+const allNews = [
+  {
+    id: 1,
+    title: "Manifestation pour la démocratie à Dakar",
+    excerpt: "Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption.",
+    date: "2023-06-15",
+    category: "Y'EN A MARRE",
+    image: "/placeholder.svg?height=400&width=600&query=African protest in Dakar",
+    url: "/actualites/manifestation-democratie-dakar"
+  },
+  {
+    id: 2,
+    title: "Lancement du programme Dox Ak Sa Gox",
+    excerpt: "Y'EN A MARRE lance un nouveau programme pour promouvoir la gouvernance locale et l'engagement citoyen.",
+    date: "2023-05-22",
+    category: "Projets",
+    image: "/placeholder.svg?height=400&width=600&query=Community meeting in Senegal",
+    url: "/actualites/lancement-dox-ak-sa-gox"
+  },
+  {
+    id: 3,
+    title: "Résidence artistique Karibu : Appel à candidatures",
+    excerpt: "Karibu lance un appel à candidatures pour sa prochaine résidence artistique qui se tiendra à Dakar en septembre 2023.",
+    date: "2023-04-10",
+    category: "Karibu",
+    image: "/placeholder.svg?height=400&width=600&query=Artists workshop in Africa",
+    url: "/actualites/residence-artistique-karibu-appel-candidatures"
+  },
+  {
+    id: 4,
+    title: "Conférence sur la démocratie en Afrique",
+    excerpt: "Y'EN A MARRE organise une conférence sur la démocratie en Afrique avec des intervenants de plusieurs pays.",
+    date: "2023-04-05",
+    category: "Événements",
+    image: "/placeholder.svg?height=400&width=600&query=Conference on democracy in Africa",
+    url: "/actualites/conference-democratie-afrique"
+  },
+  {
+    id: 5,
+    title: "Conférence sur l'art et l'engagement citoyen",
+    excerpt: "Karibu organise une conférence sur l'art et l'engagement citoyen avec des artistes et des militants de plusieurs pays africains.",
+    date: "2023-03-15",
+    category: "Événements",
+    image: "/placeholder.svg?height=400&width=600&query=African art and activism conference",
+    url: "/actualites/conference-art-engagement-citoyen"
+  },
+  {
+    id: 6,
+    title: "Lancement du programme de mobilités citoyennes",
+    excerpt: "Karibu lance son programme de mobilités citoyennes pour les militants et les artistes engagés dans la promotion de la démocratie.",
+    date: "2023-02-20",
+    category: "Programmes",
+    image: "/placeholder.svg?height=400&width=600&query=African activists meeting",
+    url: "/actualites/lancement-programme-mobilites-citoyennes"
+  },
+  {
+    id: 7,
+    title: "Débat sur la liberté de la presse au Sénégal",
+    excerpt: "LTC organise un débat sur la liberté de la presse au Sénégal avec des journalistes et des experts des médias.",
+    date: "2023-02-10",
+    category: "LTC",
+    image: "/placeholder.svg?height=400&width=600&query=Press freedom debate in Senegal",
+    url: "/actualites/debat-liberte-presse-senegal"
+  },
+  {
+    id: 8,
+    title: "Formation des Jeunes Reporters Citoyens",
+    excerpt: "LTC lance une nouvelle session de formation pour les Jeunes Reporters Citoyens (JRC) à Dakar.",
+    date: "2023-01-25",
+    category: "LTC",
+    image: "/placeholder.svg?height=400&width=600&query=Young journalists training in Africa",
+    url: "/actualites/formation-jeunes-reporters-citoyens"
+  },
+  {
+    id: 9,
+    title: "Campagne de sensibilisation sur les élections",
+    excerpt: "Y'EN A MARRE lance une campagne de sensibilisation sur l'importance du vote et de la participation citoyenne aux élections.",
+    date: "2023-01-15",
+    category: "Y'EN A MARRE",
+    image: "/placeholder.svg?height=400&width=600&query=Voter education campaign in Senegal",
+    url: "/actualites/campagne-sensibilisation-elections"
+  }
+];
+
+// Catégories pour le filtre
+const categories = ["Tous", "Y'EN A MARRE", "Karibu", "LTC", "Événements", "Projets", "Programmes"];
+
+// Pagination (simulée)
+const newsPerPage = 6;
+const totalPages = Math.ceil(allNews.length / newsPerPage);
+const currentPage = 1;
+const newsToShow = allNews.slice(0, newsPerPage);
+---
+
+<MainLayout title="Actualités - Y'EN A MARRE" currentPath="/actualites">
+  <!-- Hero Section avec effet de verre -->
+  <section class="relative py-20 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+    <!-- Overlay pattern -->
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    
+    <!-- Content -->
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center text-white">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Actualités</h1>
+        <p class="text-xl text-gray-300">
+          Restez informé des dernières activités et campagnes de Y'EN A MARRE et de ses projets.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Filtres et recherche avec effet de verre -->
+  <section class="py-8 bg-white">
+    <div class="container-custom">
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <!-- Filtres par catégorie -->
+          <div class="flex flex-wrap gap-2">
+            {categories.map((category, index) => (
+              <button 
+                class={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  index === 0 
+                    ? 'bg-yam-red text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          
+          <!-- Recherche -->
+          <div class="relative">
+            <input 
+              type="text" 
+              placeholder="Rechercher..." 
+              class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yam-red focus:border-transparent w-full md:w-64"
+            />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Liste des actualités -->
+  <section class="py-12 md:py-16">
+    <div class="container-custom">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {newsToShow.map((news) => (
+          <NewsCard 
+            title={news.title}
+            excerpt={news.excerpt}
+            date={news.date}
+            category={news.category}
+            image={news.image}
+            url={news.url}
+          />
+        ))}
+      </div>
+      
+      <!-- Pagination -->
+      <div class="mt-12 flex justify-center">
+        <nav class="inline-flex rounded-md shadow">
+          <a href="#" class="py-2 px-4 bg-gray-200 text-gray-700 rounded-l-md hover:bg-gray-300 disabled:opacity-50" disabled>
+            Précédent
+          </a>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <a 
+              href={`/actualites?page=${i + 1}`} 
+              class={`py-2 px-4 ${
+                i + 1 === currentPage 
+                  ? 'bg-yam-red text-white' 
+                  : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              {i + 1}
+            </a>
+          ))}
+          <a href="/actualites?page=2" class="py-2 px-4 bg-white border border-gray-300 text-gray-700 rounded-r-md hover:bg-gray-100">
+            Suivant
+          </a>
+        </nav>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Newsletter avec effet de verre -->
+  <section class="py-16 bg-gray-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold mb-6">Restez informé</h2>
+          <p class="text-lg text-gray-600 mb-8">
+            Inscrivez-vous à notre newsletter pour recevoir les dernières actualités et informations sur nos campagnes.
+          </p>
+          
+          <form class="flex flex-col md:flex-row gap-4">
+            <input 
+              type="email" 
+              placeholder="Votre adresse email" 
+              class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yam-red border border-gray-300"
+              required
+            />
+            <button 
+              type="submit" 
+              class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105"
+            >
+              S'inscrire
+            </button>
+          </form>
+          
+          <p class="text-sm mt-4 text-gray-500">
+            En vous inscrivant, vous acceptez de recevoir nos emails et confirmez avoir lu notre politique de confidentialité.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

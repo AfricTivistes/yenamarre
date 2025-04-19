@@ -1,0 +1,50 @@
+---
+export interface Props {
+  currentPath?: string
+}
+
+const { currentPath = "" } = Astro.props
+
+// Determine project-specific styling
+let primaryColor = "text-yam-red"
+let buttonClass = "btn-primary"
+
+if (currentPath.startsWith("/karibu")) {
+  primaryColor = "text-karibu-green"
+  buttonClass = "bg-karibu-green text-white hover:bg-green-700 font-bold py-3 px-6 rounded-lg transition-colors"
+} else if (currentPath.startsWith("/ltc")) {
+  primaryColor = "text-black"
+  buttonClass = "bg-black text-white hover:bg-gray-800 font-bold py-3 px-6 rounded-lg transition-colors"
+}
+
+const isActive = (path: string) => {
+  return currentPath.startsWith(path) ? "font-bold" : ""
+}
+---
+
+<div id="mobile-menu" class="md:hidden hidden bg-white border-t shadow-lg">
+  <div class="container-custom py-4">
+    <nav class="flex flex-col space-y-4">
+      <a href="/" class={`${isActive("/")} ${primaryColor}`}>Accueil</a>
+      
+      <!-- À propos - Maintenant redirige directement vers /yenamarre -->
+      <a href="/yenamarre" class={`${isActive("/a-propos")} ${primaryColor}`}>À propos</a>
+      
+      <!-- Projets - Sans Y'EN A MARRE comme sous-menu -->
+      <div class="space-y-2">
+        <div class={`${isActive("/projets")} ${primaryColor}`}>Projets</div>
+        <div class="pl-4 space-y-2 border-l-2 border-gray-200">
+          <a href="/ltc" class="block text-gray-600 hover:text-gray-900">Lead The Change (LTC)</a>
+          <a href="/karibu" class="block text-gray-600 hover:text-gray-900">Karibu</a>
+        </div>
+      </div>
+      
+      <a href="/actualites" class={`${isActive("/actualites")} ${primaryColor}`}>Actualités</a>
+      <a href="/contact" class={`${isActive("/contact")} ${primaryColor}`}>Contact</a>
+      
+      <div class="pt-2">
+        <a href="/rejoindre" class={buttonClass}>Rejoindre</a>
+      </div>
+    </nav>
+  </div>
+</div>

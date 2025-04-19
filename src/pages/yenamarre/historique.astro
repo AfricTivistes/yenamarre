@@ -1,0 +1,114 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import ProjectTimeline from "../../components/ProjectTimeline.astro";
+
+const timelineItems = [
+  {
+    year: "2011",
+    title: "Fondation de Y'EN A MARRE",
+    description:
+      "Création du mouvement par des rappeurs et des journalistes en réponse à la mauvaise gouvernance et aux coupures d'électricité fréquentes au Sénégal.",
+  },
+  {
+    year: "2012",
+    title: "Mobilisation contre la candidature de Wade",
+    description:
+      "Organisation de manifestations contre la candidature d'Abdoulaye Wade à un troisième mandat, contribuant à l'élection de Macky Sall.",
+  },
+  {
+    year: "2013",
+    title: "Lancement du projet Nouveau Type de Sénégalais (NTS)",
+    description:
+      "Campagne visant à promouvoir une nouvelle citoyenneté basée sur la responsabilité et l'engagement civique.",
+  },
+  {
+    year: "2016",
+    title: "Création de Lead The Change (LTC)",
+    description:
+      "Lancement de la Télé Citoyenne pour diffuser les messages du mouvement et promouvoir l'engagement citoyen.",
+  },
+  {
+    year: "2018",
+    title: "Lancement du programme Karibu",
+    description:
+      "Initiative pour promouvoir l'engagement artistique et citoyen à travers des résidences culturelles et des projets éducatifs.",
+  },
+  {
+    year: "2022",
+    title: "Expansion panafricaine",
+    description:
+      "Développement de partenariats avec d'autres mouvements citoyens en Afrique pour promouvoir la démocratie et la bonne gouvernance à l'échelle continentale.",
+  },
+];
+---
+
+<MainLayout title="Histoire de Y'EN A MARRE" currentPath="/yenamarre/historique">
+  <section class="py-16 md:py-24">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Notre Histoire</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Découvrez l'évolution de Y'EN A MARRE depuis sa création en 2011 jusqu'à aujourd'hui, et comment le mouvement a contribué à façonner le paysage politique et social du Sénégal.
+        </p>
+      </div>
+      
+      <div class="mt-16">
+        <ProjectTimeline items={timelineItems} accentColor="bg-yam-red" textColor="text-yam-red" />
+      </div>
+      
+      <div class="mt-16 bg-gray-50 p-8 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4 text-yam-red">Notre Impact</h2>
+        <p class="text-lg mb-6">
+          Depuis sa création, Y'EN A MARRE a eu un impact significatif sur la société sénégalaise :
+        </p>
+        <ul class="space-y-4">
+          <li class="flex items-start">
+            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p>Mobilisation de plus de 100 000 jeunes pour la défense de la démocratie et de la bonne gouvernance</p>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p>Contribution à l'alternance politique en 2012 et à la consolidation de la démocratie au Sénégal</p>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p>Mise en œuvre de plus de 50 campagnes de sensibilisation sur la citoyenneté et la bonne gouvernance</p>
+          </li>
+          <li class="flex items-start">
+            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p>Développement de partenariats avec des mouvements citoyens dans plus de 10 pays africains</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Call to Action -->
+  <section class="py-16 bg-yam-red text-white">
+    <div class="container-custom text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Rejoignez le mouvement</h2>
+      <p class="text-lg max-w-3xl mx-auto mb-8">
+        Ensemble, nous pouvons continuer à construire un Sénégal plus démocratique et plus juste. Rejoignez Y'EN A MARRE pour contribuer à cette mission.
+      </p>
+      <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-colors">
+        Rejoignez-nous
+      </a>
+    </div>
+  </section>
+</MainLayout>

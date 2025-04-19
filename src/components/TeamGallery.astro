@@ -1,0 +1,46 @@
+---
+export interface TeamMember {
+  name: string;
+  role: string;
+  image: string;
+  bio?: string;
+}
+
+export interface Props {
+  members: TeamMember[];
+  accentColor?: string;
+  textColor?: string;
+}
+
+const { members, accentColor = "bg-yam-red", textColor = "text-yam-red" } = Astro.props;
+---
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {members.map(member => (
+    <div class="group relative overflow-hidden rounded-lg shadow-lg">
+      <!-- Image -->
+      <div class="h-80 overflow-hidden">
+        <img 
+          src={member.image || "/placeholder.svg"} 
+          alt={member.name} 
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+      
+      <!-- Info overlay -->
+      <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+        <h3 class="text-xl font-bold">{member.name}</h3>
+        <p class={textColor}>{member.role}</p>
+      </div>
+      
+      <!-- Bio overlay (visible on hover) -->
+      {member.bio && (
+        <div class="absolute inset-0 bg-black bg-opacity-80 text-white p-6 flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <h3 class="text-xl font-bold mb-2">{member.name}</h3>
+          <p class={textColor + " mb-3"}>{member.role}</p>
+          <p class="text-sm">{member.bio}</p>
+        </div>
+      )}
+    </div>
+  ))}
+</div>

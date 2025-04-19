@@ -1,0 +1,317 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import FeatureCard from '../../components/FeatureCard.astro';
+---
+
+<MainLayout title="Karibu - Résidences artistiques et mobilités citoyennes" currentPath="/karibu">
+  <!-- Hero Section avec design moderne -->
+  <section class="relative min-h-[80vh] bg-gradient-to-br from-gray-50 to-white overflow-hidden">
+    <!-- Overlay pattern -->
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern green and yellow')] bg-repeat"></div>
+    
+    <!-- Content -->
+    <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-karibu-green">
+            KARIBU
+            <span class="block text-gray-800 text-3xl md:text-4xl mt-2">Résidences artistiques et mobilités citoyennes</span>
+          </h1>
+          
+          <p class="text-lg md:text-xl text-gray-700">
+            Karibu est une initiative de Y'EN A MARRE qui promeut l'engagement artistique et citoyen à travers des résidences culturelles et des projets éducatifs.
+          </p>
+          
+          <div class="flex flex-wrap gap-4 mt-8">
+            <a href="/karibu/residences" class="btn bg-karibu-green text-white hover:bg-green-700 transform transition-all hover:scale-105 hover:shadow-lg py-3 px-6 rounded-lg">
+              Nos Résidences
+            </a>
+            <a href="/a-propos/karibu" class="btn bg-transparent border-2 border-karibu-green text-karibu-green hover:bg-karibu-green hover:text-white transform transition-all hover:scale-105 py-3 px-6 rounded-lg">
+              En savoir plus
+            </a>
+          </div>
+        </div>
+        
+        <div class="relative">
+          <div class="bg-white rounded-full p-8 shadow-2xl mx-auto max-w-xs md:max-w-sm transform transition-transform hover:rotate-3">
+            <img 
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png" 
+              alt="Karibu" 
+              class="w-full h-auto"
+            />
+          </div>
+          <div class="absolute -bottom-4 -right-4 bg-karibu-green text-white px-6 py-3 rounded-lg font-bold shadow-lg">
+            Depuis 2018
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#f9fafb" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- About Section avec design moderne -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="container-custom">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="overflow-hidden rounded-lg shadow-xl">
+          <img 
+            src="/placeholder.svg?height=600&width=800&query=African artists in workshop" 
+            alt="Karibu Workshop" 
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+        <div class="space-y-6">
+          <h2 class="text-3xl md:text-4xl font-bold text-karibu-green">Notre Mission</h2>
+          <p class="text-lg text-gray-600">
+            Karibu est une initiative qui vise à promouvoir l'engagement artistique et citoyen à travers des résidences culturelles, des mobilités citoyennes et des projets éducatifs.
+          </p>
+          <p class="text-lg text-gray-600">
+            Notre mission est de créer des espaces d'échange, de création et d'apprentissage pour les artistes et les militants engagés dans la promotion de la démocratie, des droits humains et de la bonne gouvernance.
+          </p>
+          <div class="pt-4">
+            <a href="/a-propos/karibu" class="btn bg-karibu-green text-white hover:bg-green-700 inline-flex items-center transform transition-all hover:scale-105 py-3 px-6 rounded-lg">
+              En savoir plus
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Programs Section avec design moderne -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-karibu-green mb-4">Nos Programmes</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Découvrez les différents programmes de Karibu pour promouvoir l'engagement artistique et citoyen.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <FeatureCard 
+          icon="globe"
+          title="Mobilités Citoyennes"
+          description="Programme d'échange et de mobilité pour les militants et les artistes engagés dans la promotion de la démocratie et des droits humains."
+          color="karibu-green"
+          url="/karibu/mobilites-citoyennes"
+          buttonText="En savoir plus"
+        />
+        
+        <FeatureCard 
+          icon="palette"
+          title="Résidences Artistiques"
+          description="Résidences pour les artistes engagés dans la promotion de la démocratie, des droits humains et de la bonne gouvernance."
+          color="karibu-red"
+          url="/karibu/residences-artistiques"
+          buttonText="En savoir plus"
+        />
+        
+        <FeatureCard 
+          icon="book-open"
+          title="Production de Savoir"
+          description="Conférences, ateliers et publications pour promouvoir la réflexion et le partage de connaissances sur les questions de démocratie et de droits humains."
+          color="karibu-yellow"
+          url="/karibu/production-savoir"
+          buttonText="En savoir plus"
+        />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Artistes en résidence avec design moderne -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="container-custom">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-karibu-green mb-16">Artistes en résidence</h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-2 duration-300">
+          <div class="h-64 overflow-hidden">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African male artist portrait" 
+              alt="Moussa Diop" 
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-1">Moussa Diop</h3>
+            <p class="text-gray-600 text-sm mb-2">Artiste plasticien, Sénégal</p>
+            <p class="text-gray-600">
+              Moussa explore les thèmes de l'identité et de la mémoire collective à travers ses installations et sculptures.
+            </p>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-2 duration-300">
+          <div class="h-64 overflow-hidden">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African female artist portrait" 
+              alt="Aminata Sow" 
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-1">Aminata Sow</h3>
+            <p class="text-gray-600 text-sm mb-2">Photographe, Mali</p>
+            <p class="text-gray-600">
+              Aminata documente les transformations sociales et politiques en Afrique de l'Ouest à travers son objectif.
+            </p>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow transform hover:-translate-y-2 duration-300">
+          <div class="h-64 overflow-hidden">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African male musician portrait" 
+              alt="Ibrahim Touré" 
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-1">Ibrahim Touré</h3>
+            <p class="text-gray-600 text-sm mb-2">Musicien, Burkina Faso</p>
+            <p class="text-gray-600">
+              Ibrahim mélange les rythmes traditionnels et contemporains pour créer une musique engagée qui aborde les questions sociales.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-8">
+        <a href="/karibu/artistes" class="btn bg-karibu-green text-white hover:bg-green-700 transform transition-all hover:scale-105 py-3 px-6 rounded-lg">Découvrir tous les artistes</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Projets réalisés avec design moderne -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container-custom">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-karibu-green mb-16">Projets réalisés</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+          <div class="md:flex">
+            <div class="md:w-1/3">
+              <img 
+                src="/placeholder.svg?height=300&width=300&query=African art exhibition" 
+                alt="Exposition Art et Démocratie" 
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6 md:w-2/3">
+              <h3 class="text-xl font-bold mb-2 text-karibu-green">Exposition "Art et Démocratie"</h3>
+              <p class="text-gray-600 mb-4">
+                Une exposition collective qui explore les liens entre l'art et la démocratie en Afrique. Les œuvres présentées interrogent les notions de citoyenneté, de participation et de gouvernance.
+              </p>
+              <div class="flex items-center text-sm text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Juin 2022</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+          <div class="md:flex">
+            <div class="md:w-1/3">
+              <img 
+                src="/placeholder.svg?height=300&width=300&query=African music festival" 
+                alt="Festival Voix Citoyennes" 
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6 md:w-2/3">
+              <h3 class="text-xl font-bold mb-2 text-karibu-green">Festival "Voix Citoyennes"</h3>
+              <p class="text-gray-600 mb-4">
+                Un festival de musique et de poésie qui donne la parole aux artistes engagés dans la promotion de la démocratie et des droits humains en Afrique.
+              </p>
+              <div class="flex items-center text-sm text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Novembre 2022</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-8">
+        <a href="/karibu/projets" class="btn bg-karibu-green text-white hover:bg-green-700 transform transition-all hover:scale-105 py-3 px-6 rounded-lg">Voir tous les projets</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Latest News Section avec design moderne -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-karibu-green mb-4">Actualités Karibu</h2>
+          <p class="text-xl text-gray-600 max-w-2xl">
+            Restez informé des dernières activités et événements de Karibu.
+          </p>
+        </div>
+        <a href="/actualites?category=karibu" class="text-karibu-green font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center">
+          Voir toutes les actualités
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <NewsCard 
+          title="Résidence artistique Karibu : Appel à candidatures" 
+          excerpt="Karibu lance un appel à candidatures pour sa prochaine résidence artistique qui se tiendra à Dakar en septembre 2023."
+          date="2023-04-10"
+          category="Karibu"
+          image="/placeholder.svg?height=400&width=600&query=Artists workshop in Africa"
+          url="/actualites/residence-artistique-karibu-appel-candidatures"
+        />
+        
+        <NewsCard 
+          title="Conférence sur l'art et l'engagement citoyen" 
+          excerpt="Karibu organise une conférence sur l'art et l'engagement citoyen avec des artistes et des militants de plusieurs pays africains."
+          date="2023-03-15"
+          category="Événements"
+          image="/placeholder.svg?height=400&width=600&query=African art and activism conference"
+          url="/actualites/conference-art-engagement-citoyen"
+        />
+        
+        <NewsCard 
+          title="Lancement du programme de mobilités citoyennes" 
+          excerpt="Karibu lance son programme de mobilités citoyennes pour les militants et les artistes engagés dans la promotion de la démocratie."
+          date="2023-02-20"
+          category="Programmes"
+          image="/placeholder.svg?height=400&width=600&query=African activists meeting"
+          url="/actualites/lancement-programme-mobilites-citoyennes"
+        />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Call to Action avec design moderne -->
+  <section class="py-16 bg-karibu-green text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-10"></div>
+    <div class="container-custom text-center relative z-10">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Participez à nos programmes</h2>
+      <p class="text-lg max-w-3xl mx-auto mb-8">
+        Vous êtes artiste, militant ou simplement intéressé par nos activités ? Découvrez comment participer à nos programmes et contribuer à la promotion de la démocratie et des droits humains.
+      </p>
+      <a href="/karibu/participer" class="btn bg-white text-karibu-green hover:bg-gray-100 transform transition-all hover:scale-105 py-3 px-6 rounded-lg">Participer</a>
+    </div>
+  </section>
+</MainLayout>

@@ -1,11 +1,307 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import MainLayout from '../layouts/MainLayout.astro';
+import ScrollAnimation from '../components/ScrollAnimation.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import StatsCounter from '../components/StatsCounter.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<MainLayout title="Y'EN A MARRE - Mouvement citoyen sénégalais" currentPath="/">
+  <!-- Hero Section avec design moderne -->
+  <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+    <!-- Overlay pattern -->
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    
+    <!-- Content -->
+    <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="text-white space-y-6">
+          <div class="mb-8">
+            <img 
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp" 
+              alt="Y'EN A MARRE Logo" 
+              class="w-48 md:w-64 mb-6"
+            />
+          </div>
+          
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            Nous apportons des solutions <span class="text-yam-red">pour un Sénégal meilleur</span>
+          </h1>
+          
+          <p class="text-xl md:text-2xl text-gray-300 mt-6">
+            Un mouvement citoyen qui lutte pour la démocratie, la bonne gouvernance et l'engagement civique depuis 2011.
+          </p>
+          
+          <div class="flex flex-wrap gap-4 mt-8">
+            <a href="/rejoindre" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30">
+              Rejoignez le mouvement
+            </a>
+            <a href="/a-propos/yenamarre" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
+              En savoir plus
+            </a>
+          </div>
+        </div>
+        
+        <div class="hidden md:block relative">
+          <div class="relative rounded-lg overflow-hidden shadow-2xl">
+            <img 
+              src="/placeholder.svg?height=600&width=800&query=African youth protest movement with signs and flags in Senegal" 
+              alt="Y'EN A MARRE en action" 
+              class="w-full h-auto rounded-lg"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          </div>
+          <div class="absolute -bottom-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg">
+            Depuis 2011
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Services Section inspiré du design Sandbox -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container-custom">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6">Notre mission</h2>
+        <p class="text-xl text-gray-700">
+          Nous luttons pour un Sénégal où tous les citoyens peuvent jouir pleinement de leurs droits et participer activement à la construction d'une société démocratique et juste.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <FeatureCard 
+          icon="scale-balanced"
+          title="Démocratie"
+          description="Nous promouvons les valeurs démocratiques et la participation citoyenne pour construire un Sénégal plus juste."
+          color="yam-red"
+        />
+        
+        <FeatureCard 
+          icon="users"
+          title="Engagement civique"
+          description="Nous encourageons les citoyens, en particulier les jeunes, à s'engager activement dans la vie politique et sociale."
+          color="yam-red"
+        />
+        
+        <FeatureCard 
+          icon="building-government"
+          title="Bonne gouvernance"
+          description="Nous luttons contre la corruption et promouvons la transparence et la responsabilité dans la gestion des affaires publiques."
+          color="yam-red"
+        />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Statistiques avec design moderne -->
+  <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern red and black')] opacity-5"></div>
+    <div class="container-custom relative z-10">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6">Notre impact</h2>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+          Depuis notre création, nous avons mobilisé des milliers de citoyens et mené des dizaines de campagnes pour promouvoir la démocratie et la bonne gouvernance au Sénégal.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <StatsCounter number="12" label="Années d'activisme" color="yam-red" />
+        <StatsCounter number="50" label="Campagnes menées" color="yam-red" />
+        <StatsCounter number="100000" label="Citoyens mobilisés" color="yam-red" />
+        <StatsCounter number="14" label="Régions touchées" color="yam-red" />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Nos projets avec design moderne -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-4">Nos projets</h2>
+          <p class="text-xl text-gray-600 max-w-2xl">
+            Découvrez les différentes initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique.
+          </p>
+        </div>
+        <a href="/projets" class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center">
+          Voir tous les projets
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <ProjectCard 
+          title="Y'EN A MARRE" 
+          description="Le mouvement principal qui promeut la démocratie et la bonne gouvernance au Sénégal."
+          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp"
+          url="/yenamarre"
+        />
+        
+        <ProjectCard 
+          title="Lead The Change (LTC)" 
+          description="La Télé Citoyenne, un média alternatif pour diffuser les messages du mouvement."
+          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png"
+          url="/ltc"
+        />
+        
+        <ProjectCard 
+          title="Karibu" 
+          description="Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen."
+          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
+          url="/karibu"
+        />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Appel à l'action avec design moderne -->
+  <section class="py-16 bg-yam-red text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-10"></div>
+    <div class="container-custom text-center relative z-10">
+      <h2 class="text-3xl md:text-5xl font-bold mb-6">Passez à l'action maintenant</h2>
+      <p class="text-xl max-w-3xl mx-auto mb-8">
+        Ensemble, nous pouvons faire la différence. Rejoignez Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique au Sénégal.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg">
+          Rejoignez-nous
+        </a>
+        <a href="/faire-un-don" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
+          Faire un don
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Actualités récentes avec design moderne -->
+  <section class="py-16 md:py-24">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-4">Actualités récentes</h2>
+          <p class="text-xl text-gray-600 max-w-2xl">
+            Restez informé des dernières activités et campagnes de Y'EN A MARRE.
+          </p>
+        </div>
+        <a href="/actualites" class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center">
+          Voir toutes les actualités
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <NewsCard 
+          title="Manifestation pour la démocratie à Dakar" 
+          excerpt="Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption."
+          date="2023-06-15"
+          category="Y'EN A MARRE"
+          image="/placeholder.svg?height=400&width=600&query=African protest in Dakar"
+          url="/actualites/manifestation-democratie-dakar"
+        />
+        
+        <NewsCard 
+          title="Lancement du programme Dox Ak Sa Gox" 
+          excerpt="Y'EN A MARRE lance un nouveau programme pour promouvoir la gouvernance locale et l'engagement citoyen."
+          date="2023-05-22"
+          category="Projets"
+          image="/placeholder.svg?height=400&width=600&query=Community meeting in Senegal"
+          url="/actualites/lancement-dox-ak-sa-gox"
+        />
+        
+        <NewsCard 
+          title="Résidence artistique Karibu : Appel à candidatures" 
+          excerpt="Karibu lance un appel à candidatures pour sa prochaine résidence artistique qui se tiendra à Dakar en septembre 2023."
+          date="2023-04-10"
+          category="Karibu"
+          image="/placeholder.svg?height=400&width=600&query=Artists workshop in Africa"
+          url="/actualites/residence-artistique-karibu-appel-candidatures"
+        />
+      </div>
+    </div>
+  </section>
+  
+  <!-- Newsletter avec design moderne -->
+  <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Restez informé</h2>
+        <p class="text-lg mb-8">
+          Inscrivez-vous à notre newsletter pour recevoir les dernières actualités et informations sur nos campagnes.
+        </p>
+        
+        <form class="flex flex-col md:flex-row gap-4 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+          <input 
+            type="email" 
+            placeholder="Votre adresse email" 
+            class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yam-red text-black bg-white"
+            required
+          />
+          <button 
+            type="submit" 
+            class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105"
+          >
+            S'inscrire
+          </button>
+        </form>
+        
+        <p class="text-sm mt-4 text-gray-400">
+          En vous inscrivant, vous acceptez de recevoir nos emails et confirmez avoir lu notre politique de confidentialité.
+        </p>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<script>
+// Animation des compteurs
+document.addEventListener('DOMContentLoaded', () => {
+  const counters = document.querySelectorAll('.counter-item [data-count]');
+  
+  const animateCounter = (counter, target) => {
+    let current = 0;
+    const increment = target > 1000 ? 1000 : 1;
+    const duration = 2000; // 2 secondes
+    const steps = Math.ceil(duration / 16);
+    const step = Math.ceil(target / steps);
+    
+    const timer = setInterval(() => {
+      current += step;
+      if (current > target) {
+        counter.textContent = target.toLocaleString();
+        clearInterval(timer);
+      } else {
+        counter.textContent = current.toLocaleString();
+      }
+    }, 16);
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counter = entry.target;
+        const target = parseInt(counter.getAttribute('data-count'));
+        animateCounter(counter, target);
+        observer.unobserve(counter);
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  counters.forEach(counter => {
+    observer.observe(counter);
+  });
+});
+</script>

@@ -1,0 +1,251 @@
+---
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = "" } = Astro.props;
+
+// Determine which project we're in
+const isLTC = currentPath.startsWith("/ltc");
+const isKaribu = currentPath.startsWith("/karibu");
+
+// Function to check if a path is active
+const isActive = (path: string) => {
+  return currentPath === path || currentPath.startsWith(`${path}/`) ? "active-nav-item" : "";
+};
+
+// Define project-specific styling and menu items
+let bgColor = "bg-white";
+let accentColor = isLTC ? "black" : "karibu-green";
+let hoverBgColor = "hover:bg-gray-100";
+let activeTextColor = isLTC ? "text-black" : "text-karibu-green";
+let menuItems = [];
+
+if (isLTC) {
+  menuItems = [
+    { name: "À propos de LTC", path: "/ltc/a-propos" },
+    { 
+      name: "Programmes", 
+      path: "/ltc/programmes",
+      submenu: [
+        { name: "Dox Mbokk", path: "/ltc/programmes/dox-mbokk" },
+        { name: "Sama Kaddu", path: "/ltc/programmes/sama-kaddu" },
+        { name: "Le Carré", path: "/ltc/programmes/le-carre" },
+        { name: "Parle-nous de", path: "/ltc/programmes/parle-nous-de" },
+        { name: "Cultur'All", path: "/ltc/programmes/culturall" },
+        { name: "Gëm Gëm", path: "/ltc/programmes/gem-gem" },
+        { name: "Njambaar", path: "/ltc/programmes/njambaar" }
+      ]
+    },
+    { name: "Jeunes Reporters Citoyens", path: "/ltc/jeunes-reporters-citoyens" },
+    { name: "Reportages/Productions", path: "/ltc/productions" },
+    { name: "Services", path: "/ltc/services" }
+  ];
+} else if (isKaribu) {
+  menuItems = [
+    { name: "Hospitalité", path: "/karibu/hospitalite" },
+    { 
+      name: "Mobilités citoyenne & apprentissage", 
+      path: "/karibu/mobilites",
+      submenu: [
+        { name: "Cohorte régionale", path: "/karibu/mobilites/cohorte-regionale" },
+        { name: "Cohorte locale", path: "/karibu/mobilites/cohorte-locale" }
+      ]
+    },
+    { 
+      name: "Production de savoir & Connaissance", 
+      path: "/karibu/production-savoir",
+      submenu: [
+        { name: "Conférences", path: "/karibu/production-savoir/conferences" },
+        { name: "Résidences artistiques", path: "/karibu/production-savoir/residences" },
+        { name: "Autres événements", path: "/karibu/production-savoir/evenements" }
+      ]
+    }
+  ];
+}
+
+// Check if any submenu is active
+const hasActiveSubmenu = menuItems.some(item => 
+  item.submenu && item.submenu.some(subitem => 
+    currentPath === subitem.path || currentPath.startsWith(`${subitem.path}/`)
+  )
+);
+---
+
+{(isLTC || isKaribu) && (
+  <div class={`border-b border-gray-200 ${bgColor} shadow-sm project-navbar`}>
+    <div class="container-custom">
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:block">
+        <div class="flex items-center justify-start overflow-x-auto py-1 project-nav-container">
+          {menuItems.map((item) => (
+            <div class={`relative group project-nav-item ${isActive(item.path)}`}>
+              <a 
+                href={item.path} 
+                class={`px-4 py-3 inline-block whitespace-nowrap text-gray-700 hover:text-${accentColor} transition-all ${isActive(item.path)}`}
+              >
+                {item.name}
+                {item.submenu && (
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 inline-block transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+                <span class="nav-indicator bg-${accentColor}"></span>
+              </a>
+              
+              {item.submenu && (
+                <div class="absolute left-0 mt-0 w-64 bg-white rounded-b-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[60] transform origin-top scale-95 group-hover:scale-100">
+                  <div class="py-2 rounded-b-lg bg-gradient-to-br from-white to-gray-50 ring-1 ring-gray-200">
+                    {item.submenu.map((subitem) => (
+                      <a 
+                        href={subitem.path} 
+                        class={`block px-4 py-2 text-gray-700 ${hoverBgColor} hover:text-${accentColor} ${isActive(subitem.path)} border-l-4 border-transparent hover:border-${accentColor}`}
+                      >
+                        {subitem.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </nav>
+      
+      <!-- Mobile Navigation (Improved) -->
+      <div class="md:hidden py-3">
+        <div class="relative">
+          <select id="mobile-project-nav" class="w-full p-3 pr-10 border rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-300 appearance-none">
+            {menuItems.map((item) => (
+              <>
+                <option value={item.path} selected={isActive(item.path)}>
+                  {item.name}
+                </option>
+                
+                {item.submenu && item.submenu.map((subitem) => (
+                  <option value={subitem.path} selected={isActive(subitem.path)}>
+                    &nbsp;&nbsp;— {subitem.name}
+                  </option>
+                ))}
+              </>
+            ))}
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Submenu container that appears when a submenu item is active -->
+    {hasActiveSubmenu && (
+      <div class={`bg-gray-50 border-t border-gray-200 py-2 submenu-container`}>
+        <div class="container-custom">
+          {menuItems.map((item) => (
+            item.submenu && item.submenu.some(subitem => isActive(subitem.path)) && (
+              <div class="overflow-x-auto">
+                <div class="flex space-x-4 items-center py-1">
+                  <span class="text-sm text-gray-500 whitespace-nowrap">{item.name}:</span>
+                  <div class="flex space-x-2">
+                    {item.submenu.map((subitem) => (
+                      <a 
+                        href={subitem.path} 
+                        class={`px-3 py-1 text-sm rounded-full whitespace-nowrap ${
+                          isActive(subitem.path) 
+                            ? `bg-${accentColor} text-white` 
+                            : `bg-white text-gray-700 hover:bg-gray-100 border border-gray-200`
+                        }`}
+                      >
+                        {subitem.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+)}
+
+<style define:vars={{ accentColor }}>
+  .project-navbar {
+    position: sticky;
+    top: 72px;
+    z-index: 40;
+  }
+  
+  .project-nav-item {
+    position: relative;
+  }
+  
+  .project-nav-item a {
+    position: relative;
+  }
+  
+  .nav-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+  }
+  
+  .project-nav-item:hover .nav-indicator {
+    width: 80%;
+  }
+  
+  .active-nav-item a {
+    font-weight: 600;
+  }
+  
+  .active-nav-item .nav-indicator {
+    width: 80%;
+  }
+  
+  .submenu-container {
+    position: relative;
+    z-index: 30;
+  }
+  
+  /* Custom scrollbar for overflow menus */
+  .project-nav-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+  
+  .project-nav-container::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .project-nav-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .project-nav-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+  }
+</style>
+
+<script>
+  // Handle mobile dropdown navigation
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileNav = document.getElementById('mobile-project-nav');
+    
+    if (mobileNav) {
+      mobileNav.addEventListener('change', (e) => {
+        const target = e.target as HTMLSelectElement;
+        if (target.value) {
+          window.location.href = target.value;
+        }
+      });
+    }
+  });
+</script>

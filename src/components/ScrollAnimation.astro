@@ -1,0 +1,116 @@
+---
+export interface Props {
+  animation?: 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'zoom-in' | 'zoom-out';
+  duration?: number;
+  delay?: number;
+  threshold?: number;
+  once?: boolean;
+  className?: string;
+  disabled?: boolean;
+}
+
+const { 
+  animation = 'fade-up', 
+  duration = 800, 
+  delay = 0, 
+  threshold = 0.1,
+  once = true,
+  className = '',
+  disabled = false
+} = Astro.props;
+---
+
+<div 
+  class={`${disabled ? '' : 'scroll-animation'} ${className}`}
+  data-animation={animation}
+  data-duration={duration}
+  data-delay={delay}
+  data-threshold={threshold}
+  data-once={once}
+>
+  <slot />
+</div>
+
+<style>
+  .scroll-animation {
+    opacity: 1; /* Commencer visible par défaut */
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .scroll-animation[data-animation="fade-up"] {
+    transform: translateY(20px);
+  }
+  
+  .scroll-animation[data-animation="fade-down"] {
+    transform: translateY(-20px);
+  }
+  
+  .scroll-animation[data-animation="fade-left"] {
+    transform: translateX(20px);
+  }
+  
+  .scroll-animation[data-animation="fade-right"] {
+    transform: translateX(-20px);
+  }
+  
+  .scroll-animation[data-animation="zoom-in"] {
+    transform: scale(0.95);
+  }
+  
+  .scroll-animation[data-animation="zoom-out"] {
+    transform: scale(1.05);
+  }
+  
+  .scroll-animation.animated {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const animatedElements = document.querySelectorAll('.scroll-animation');
+    
+    // Rendre tout visible après un délai, même sans animation
+    setTimeout(() => {
+      animatedElements.forEach(element => {
+        if (!element.classList.contains('animated')) {
+          element.classList.add('animated');
+        }
+      });
+    }, 500);
+    
+    // Créer l'observateur d'intersection
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const duration = element.dataset.duration || '800';
+          const delay = element.dataset.delay || '0';
+          const once = element.dataset.once === 'true';
+          
+          element.style.transitionDuration = `${duration}ms`;
+          element.style.transitionDelay = `${delay}ms`;
+          
+          // Ajouter la classe animée
+          element.classList.add('animated');
+          
+          if (once) {
+            observer.unobserve(element);
+          }
+        } else if (element.dataset.once === 'false') {
+          element.classList.remove('animated');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px'
+    });
+    
+    // Observer tous les éléments
+    animatedElements.forEach(element => {
+      observer.observe(element);
+    });
+  });
+</script>

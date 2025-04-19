@@ -1,0 +1,178 @@
+---
+import { Image } from "astro:assets"
+import MobileMenu from "./MobileMenu.astro"
+
+const { currentPath = "" } = Astro.props
+
+const isActive = (path: string) => {
+  return currentPath.startsWith(path) ? "font-bold" : ""
+}
+
+// Determine project-specific styling
+let projectLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp"
+let isProjectPage = false
+let projectName = "";
+
+if (currentPath.startsWith("/karibu")) {
+  projectLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
+  isProjectPage = true;
+  projectName = "Karibu";
+} else if (currentPath.startsWith("/ltc")) {
+  projectLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png"
+  isProjectPage = true;
+  projectName = "LTC";
+}
+
+const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp"
+---
+
+<header class="sticky top-0 z-50 bg-white shadow-md">
+  <div class="container-custom py-3">
+    <div class="flex items-center justify-between">
+      <!-- Logo Section -->
+      <div class="flex items-center">
+        {isProjectPage ? (
+          <div class="flex items-center">
+            <!-- Main Y'EN A MARRE logo for project pages -->
+            <a href="/" class="mr-2 relative group">
+              <div class="absolute -top-1 -left-1 w-full h-full bg-gray-100 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <img 
+                src={yamLogo || "/placeholder.svg"} 
+                alt="Y'EN A MARRE" 
+                class="h-10 w-auto relative z-10"
+              />
+            </a>
+            <!-- Separator with animation -->
+            <div class="h-8 w-px bg-gradient-to-b from-gray-200 via-gray-400 to-gray-200 mx-2 animate-pulse"></div>
+            <!-- Project specific logo without badge -->
+            <a href={currentPath.startsWith("/karibu") ? "/karibu" : "/ltc"} class="flex items-center relative">
+              <img 
+                src={projectLogo || "/placeholder.svg"} 
+                alt={projectName} 
+                class="h-12 w-auto transition-transform hover:scale-105"
+              />
+            </a>
+          </div>
+        ) : (
+          <a href="/" class="flex items-center">
+            <img 
+              src={projectLogo || "/placeholder.svg"} 
+              alt="Y'EN A MARRE" 
+              class="h-12 w-auto transition-transform hover:scale-105"
+            />
+          </a>
+        )}
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="/" class={`${isActive("/")} text-gray-800 hover:text-yam-red relative nav-link`}>
+          Accueil
+          <span class="nav-highlight bg-yam-red"></span>
+        </a>
+        
+        <!-- À propos - Redirige directement vers /yenamarre -->
+        <a href="/yenamarre" class={`${isActive("/a-propos")} text-gray-800 hover:text-yam-red relative nav-link`}>
+          À propos
+          <span class="nav-highlight bg-yam-red"></span>
+        </a>
+        
+        <!-- Projets dropdown - Sans Y'EN A MARRE comme sous-menu -->
+        <div class="relative group">
+          <button class={`flex items-center ${isActive("/projets")} text-gray-800 hover:text-yam-red relative nav-link`}>
+            Projets
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            <span class="nav-highlight bg-yam-red"></span>
+          </button>
+          <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+            <div class="py-2 rounded-md bg-gradient-to-br from-white to-gray-50 ring-1 ring-gray-200">
+              <a href="/ltc" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span class="w-6 h-6 flex-shrink-0">
+                  <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png" alt="LTC" class="w-full h-full object-contain" />
+                </span>
+                <span>Lead The Change (LTC)</span>
+              </a>
+              <a href="/karibu" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-karibu-green flex items-center space-x-2 border-l-4 border-transparent hover:border-karibu-green">
+                <span class="w-6 h-6 flex-shrink-0">
+                  <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png" alt="Karibu" class="w-full h-full object-contain" />
+                </span>
+                <span>Karibu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <a href="/actualites" class={`${isActive("/actualites")} text-gray-800 hover:text-yam-red relative nav-link`}>
+          Actualités
+          <span class="nav-highlight bg-yam-red"></span>
+        </a>
+        <a href="/contact" class={`${isActive("/contact")} text-gray-800 hover:text-yam-red relative nav-link`}>
+          Contact
+          <span class="nav-highlight bg-yam-red"></span>
+        </a>
+      </nav>
+
+      <!-- CTA Button -->
+      <div class="hidden md:block">
+        <a href="/rejoindre" class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105 shadow-md hover:shadow-lg">
+          Rejoindre
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none bg-gray-100 p-2 rounded-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <MobileMenu currentPath={currentPath} />
+</header>
+
+<style>
+  .nav-link {
+    padding-bottom: 2px;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    transform: translateY(-2px);
+  }
+  
+  .nav-highlight {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-link:hover .nav-highlight {
+    width: 100%;
+  }
+  
+  /* Active state styling */
+  .font-bold .nav-highlight {
+    width: 100%;
+  }
+</style>
+
+<script>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>

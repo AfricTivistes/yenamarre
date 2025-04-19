@@ -1,0 +1,122 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import MediaGallery from "../../components/MediaGallery.astro";
+
+const mediaItems = [
+  {
+    type: "video",
+    title: "Dox Mbokk - La gouvernance locale",
+    description: "Discussion sur la gouvernance locale et le rôle des citoyens dans la gestion des affaires publiques.",
+    url: "#",
+    thumbnail: "/placeholder.svg?height=400&width=600&query=African community discussion TV show",
+  },
+  {
+    type: "video",
+    title: "Sama Kaddu - Les jeunes et l'emploi",
+    description: "Les jeunes s'expriment sur les défis de l'emploi au Sénégal et proposent des solutions.",
+    url: "#",
+    thumbnail: "/placeholder.svg?height=400&width=600&query=African youth panel discussion",
+  },
+  {
+    type: "video",
+    title: "Le Carré - Démocratie et élections",
+    description: "Débat entre experts sur la démocratie et les élections au Sénégal et en Afrique.",
+    url: "#",
+    thumbnail: "/placeholder.svg?height=400&width=600&query=African political debate TV show",
+  },
+  {
+    type: "video",
+    title: "Dox Mbokk - L'éducation au Sénégal",
+    description: "Analyse des défis et opportunités du système éducatif sénégalais.",
+    url: "#",
+    thumbnail: "/placeholder.svg?height=400&width=600&query=African education discussion TV show",
+  },
+  {
+    type: "video",
+    title: "Sama Kaddu - La santé publique",
+    description: "Les jeunes discutent des enjeux de la santé publique au Sénégal.",
+    url: "#",
+    thumbnail: "/placeholder.svg?height=400&width=600&query=African youth health discussion",
+  },
+  {
+    type: "video",
+    title: "Le Carré - L'économie sénégalaise",
+    description: "Débat sur les défis et perspectives de l'économie sénégalaise.",
+    url: "#",
+    thumbnail: "/placeholder.svg?height=400&width=600&query=African economic debate TV show",
+  },
+];
+---
+
+<MainLayout title="Productions LTC" currentPath="/ltc/productions">
+  <section class="py-16 md:py-24">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Nos Productions</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Découvrez les dernières productions de Lead The Change (LTC), notre média citoyen qui promeut la démocratie et la bonne gouvernance.
+        </p>
+      </div>
+      
+      <!-- Filter tabs -->
+      <div class="flex flex-wrap justify-center mb-12 gap-2">
+        <button class="px-6 py-2 rounded-full bg-black text-white">Tous</button>
+        <button class="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300">Dox Mbokk</button>
+        <button class="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300">Sama Kaddu</button>
+        <button class="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300">Le Carré</button>
+      </div>
+      
+      <div class="mt-8">
+        <MediaGallery items={mediaItems} accentColor="bg-black" textColor="text-black" />
+      </div>
+      
+      <!-- Pagination -->
+      <div class="mt-12 flex justify-center">
+        <nav class="inline-flex rounded-md shadow">
+          <a href="#" class="py-2 px-4 bg-black text-white rounded-l-md hover:bg-gray-800">
+            Précédent
+          </a>
+          <a href="#" class="py-2 px-4 bg-white border-t border-b border-gray-300 hover:bg-gray-100">
+            1
+          </a>
+          <a href="#" class="py-2 px-4 bg-white border border-gray-300 hover:bg-gray-100">
+            2
+          </a>
+          <a href="#" class="py-2 px-4 bg-white border-t border-b border-gray-300 hover:bg-gray-100">
+            3
+          </a>
+          <a href="#" class="py-2 px-4 bg-black text-white rounded-r-md hover:bg-gray-800">
+            Suivant
+          </a>
+        </nav>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Subscribe Section -->
+  <section class="py-16 bg-black text-white">
+    <div class="container-custom">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">Abonnez-vous à notre chaîne</h2>
+          <p class="text-lg mb-6">
+            Ne manquez aucune de nos productions. Abonnez-vous à notre chaîne YouTube pour être informé de nos dernières vidéos.
+          </p>
+          <a href="#" class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+            </svg>
+            S'abonner sur YouTube
+          </a>
+        </div>
+        <div>
+          <img 
+            src="/placeholder.svg?height=400&width=600&query=African TV studio with cameras and equipment" 
+            alt="Studio LTC" 
+            class="rounded-lg shadow-lg"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

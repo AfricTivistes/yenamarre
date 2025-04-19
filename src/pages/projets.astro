@@ -1,0 +1,257 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+// Simuler des données de projets
+const allProjects = [
+  {
+    id: 1,
+    title: "Y'EN A MARRE",
+    description: "Le mouvement principal qui promeut la démocratie et la bonne gouvernance au Sénégal.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp",
+    url: "/yenamarre",
+    category: "Mouvement principal"
+  },
+  {
+    id: 2,
+    title: "Lead The Change (LTC)",
+    description: "La Télé Citoyenne, un média alternatif pour diffuser les messages du mouvement.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png",
+    url: "/ltc",
+    category: "Média"
+  },
+  {
+    id: 3,
+    title: "Karibu",
+    description: "Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png",
+    url: "/karibu",
+    category: "Art et culture"
+  },
+  {
+    id: 4,
+    title: "Dox Ak Sa Gox",
+    description: "Programme de promotion de la gouvernance locale et de l'engagement citoyen au niveau des quartiers.",
+    image: "/placeholder.svg?height=400&width=600&query=Community governance in Senegal",
+    url: "/projets/dox-ak-sa-gox",
+    category: "Gouvernance"
+  },
+  {
+    id: 5,
+    title: "Citizen Mic",
+    description: "Formation de rappeurs sur la citoyenneté et l'engagement civique à travers la musique.",
+    image: "/placeholder.svg?height=400&width=600&query=African rappers workshop",
+    url: "/projets/citizen-mic",
+    category: "Art et culture"
+  },
+  {
+    id: 6,
+    title: "Nouveau Type de Sénégalais (NTS)",
+    description: "Campagne visant à promouvoir une nouvelle citoyenneté basée sur la responsabilité et l'engagement civique.",
+    image: "/placeholder.svg?height=400&width=600&query=Senegalese youth civic engagement",
+    url: "/projets/nts",
+    category: "Citoyenneté"
+  },
+  {
+    id: 7,
+    title: "Observatoire de la Démocratie",
+    description: "Surveillance et analyse des pratiques démocratiques et de la gouvernance au Sénégal.",
+    image: "/placeholder.svg?height=400&width=600&query=Democracy monitoring in Africa",
+    url: "/projets/observatoire-democratie",
+    category: "Gouvernance"
+  },
+  {
+    id: 8,
+    title: "Jeunes Reporters Citoyens (JRC)",
+    description: "Formation de jeunes journalistes citoyens pour promouvoir l'information indépendante et engagée.",
+    image: "/placeholder.svg?height=400&width=600&query=Young African journalists training",
+    url: "/projets/jrc",
+    category: "Média"
+  },
+  {
+    id: 9,
+    title: "Mobilités Citoyennes",
+    description: "Programme d'échange et de mobilité pour les militants et les artistes engagés dans la promotion de la démocratie.",
+    image: "/placeholder.svg?height=400&width=600&query=African activists exchange program",
+    url: "/projets/mobilites-citoyennes",
+    category: "Art et culture"
+  }
+];
+
+// Catégories pour le filtre
+const categories = ["Tous", "Mouvement principal", "Média", "Art et culture", "Gouvernance", "Citoyenneté"];
+
+// Pagination (simulée)
+const projectsPerPage = 6;
+const totalPages = Math.ceil(allProjects.length / projectsPerPage);
+const currentPage = 1;
+const projectsToShow = allProjects.slice(0, projectsPerPage);
+---
+
+<MainLayout title="Projets - Y'EN A MARRE" currentPath="/projets">
+  <!-- Hero Section avec effet de verre -->
+  <section class="relative py-20 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+    <!-- Overlay pattern -->
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    
+    <!-- Content -->
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center text-white">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Nos Projets</h1>
+        <p class="text-xl text-gray-300">
+          Découvrez les différentes initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Filtres avec effet de verre -->
+  <section class="py-8 bg-white">
+    <div class="container-custom">
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
+        <div class="flex flex-wrap gap-2 justify-center">
+          {categories.map((category, index) => (
+            <button 
+              class={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                index === 0 
+                  ? 'bg-yam-red text-white' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Liste des projets -->
+  <section class="py-12 md:py-16">
+    <div class="container-custom">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projectsToShow.map((project) => (
+          <div class="group">
+            <ProjectCard 
+              title={project.title}
+              description={project.description}
+              image={project.image}
+              url={project.url}
+            />
+            <div class="mt-2 inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+              {project.category}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <!-- Pagination -->
+      <div class="mt-12 flex justify-center">
+        <nav class="inline-flex rounded-md shadow">
+          <a href="#" class="py-2 px-4 bg-gray-200 text-gray-700 rounded-l-md hover:bg-gray-300 disabled:opacity-50" disabled>
+            Précédent
+          </a>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <a 
+              href={`/projets?page=${i + 1}`} 
+              class={`py-2 px-4 ${
+                i + 1 === currentPage 
+                  ? 'bg-yam-red text-white' 
+                  : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              {i + 1}
+            </a>
+          ))}
+          <a href="/projets?page=2" class="py-2 px-4 bg-white border border-gray-300 text-gray-700 rounded-r-md hover:bg-gray-100">
+            Suivant
+          </a>
+        </nav>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Appel à l'action avec effet de verre -->
+  <section class="py-16 bg-gray-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold mb-6">Vous avez une idée de projet ?</h2>
+          <p class="text-lg text-gray-600 mb-8">
+            Nous sommes toujours à la recherche de nouvelles idées et de nouveaux partenaires pour nos projets. N'hésitez pas à nous contacter pour discuter de votre idée.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/contact" class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105">
+              Contactez-nous
+            </a>
+            <a href="/rejoindre" class="bg-transparent border-2 border-yam-red text-yam-red hover:bg-yam-red hover:text-white py-3 px-6 rounded-lg transition-colors">
+              Rejoignez-nous
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Témoignages avec effet de verre -->
+  <section class="py-16 bg-white">
+    <div class="container-custom">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Ce qu'ils disent de nos projets</h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+          <div class="text-yam-red mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+          </div>
+          <p class="text-lg text-gray-700 mb-6">
+            Y'EN A MARRE a transformé ma vision de la citoyenneté. Grâce à leur travail, je comprends mieux mon rôle dans la construction d'un Sénégal démocratique.
+          </p>
+          <div>
+            <p class="font-bold">Aminata Diop</p>
+            <p class="text-gray-600">Étudiante, Dakar</p>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+          <div class="text-yam-red mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+          </div>
+          <p class="text-lg text-gray-700 mb-6">
+            Le mouvement Y'EN A MARRE est une source d'inspiration pour toute une génération. Leur courage et leur détermination ont changé le paysage politique sénégalais.
+          </p>
+          <div>
+            <p class="font-bold">Dr. Moussa Sall</p>
+            <p class="text-gray-600">Professeur d'université, Saint-Louis</p>
+          </div>
+        </div>
+        
+        <div class="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+          <div class="text-yam-red mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+          </div>
+          <p class="text-lg text-gray-700 mb-6">
+            En tant qu'artiste, j'ai trouvé dans Y'EN A MARRE un espace pour exprimer mon engagement citoyen à travers mon art. Leur programme Karibu a changé ma vie.
+          </p>
+          <div>
+            <p class="font-bold">Ibrahima Ndiaye</p>
+            <p class="text-gray-600">Artiste, Thiès</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

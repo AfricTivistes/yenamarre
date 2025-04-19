@@ -1,0 +1,117 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import TeamGallery from "../../components/TeamGallery.astro";
+
+const teamMembers = [
+  {
+    name: "Fatou Diop",
+    role: "Directrice de Karibu",
+    image: "/placeholder.svg?height=400&width=300&query=African woman cultural leader",
+    bio: "Fatou dirige l'initiative Karibu depuis sa création en 2018. Elle est passionnée par l'art comme vecteur de changement social.",
+  },
+  {
+    name: "Babacar Ndiaye",
+    role: "Coordinateur des résidences",
+    image: "/placeholder.svg?height=400&width=300&query=African man arts coordinator",
+    bio: "Babacar coordonne les résidences artistiques de Karibu et facilite les échanges entre les artistes participants.",
+  },
+  {
+    name: "Aminata Sow",
+    role: "Responsable des projets éducatifs",
+    image: "/placeholder.svg?height=400&width=300&query=African woman education specialist",
+    bio: "Aminata développe les programmes éducatifs de Karibu et travaille avec les écoles et les communautés.",
+  },
+  {
+    name: "Moussa Fall",
+    role: "Chargé de mobilité citoyenne",
+    image: "/placeholder.svg?height=400&width=300&query=African man community organizer",
+    bio: "Moussa gère les programmes de mobilité citoyenne et les échanges entre militants et artistes.",
+  },
+  {
+    name: "Aïda Mbaye",
+    role: "Responsable de communication",
+    image: "/placeholder.svg?height=400&width=300&query=African woman communications specialist",
+    bio: "Aïda est en charge de la stratégie de communication et de la visibilité des projets de Karibu.",
+  },
+  {
+    name: "Omar Diallo",
+    role: "Coordinateur artistique",
+    image: "/placeholder.svg?height=400&width=300&query=African man artist coordinator",
+    bio: "Omar travaille avec les artistes et développe la programmation créative de Karibu.",
+  },
+];
+---
+
+<MainLayout title="Équipe Karibu" currentPath="/karibu/equipe">
+  <section class="py-16 md:py-24">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-karibu-green">Notre Équipe</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Découvrez les personnes passionnées qui font vivre Karibu et qui travaillent chaque jour pour promouvoir l'engagement artistique et citoyen.
+        </p>
+      </div>
+      
+      <div class="mt-16">
+        <TeamGallery members={teamMembers} accentColor="bg-karibu-green" textColor="text-karibu-green" />
+      </div>
+      
+      <div class="mt-16 bg-gray-50 p-8 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4 text-karibu-green">Rejoindre notre équipe</h2>
+        <p class="text-lg mb-6">
+          Vous êtes passionné par l'art, la culture et l'engagement citoyen ? Rejoignez notre équipe pour contribuer à nos projets et à notre mission.
+        </p>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-3 text-karibu-green">Postes ouverts</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-karibu-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span>Chargé(e) de projets culturels</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-karibu-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span>Assistant(e) de communication</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-karibu-green mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span>Coordinateur(trice) de résidences artistiques</span>
+              </li>
+            </ul>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-3 text-karibu-green">Bénévolat</h3>
+            <p class="mb-4">
+              Nous accueillons également des bénévoles pour nous aider dans l'organisation de nos événements et la mise en œuvre de nos projets.
+            </p>
+            <a href="/karibu/benevolat" class="inline-flex items-center text-karibu-green font-medium hover:underline">
+              En savoir plus
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Call to Action -->
+  <section class="py-16 bg-karibu-green text-white">
+    <div class="container-custom text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Contactez-nous</h2>
+      <p class="text-lg max-w-3xl mx-auto mb-8">
+        Vous avez des questions sur notre équipe ou vous souhaitez en savoir plus sur nos opportunités ? N'hésitez pas à nous contacter.
+      </p>
+      <a href="/contact" class="btn bg-white text-karibu-green hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-colors">
+        Nous contacter
+      </a>
+    </div>
+  </section>
+</MainLayout>
