@@ -6,7 +6,7 @@
   body {
     @apply font-opensans;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-montserrat font-bold;
   }
@@ -16,27 +16,44 @@
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 rounded font-montserrat font-bold transition-colors;
   }
-  
+
   .btn-primary {
     @apply btn bg-yam-red text-white hover:bg-red-700;
   }
-  
+
   .btn-secondary {
     @apply btn border-2 border-yam-black text-yam-black hover:bg-gray-100;
   }
-  
+
   .container-custom {
     @apply container mx-auto px-4 md:px-6 lg:px-8;
   }
-  
+
   .section {
     @apply py-12 md:py-16 lg:py-20;
   }
-  
+
   .card {
     @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:shadow-lg hover:-translate-y-1;
   }
-  
+
+}
+
+/* Styles globaux pour le site Y'EN A MARRE */
+
+/* Utilitaires pour limiter le nombre de lignes */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Ajoutez ces styles à votre fichier global.css */
