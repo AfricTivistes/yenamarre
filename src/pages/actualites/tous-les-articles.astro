@@ -243,47 +243,40 @@ const getCategoryColor = (category: string) => {
           )}
 
           <!-- Numéros de page -->
-          {(() => {
-            const pages = [];
-            const maxVisible = Math.min(5, totalPages);
-            
-            for (let i = 0; i < maxVisible; i++) {
-              let pageNum;
-              if (totalPages < 5) {
-                pageNum = i + 1;
-              } else if (currentPage <= 3) {
-                pageNum = i + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i;
-              } else {
-                pageNum = currentPage - 2 + i;
-              }
-
-              const isActive = pageNum === currentPage;
-              
-              if (isActive) {
-                pages.push(
-                  <a 
-                    href={getPageUrl(pageNum)} 
-                    class="px-4 py-2 rounded-lg transition-colors bg-yam-red text-white"
-                  >
-                    {pageNum}
-                  </a>
-                );
-              } else {
-                pages.push(
-                  <a 
-                    href={getPageUrl(pageNum)} 
-                    class="px-4 py-2 rounded-lg transition-colors border border-gray-300 text-gray-600 hover:bg-gray-50"
-                  >
-                    {pageNum}
-                  </a>
-                );
-              }
+          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+            let pageNum;
+            if (totalPages < 5) {
+              pageNum = i + 1;
+            } else if (currentPage <= 3) {
+              pageNum = i + 1;
+            } else if (currentPage >= totalPages - 2) {
+              pageNum = totalPages - 4 + i;
+            } else {
+              pageNum = currentPage - 2 + i;
             }
+
+            const isActive = pageNum === currentPage;
             
-            return pages;
-          })()}
+            if (isActive) {
+              return (
+                <a 
+                  href={getPageUrl(pageNum)} 
+                  class="px-4 py-2 rounded-lg transition-colors bg-yam-red text-white"
+                >
+                  {pageNum}
+                </a>
+              );
+            } else {
+              return (
+                <a 
+                  href={getPageUrl(pageNum)} 
+                  class="px-4 py-2 rounded-lg transition-colors border border-gray-300 text-gray-600 hover:bg-gray-50"
+                >
+                  {pageNum}
+                </a>
+              );
+            }
+          })}
 
           {totalPages > 5 && currentPage < totalPages - 2 && (
             <>
