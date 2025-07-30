@@ -1,115 +1,161 @@
+
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import NewsCard from '../components/NewsCard.astro';
 
-// Simuler des données d'actualités
-const allNews = [
+// Actualité principale (à la une)
+const featuredNews = {
+  id: 1,
+  title: "Manifestation pour la démocratie à Dakar",
+  excerpt: "Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption. Cette mobilisation historique marque un tournant dans l'engagement citoyen au Sénégal.",
+  date: "2023-06-15",
+  category: "Y'EN A MARRE",
+  image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+  url: "/actualites/manifestation-democratie-dakar"
+};
+
+// Actualités par catégorie
+const newsByCategory = {
+  "communiques-presse": [
+    {
+      id: 2,
+      title: "Position officielle sur les réformes électorales",
+      excerpt: "Y'EN A MARRE exprime sa position sur les récentes propositions de réformes du système électoral sénégalais.",
+      date: "2023-06-10",
+      category: "Communiqué de presse",
+      image: "https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=400&h=300&fit=crop",
+      url: "/actualites/position-reformes-electorales"
+    },
+    {
+      id: 3,
+      title: "Appel à la transparence budgétaire",
+      excerpt: "Le mouvement demande plus de transparence dans la gestion des finances publiques.",
+      date: "2023-05-28",
+      category: "Communiqué de presse",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop",
+      url: "/actualites/appel-transparence-budgetaire"
+    }
+  ],
+  "yam-presse": [
+    {
+      id: 4,
+      title: "Y'EN A MARRE dans Le Quotidien",
+      excerpt: "Interview exclusive de nos dirigeants sur les enjeux démocratiques actuels.",
+      date: "2023-06-08",
+      category: "YAM dans la presse",
+      image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=300&fit=crop",
+      url: "/actualites/interview-quotidien"
+    },
+    {
+      id: 5,
+      title: "Reportage RTS sur nos actions",
+      excerpt: "La télévision nationale couvre nos dernières initiatives citoyennes.",
+      date: "2023-05-25",
+      category: "YAM dans la presse",
+      image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=300&fit=crop",
+      url: "/actualites/reportage-rts"
+    }
+  ],
+  "medias": [
+    {
+      id: 6,
+      title: "Documentaire : 12 ans d'activisme",
+      excerpt: "Découvrez notre parcours à travers un documentaire retraçant 12 années d'engagement.",
+      date: "2023-06-05",
+      category: "Médias",
+      image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=300&fit=crop",
+      url: "/actualites/documentaire-12-ans"
+    },
+    {
+      id: 7,
+      title: "Galerie photos : Marche citoyenne",
+      excerpt: "Revivez en images la dernière marche citoyenne organisée à Dakar.",
+      date: "2023-05-20",
+      category: "Médias",
+      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+      url: "/actualites/galerie-marche-citoyenne"
+    }
+  ]
+};
+
+// Catégories avec leurs couleurs et icônes
+const categories = [
   {
-    id: 1,
-    title: "Manifestation pour la démocratie à Dakar",
-    excerpt: "Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption.",
-    date: "2023-06-15",
-    category: "Y'EN A MARRE",
-    image: "/placeholder.svg?height=400&width=600&query=African protest in Dakar",
-    url: "/actualites/manifestation-democratie-dakar"
+    id: "communiques-presse",
+    title: "Communiqués de presse",
+    description: "Nos positions officielles et déclarations publiques",
+    color: "bg-red-600",
+    icon: "📢",
+    url: "/actualites/communiques-presse"
   },
   {
-    id: 2,
-    title: "Lancement du programme Dox Ak Sa Gox",
-    excerpt: "Y'EN A MARRE lance un nouveau programme pour promouvoir la gouvernance locale et l'engagement citoyen.",
-    date: "2023-05-22",
-    category: "Projets",
-    image: "/placeholder.svg?height=400&width=600&query=Community meeting in Senegal",
-    url: "/actualites/lancement-dox-ak-sa-gox"
+    id: "yam-presse",
+    title: "YAM dans la presse",
+    description: "Notre couverture médiatique",
+    color: "bg-blue-600",
+    icon: "📰",
+    url: "/actualites/yam-presse"
   },
   {
-    id: 3,
-    title: "Résidence artistique Karibu : Appel à candidatures",
-    excerpt: "Karibu lance un appel à candidatures pour sa prochaine résidence artistique qui se tiendra à Dakar en septembre 2023.",
-    date: "2023-04-10",
-    category: "Karibu",
-    image: "/placeholder.svg?height=400&width=600&query=Artists workshop in Africa",
-    url: "/actualites/residence-artistique-karibu-appel-candidatures"
-  },
-  {
-    id: 4,
-    title: "Conférence sur la démocratie en Afrique",
-    excerpt: "Y'EN A MARRE organise une conférence sur la démocratie en Afrique avec des intervenants de plusieurs pays.",
-    date: "2023-04-05",
-    category: "Événements",
-    image: "/placeholder.svg?height=400&width=600&query=Conference on democracy in Africa",
-    url: "/actualites/conference-democratie-afrique"
-  },
-  {
-    id: 5,
-    title: "Conférence sur l'art et l'engagement citoyen",
-    excerpt: "Karibu organise une conférence sur l'art et l'engagement citoyen avec des artistes et des militants de plusieurs pays africains.",
-    date: "2023-03-15",
-    category: "Événements",
-    image: "/placeholder.svg?height=400&width=600&query=African art and activism conference",
-    url: "/actualites/conference-art-engagement-citoyen"
-  },
-  {
-    id: 6,
-    title: "Lancement du programme de mobilités citoyennes",
-    excerpt: "Karibu lance son programme de mobilités citoyennes pour les militants et les artistes engagés dans la promotion de la démocratie.",
-    date: "2023-02-20",
-    category: "Programmes",
-    image: "/placeholder.svg?height=400&width=600&query=African activists meeting",
-    url: "/actualites/lancement-programme-mobilites-citoyennes"
-  },
-  {
-    id: 7,
-    title: "Débat sur la liberté de la presse au Sénégal",
-    excerpt: "LTC organise un débat sur la liberté de la presse au Sénégal avec des journalistes et des experts des médias.",
-    date: "2023-02-10",
-    category: "LTC",
-    image: "/placeholder.svg?height=400&width=600&query=Press freedom debate in Senegal",
-    url: "/actualites/debat-liberte-presse-senegal"
-  },
-  {
-    id: 8,
-    title: "Formation des Jeunes Reporters Citoyens",
-    excerpt: "LTC lance une nouvelle session de formation pour les Jeunes Reporters Citoyens (JRC) à Dakar.",
-    date: "2023-01-25",
-    category: "LTC",
-    image: "/placeholder.svg?height=400&width=600&query=Young journalists training in Africa",
-    url: "/actualites/formation-jeunes-reporters-citoyens"
-  },
-  {
-    id: 9,
-    title: "Campagne de sensibilisation sur les élections",
-    excerpt: "Y'EN A MARRE lance une campagne de sensibilisation sur l'importance du vote et de la participation citoyenne aux élections.",
-    date: "2023-01-15",
-    category: "Y'EN A MARRE",
-    image: "/placeholder.svg?height=400&width=600&query=Voter education campaign in Senegal",
-    url: "/actualites/campagne-sensibilisation-elections"
+    id: "medias",
+    title: "Médias",
+    description: "Documentaires, photos et vidéos",
+    color: "bg-purple-600",
+    icon: "🎥",
+    url: "/actualites/medias"
   }
 ];
-
-// Catégories pour le filtre
-const categories = ["Tous", "Y'EN A MARRE", "Karibu", "LTC", "Événements", "Projets", "Programmes"];
-
-// Pagination (simulée)
-const newsPerPage = 6;
-const totalPages = Math.ceil(allNews.length / newsPerPage);
-const currentPage = 1;
-const newsToShow = allNews.slice(0, newsPerPage);
 ---
 
 <MainLayout title="Actualités - Y'EN A MARRE" currentPath="/actualites">
-  <!-- Hero Section avec effet de verre -->
-  <section class="relative py-20 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
-    <!-- Overlay pattern -->
-    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+  <!-- Hero Section avec actualité à la une -->
+  <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
+    <!-- Image de fond -->
+    <div class="absolute inset-0">
+      <img 
+        src={featuredNews.image} 
+        alt={featuredNews.title}
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+    </div>
     
     <!-- Content -->
-    <div class="container-custom relative z-10">
-      <div class="max-w-3xl mx-auto text-center text-white">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Actualités</h1>
-        <p class="text-xl text-gray-300">
-          Restez informé des dernières activités et campagnes de Y'EN A MARRE et de ses projets.
+    <div class="container-custom relative z-10 h-full flex items-center py-20">
+      <div class="max-w-2xl text-white">
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
+          À la une
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          {featuredNews.title}
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+          {featuredNews.excerpt}
         </p>
+        
+        <div class="flex flex-wrap items-center gap-6 mb-8">
+          <time class="text-gray-300" datetime={featuredNews.date}>
+            {new Date(featuredNews.date).toLocaleDateString('fr-FR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </time>
+          <span class="w-2 h-2 bg-yam-red rounded-full"></span>
+          <span class="text-yam-red font-medium">{featuredNews.category}</span>
+        </div>
+        
+        <a 
+          href={featuredNews.url} 
+          class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
+        >
+          Lire l'article complet
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
       </div>
     </div>
     
@@ -121,89 +167,123 @@ const newsToShow = allNews.slice(0, newsPerPage);
     </div>
   </section>
   
-  <!-- Filtres et recherche avec effet de verre -->
-  <section class="py-8 bg-white">
+  <!-- Catégories d'actualités en blocs -->
+  <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <!-- Filtres par catégorie -->
-          <div class="flex flex-wrap gap-2">
-            {categories.map((category, index) => (
-              <button 
-                class={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  index === 0 
-                    ? 'bg-yam-red text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-          
-          <!-- Recherche -->
-          <div class="relative">
-            <input 
-              type="text" 
-              placeholder="Rechercher..." 
-              class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yam-red focus:border-transparent w-full md:w-64"
-            />
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Liste des actualités -->
-  <section class="py-12 md:py-16">
-    <div class="container-custom">
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {newsToShow.map((news) => (
-          <NewsCard 
-            title={news.title}
-            excerpt={news.excerpt}
-            date={news.date}
-            category={news.category}
-            image={news.image}
-            url={news.url}
-          />
-        ))}
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6">Nos actualités par catégorie</h2>
+        <p class="text-xl text-gray-600">
+          Explorez nos différents types de contenus pour rester informé de toutes nos activités et prises de position.
+        </p>
       </div>
       
-      <!-- Pagination -->
-      <div class="mt-12 flex justify-center">
-        <nav class="inline-flex rounded-md shadow">
-          <a href="#" class="py-2 px-4 bg-gray-200 text-gray-700 rounded-l-md hover:bg-gray-300 disabled:opacity-50" disabled>
-            Précédent
-          </a>
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <a 
-              href={`/actualites?page=${i + 1}`} 
-              class={`py-2 px-4 ${
-                i + 1 === currentPage 
-                  ? 'bg-yam-red text-white' 
-                  : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              {i + 1}
-            </a>
-          ))}
-          <a href="/actualites?page=2" class="py-2 px-4 bg-white border border-gray-300 text-gray-700 rounded-r-md hover:bg-gray-100">
-            Suivant
-          </a>
-        </nav>
+      <!-- Grille des catégories -->
+      <div class="space-y-16">
+        {categories.map((category) => (
+          <div class="bg-gray-50 rounded-2xl p-8 md:p-12">
+            <!-- En-tête de catégorie -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+              <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <div class={`w-16 h-16 ${category.color} rounded-xl flex items-center justify-center text-2xl`}>
+                  {category.icon}
+                </div>
+                <div>
+                  <h3 class="text-2xl md:text-3xl font-bold">{category.title}</h3>
+                  <p class="text-gray-600 mt-1">{category.description}</p>
+                </div>
+              </div>
+              <a 
+                href={category.url} 
+                class="inline-flex items-center text-yam-red font-bold hover:underline group"
+              >
+                Voir tout
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+            
+            <!-- Articles de la catégorie -->
+            <div class="grid md:grid-cols-2 gap-6">
+              {newsByCategory[category.id]?.map((news) => (
+                <article class="group">
+                  <a href={news.url} class="block">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                      <div class="relative h-48 overflow-hidden">
+                        <img 
+                          src={news.image} 
+                          alt={news.title} 
+                          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </div>
+                      <div class="p-6">
+                        <time datetime={news.date} class="text-sm text-gray-500">
+                          {new Date(news.date).toLocaleDateString('fr-FR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </time>
+                        <h4 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors">
+                          {news.title}
+                        </h4>
+                        <p class="text-gray-600 mb-4">{news.excerpt}</p>
+                        <div class="flex justify-end">
+                          <span class="text-yam-red font-medium group-hover:underline">Lire la suite →</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
   
-  <!-- Newsletter avec effet de verre -->
+  <!-- Autres catégories en liens rapides -->
+  <section class="py-16 bg-gray-900 text-white">
+    <div class="container-custom">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Plus d'actualités</h2>
+        <p class="text-xl text-gray-300">Découvrez tous nos contenus</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="/actualites/tribune-libre" class="group bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
+          <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <span class="text-xl">💬</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Tribune libre</h3>
+          <p class="text-gray-300">Espace d'expression libre de nos membres et sympathisants.</p>
+        </a>
+        
+        <a href="/actualites/appels-offres" class="group bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition-all">
+          <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <span class="text-xl">💼</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Appels d'offres</h3>
+          <p class="text-gray-300">Opportunités d'emploi et de collaboration avec nos projets.</p>
+        </a>
+        
+        <a href="/actualites" class="group bg-yam-red rounded-xl p-6 hover:bg-red-700 transition-all md:col-span-2 lg:col-span-1">
+          <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <span class="text-xl">📰</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Toutes les actualités</h3>
+          <p class="text-white/90">Accédez à l'ensemble de nos contenus et actualités.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Newsletter -->
   <section class="py-16 bg-gray-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
     <div class="container-custom relative z-10">
-      <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100">
+      <div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-lg">
         <div class="text-center">
           <h2 class="text-3xl font-bold mb-6">Restez informé</h2>
           <p class="text-lg text-gray-600 mb-8">
