@@ -19,7 +19,6 @@ const { number, label, color = "yam-red" } = Astro.props;
 
     const animateCounter = (counter: HTMLElement, target: number) => {
       let currentValue = 0;
-      const increment = target > 1000 ? 1000 : 1;
       const duration = 2000; // 2 secondes
       const stepTime = duration / target;
 
