@@ -1,3 +1,4 @@
+
 ---
 export interface Props {
   animation?: 'fade-up' | 'fade-down' | 'fade-left' | 'fade-right' | 'zoom-in' | 'zoom-out';
@@ -85,7 +86,7 @@ const {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const element = entry.target;
+          const element = entry.target as HTMLElement;
           const duration = element.dataset.duration || '800';
           const delay = element.dataset.delay || '0';
           const once = element.dataset.once === 'true';
@@ -99,8 +100,11 @@ const {
           if (once) {
             observer.unobserve(element);
           }
-        } else if (element.dataset.once === 'false') {
-          element.classList.remove('animated');
+        } else {
+          const element = entry.target as HTMLElement;
+          if (element.dataset.once === 'false') {
+            element.classList.remove('animated');
+          }
         }
       });
     }, {
@@ -109,27 +113,15 @@ const {
     });
 
     // Observer tous les éléments
-    animatedElements.forEach((element: HTMLElement) => {
-          const duration = element.dataset.duration || '800';
-          const delay = element.dataset.delay || '0';
-          const once = element.dataset.once === 'true';
+    animatedElements.forEach((element) => {
+      const htmlElement = element as HTMLElement;
+      const duration = htmlElement.dataset.duration || '800';
+      const delay = htmlElement.dataset.delay || '0';
 
-          element.style.transitionDuration = `${duration}ms`;
-          element.style.transitionDelay = `${delay}ms`;
+      htmlElement.style.transitionDuration = `${duration}ms`;
+      htmlElement.style.transitionDelay = `${delay}ms`;
 
-          observer.observe(element);
-        });
-
-        // Intersection Observer pour détecter quand les éléments entrent dans la vue
-        const intersectionCallback = (entries: IntersectionObserverEntry[]) => {
-          entries.forEach(entry => {
-            const target = entry.target as HTMLElement;
-            if (entry.isIntersecting) {
-              target.classList.add('animated');
-            } else if (target.dataset.once === 'false') {
-              target.classList.remove('animated');
-            }
-          });
-        };
+      observer.observe(element);
+    });
   });
 </script>
