@@ -257,25 +257,21 @@ const getCategoryColor = (category: string) => {
 
             const isActive = pageNum === currentPage;
             
-            if (isActive) {
-              return (
-                <a 
-                  href={getPageUrl(pageNum)} 
-                  class="px-4 py-2 rounded-lg transition-colors bg-yam-red text-white"
-                >
-                  {pageNum}
-                </a>
-              );
-            } else {
-              return (
-                <a 
-                  href={getPageUrl(pageNum)} 
-                  class="px-4 py-2 rounded-lg transition-colors border border-gray-300 text-gray-600 hover:bg-gray-50"
-                >
-                  {pageNum}
-                </a>
-              );
-            }
+            return isActive ? (
+              <a 
+                href={getPageUrl(pageNum)} 
+                class="px-4 py-2 rounded-lg transition-colors bg-yam-red text-white"
+              >
+                {pageNum}
+              </a>
+            ) : (
+              <a 
+                href={getPageUrl(pageNum)} 
+                class="px-4 py-2 rounded-lg transition-colors border border-gray-300 text-gray-600 hover:bg-gray-50"
+              >
+                {pageNum}
+              </a>
+            );
           })}
 
           {totalPages > 5 && currentPage < totalPages - 2 && (

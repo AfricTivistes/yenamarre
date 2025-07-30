@@ -12,10 +12,10 @@ import StatsCounter from '../components/StatsCounter.astro';
   <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
     <!-- Image d'arrière-plan -->
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
-    
+
     <!-- Overlay sombre pour la lisibilité -->
     <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/60"></div>
-    
+
     <!-- Overlay pattern -->
     <div class="absolute inset-0 opacity-5 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
 
@@ -460,34 +460,36 @@ import StatsCounter from '../components/StatsCounter.astro';
 document.addEventListener('DOMContentLoaded', () => {
   const counters = document.querySelectorAll('.counter-item [data-count]');
 
-  const animateCounter = (counter, target) => {
-    let current = 0;
+  const animateCounter = (counter: HTMLElement, target: number) => {
+    let currentValue = 0;
     const increment = target > 1000 ? 1000 : 1;
     const duration = 2000; // 2 secondes
-    const steps = Math.ceil(duration / 16);
-    const step = Math.ceil(target / steps);
+    const stepTime = duration / target;
 
     const timer = setInterval(() => {
-      current += step;
-      if (current > target) {
-        counter.textContent = target.toLocaleString();
+      currentValue += Math.ceil(target / 100);
+      if (currentValue >= target) {
+        currentValue = target;
         clearInterval(timer);
-      } else {
-        counter.textContent = current.toLocaleString();
       }
-    }, 16);
+      counter.textContent = currentValue.toLocaleString();
+    }, stepTime);
   };
 
+  // Observer pour déclencher l'animation
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const counter = entry.target;
-        const target = parseInt(counter.getAttribute('data-count'));
-        animateCounter(counter, target);
-        observer.unobserve(counter);
+        const counter = entry.target as HTMLElement;
+        const countAttr = counter.getAttribute('data-count');
+        if (countAttr) {
+          const target = parseInt(countAttr);
+          animateCounter(counter, target);
+          observer.unobserve(counter);
+        }
       }
     });
-  }, { threshold: 0.5 });
+  });
 
   counters.forEach(counter => {
     observer.observe(counter);

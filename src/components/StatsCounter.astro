@@ -16,36 +16,38 @@ const { number, label, color = "yam-red" } = Astro.props;
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const counters = document.querySelectorAll('.counter-item [data-count]');
-    
-    const animateCounter = (counter, target) => {
-      let current = 0;
+
+    const animateCounter = (counter: HTMLElement, target: number) => {
+      let currentValue = 0;
       const increment = target > 1000 ? 1000 : 1;
       const duration = 2000; // 2 secondes
-      const steps = Math.ceil(duration / 16);
-      const step = Math.ceil(target / steps);
-      
+      const stepTime = duration / target;
+
       const timer = setInterval(() => {
-        current += step;
-        if (current > target) {
-          counter.textContent = target.toLocaleString();
+        currentValue += Math.ceil(target / 100);
+        if (currentValue >= target) {
+          currentValue = target;
           clearInterval(timer);
-        } else {
-          counter.textContent = current.toLocaleString();
         }
-      }, 16);
+        counter.textContent = currentValue.toLocaleString();
+      }, stepTime);
     };
-    
+
+    // Observer pour déclencher l'animation
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const counter = entry.target;
-          const target = parseInt(counter.getAttribute('data-count'));
-          animateCounter(counter, target);
-          observer.unobserve(counter);
+          const counter = entry.target as HTMLElement;
+          const countAttr = counter.getAttribute('data-count');
+          if (countAttr) {
+            const target = parseInt(countAttr);
+            animateCounter(counter, target);
+            observer.unobserve(counter);
+          }
         }
       });
-    }, { threshold: 0.5 });
-    
+    });
+
     counters.forEach(counter => {
       observer.observe(counter);
     });
