@@ -46,11 +46,11 @@ const isProjectPage = currentPath.startsWith("/karibu") || currentPath.startsWit
           <a href="/" class={`block px-3 py-2 rounded-lg ${isActive("/")} hover:bg-gray-100 hover:text-yam-red`}>
             Accueil
           </a>
-          
+
           <a href="/yenamarre" class={`block px-3 py-2 rounded-lg ${isActive("/yenamarre")} hover:bg-gray-100 hover:text-yam-red`}>
             À propos
           </a>
-          
+
           <!-- Projets avec sous-menu -->
           <div class="space-y-2">
             <div class={`px-3 py-2 ${isActive("/projets")} font-semibold`}>Projets</div>
@@ -69,17 +69,17 @@ const isProjectPage = currentPath.startsWith("/karibu") || currentPath.startsWit
               </a>
             </div>
           </div>
-          
+
           <a href="/actualites" class={`block px-3 py-2 rounded-lg ${isActive("/actualites")} hover:bg-gray-100 hover:text-yam-red`}>
             Actualités
           </a>
-          
+
           <a href="/contact" class={`block px-3 py-2 rounded-lg ${isActive("/contact")} hover:bg-gray-100 hover:text-yam-red`}>
             Contact
           </a>
         </div>
       </div>
-      
+
       <!-- Project-specific Navigation (only shown on project pages) -->
       {isProjectPage && (
         <div class="py-4 border-b border-gray-200">
@@ -93,14 +93,14 @@ const isProjectPage = currentPath.startsWith("/karibu") || currentPath.startsWit
           </div>
         </div>
       )}
-      
+
       <!-- Call to Action -->
       <div class="pt-4">
         <a href="/rejoindre" class={`block text-center py-3 px-4 rounded-lg ${buttonClass} font-bold`}>
           Rejoindre
         </a>
       </div>
-      
+
       <!-- Social Links -->
       <div class="pt-4 flex justify-center space-x-4">
         <a href="#" aria-label="Facebook" class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors">
@@ -119,7 +119,7 @@ const isProjectPage = currentPath.startsWith("/karibu") || currentPath.startsWit
           </svg>
         </a>
       </div>
-      
+
       <!-- Close Button -->
       <button id="close-mobile-menu" class="mt-4 w-full flex items-center justify-center py-3 text-gray-500 hover:text-gray-700">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -135,7 +135,7 @@ const isProjectPage = currentPath.startsWith("/karibu") || currentPath.startsWit
   document.addEventListener('DOMContentLoaded', () => {
     const closeButton = document.getElementById('close-mobile-menu');
     const mobileMenu = document.getElementById('mobile-menu');
-    
+
     if (closeButton && mobileMenu) {
       closeButton.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');

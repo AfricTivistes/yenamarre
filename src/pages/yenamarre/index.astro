@@ -1,4 +1,3 @@
-
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
@@ -17,50 +16,55 @@ const navItems = [
   <!-- Navigation du projet -->
   <ProjectNavbar items={navItems} accentColor="yam-red" />
 
-  <!-- Hero Section modernisé -->
-  <section class="relative min-h-[80vh] bg-gradient-to-br from-black via-gray-900 to-yam-red overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=800&width=1600&query=African protest movement with signs and flags')] bg-cover bg-center opacity-20"></div>
-    
-    <div class="container-custom relative z-10 h-full flex items-center py-20">
-      <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
-        <div class="text-white space-y-8">
-          <div class="space-y-4">
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Y'EN A <span class="text-yam-red">MARRE</span>
-            </h1>
-            <div class="w-24 h-1 bg-yam-red"></div>
-          </div>
-          
-          <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
-            Un mouvement citoyen qui transforme la société sénégalaise depuis 2011, 
-            en mobilisant la jeunesse pour la démocratie et la bonne gouvernance.
+  <!-- Hero Section avec design moderne -->
+  <section class="relative min-h-[80vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+    <!-- Image d'arrière-plan -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+
+    <!-- Overlay sombre pour la lisibilité -->
+    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/60"></div>
+
+    <!-- Overlay pattern -->
+    <div class="absolute inset-0 opacity-5 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern red and black')] bg-repeat"></div>
+
+    <!-- Content -->
+    <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="text-white space-y-6">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-yam-red">
+            Y'EN A MARRE
+            <span class="block text-white text-3xl md:text-4xl mt-2">Le mouvement citoyen du Sénégal</span>
+          </h1>
+
+          <p class="text-lg md:text-xl text-gray-300">
+            Depuis 2011, Y'EN A MARRE lutte pour la démocratie, la bonne gouvernance et l'engagement civique au Sénégal.
           </p>
-          
-          <div class="flex flex-wrap gap-6">
-            <a href="/rejoindre" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 transform hover:scale-105">
-              Rejoignez-nous
+
+          <div class="flex flex-wrap gap-4 mt-8">
+            <a href="/yenamarre/vision-mission" class="btn bg-yam-red text-white hover:bg-red-700 transform transition-all hover:scale-105 hover:shadow-lg py-3 px-6 rounded-lg">
+              Notre Vision
             </a>
-            <a href="/yenamarre/histoire" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
-              Notre histoire
+            <a href="/yenamarre/historique" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 transform transition-all hover:scale-105 py-3 px-6 rounded-lg">
+              Notre Histoire
             </a>
           </div>
         </div>
-        
+
         <div class="relative">
-          <div class="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+          <div class="bg-white rounded-full p-8 shadow-2xl mx-auto max-w-xs md:max-w-sm transform transition-transform hover:rotate-3">
             <img 
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp" 
-              alt="Y'EN A MARRE Logo" 
-              class="w-full max-w-sm mx-auto"
+              alt="Y'EN A MARRE" 
+              class="w-full h-auto"
             />
-            <div class="absolute -top-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg animate-pulse">
-              Depuis 2011
-            </div>
+          </div>
+          <div class="absolute -bottom-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg">
+            Depuis 2011
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- Wave divider -->
     <div class="absolute bottom-0 left-0 right-0">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
@@ -79,7 +83,7 @@ const navItems = [
           Construire une société sénégalaise démocratique, transparente et participative où chaque citoyen peut exercer pleinement ses droits.
         </p>
       </div>
-      
+
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="space-y-8">
           <div class="bg-gradient-to-r from-yam-red to-red-600 p-8 rounded-2xl text-white">
@@ -95,7 +99,7 @@ const navItems = [
               où la démocratie est effective et où la bonne gouvernance est la norme.
             </p>
           </div>
-          
+
           <div class="bg-gray-50 p-8 rounded-2xl border-l-4 border-yam-red">
             <h3 class="text-2xl font-bold mb-4 flex items-center text-gray-800">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-yam-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +113,7 @@ const navItems = [
             </p>
           </div>
         </div>
-        
+
         <div class="relative">
           <img 
             src="/placeholder.svg?height=600&width=800&query=Young African activists discussing democracy" 
@@ -119,7 +123,7 @@ const navItems = [
           <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl"></div>
         </div>
       </div>
-      
+
       <div class="mt-12 text-center">
         <a href="/yenamarre/vision-mission" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all inline-flex items-center">
           En savoir plus sur notre vision
@@ -142,7 +146,7 @@ const navItems = [
           Depuis 2011, nous menons des combats concrets pour transformer la société sénégalaise.
         </p>
       </div>
-      
+
       <div class="grid md:grid-cols-3 gap-8">
         <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all hover:-translate-y-2">
           <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-6">
@@ -155,7 +159,7 @@ const navItems = [
             Promouvoir une démocratie où chaque citoyen peut participer activement aux décisions qui l'concernent.
           </p>
         </div>
-        
+
         <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all hover:-translate-y-2">
           <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-6">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,7 +171,7 @@ const navItems = [
             Combattre la corruption sous toutes ses formes et promouvoir la transparence dans la gestion publique.
           </p>
         </div>
-        
+
         <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all hover:-translate-y-2">
           <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-6">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -193,7 +197,7 @@ const navItems = [
           Découvrez nos programmes concrets qui transforment les communautés à travers tout le Sénégal.
         </p>
       </div>
-      
+
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
           <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
@@ -217,7 +221,7 @@ const navItems = [
             </a>
           </div>
         </div>
-        
+
         <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
           <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
             <div class="absolute inset-0 bg-gradient-to-t from-blue-600/80 to-blue-600/40"></div>
@@ -240,7 +244,7 @@ const navItems = [
             </a>
           </div>
         </div>
-        
+
         <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
           <div class="h-48 bg-cover bg-center relative overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
             <div class="absolute inset-0 bg-gradient-to-t from-green-600/80 to-green-600/40"></div>
@@ -277,7 +281,7 @@ const navItems = [
           Une organisation structurée et décentralisée qui assure la coordination des actions sur l'ensemble du territoire national.
         </p>
       </div>
-      
+
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="space-y-8">
           <div class="flex items-start space-x-4">
@@ -291,7 +295,7 @@ const navItems = [
               <p class="text-gray-600">Basée à Dakar, elle assure la direction stratégique et la coordination générale du mouvement.</p>
             </div>
           </div>
-          
+
           <div class="flex items-start space-x-4">
             <div class="bg-yam-red rounded-full p-3 flex-shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -303,7 +307,7 @@ const navItems = [
               <p class="text-gray-600">Présentes dans les 14 régions du Sénégal pour adapter les actions aux réalités locales.</p>
             </div>
           </div>
-          
+
           <div class="flex items-start space-x-4">
             <div class="bg-yam-red rounded-full p-3 flex-shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -316,7 +320,7 @@ const navItems = [
             </div>
           </div>
         </div>
-        
+
         <div class="bg-gray-50 p-8 rounded-2xl">
           <h3 class="text-2xl font-bold mb-6 text-center">Structure Organisationnelle</h3>
           <div class="space-y-4">
@@ -333,7 +337,7 @@ const navItems = [
               <p class="text-sm text-gray-600">Groupes de travail spécialisés</p>
             </div>
           </div>
-          
+
           <div class="mt-6 text-center">
             <a href="/yenamarre/coordination" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all">
               Découvrir l'organisation
@@ -359,7 +363,7 @@ const navItems = [
           </svg>
         </a>
       </div>
-      
+
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <NewsCard 
           title="Manifestation pour la démocratie à Dakar" 
@@ -369,7 +373,7 @@ const navItems = [
           image="/placeholder.svg?height=400&width=600&query=African protest in Dakar"
           url="/actualites/manifestation-democratie-dakar"
         />
-        
+
         <NewsCard 
           title="Lancement du programme Dox Ak Sa Gox" 
           excerpt="Y'EN A MARRE lance un nouveau programme pour promouvoir la gouvernance locale et l'engagement citoyen."
@@ -378,7 +382,7 @@ const navItems = [
           image="/placeholder.svg?height=400&width=600&query=Community meeting in Senegal"
           url="/actualites/lancement-dox-ak-sa-gox"
         />
-        
+
         <NewsCard 
           title="Conférence sur la démocratie en Afrique" 
           excerpt="Y'EN A MARRE organise une conférence sur la démocratie en Afrique avec des intervenants de plusieurs pays."
