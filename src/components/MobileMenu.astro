@@ -9,23 +9,30 @@ const { currentPath = "" } = Astro.props
 let primaryColor = "text-gray-900";
 let buttonClass = "bg-yam-red text-white hover:bg-red-700";
 let projectName = "";
-let projectMenuItems = [];
+
+// Simulation des éléments de menu projets
+interface MenuItem {
+  name: string;
+  href: string;
+}
+
+let projectMenuItems: MenuItem[] = [];
 
 if (currentPath.startsWith("/karibu")) {
   projectName = "Karibu";
   projectMenuItems = [
-    { name: "Hospitalité", path: "/karibu/hospitalite" },
-    { name: "Mobilités citoyenne", path: "/karibu/mobilites" },
-    { name: "Production de savoir", path: "/karibu/production-savoir" },
+    { name: "Hospitalité", href: "/karibu/hospitalite" },
+    { name: "Mobilités citoyenne", href: "/karibu/mobilites" },
+    { name: "Production de savoir", href: "/karibu/production-savoir" },
   ];
 } else if (currentPath.startsWith("/ltc")) {
   projectName = "LTC";
   projectMenuItems = [
-    { name: "À propos de LTC", path: "/ltc/a-propos" },
-    { name: "Programmes", path: "/ltc/programmes" },
-    { name: "Jeunes Reporters Citoyens", path: "/ltc/jeunes-reporters-citoyens" },
-    { name: "Reportages/Productions", path: "/ltc/productions" },
-    { name: "Services", path: "/ltc/services" },
+    { name: "À propos de LTC", href: "/ltc/a-propos" },
+    { name: "Programmes", href: "/ltc/programmes" },
+    { name: "Jeunes Reporters Citoyens", href: "/ltc/jeunes-reporters-citoyens" },
+    { name: "Reportages/Productions", href: "/ltc/productions" },
+    { name: "Services", href: "/ltc/services" },
   ];
 }
 
@@ -86,7 +93,7 @@ const isProjectPage = currentPath.startsWith("/karibu") || currentPath.startsWit
           <h3 class="text-sm uppercase text-gray-500 font-semibold mb-3">Navigation {projectName}</h3>
           <div class="space-y-3">
             {projectMenuItems.map((item) => (
-              <a href={item.path} class={`block px-3 py-2 rounded-lg ${isActive(item.path)} hover:bg-gray-100 hover:text-yam-red`}>
+              <a href={item.href} class={`block px-3 py-2 rounded-lg ${isActive(item.href)} hover:bg-gray-100 hover:text-yam-red`}>
                 {item.name}
               </a>
             ))}
