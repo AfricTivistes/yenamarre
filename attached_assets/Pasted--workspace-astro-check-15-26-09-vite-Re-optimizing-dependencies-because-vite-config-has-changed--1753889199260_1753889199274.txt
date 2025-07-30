@@ -1,0 +1,193 @@
+~/workspace$ astro check
+15:26:09 [vite] Re-optimizing dependencies because vite config has changed
+15:26:09 [content] Syncing content
+15:26:09 [content] Synced content
+15:26:09 [types] Generated 158ms
+15:26:09 [check] Getting diagnostics for Astro files in /home/runner/workspace...
+src/components/Footer.astro:14:5 - warning ts(6133): 'primaryColor' is declared but its value is never read.
+
+14 let primaryColor = "text-yam-red";
+       ~~~~~~~~~~~~
+src/components/Footer.astro:2:1 - warning ts(6133): 'Image' is declared but its value is never read.
+
+2 import { Image } from 'astro:assets';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/Header.astro:2:1 - warning ts(6133): 'Image' is declared but its value is never read.
+
+2 import { Image } from "astro:assets"
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/MobileMenu.astro:88:14 - error ts(7005): Variable 'projectMenuItems' implicitly has an 'any[]' type.
+
+88             {projectMenuItems.map((item) => (
+                ~~~~~~~~~~~~~~~~
+src/components/MobileMenu.astro:12:5 - error ts(7034): Variable 'projectMenuItems' implicitly has type 'any[]' in some locations where its type cannot be determined.
+
+12 let projectMenuItems = [];
+       ~~~~~~~~~~~~~~~~
+src/components/MobileMenu.astro:9:5 - warning ts(6133): 'primaryColor' is declared but its value is never read.
+
+9 let primaryColor = "text-gray-900";
+      ~~~~~~~~~~~~
+
+src/components/ScrollAnimation.astro:112:30 - error ts(2345): Argument of type '(element: HTMLElement) => void' is not assignable to parameter of type '(value: Element, key: number, parent: NodeListOf<Element>) => void'.
+  Types of parameters 'element' and 'value' are incompatible.
+
+112     animatedElements.forEach((element: HTMLElement) => {
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/components/ScrollAnimation.astro:103:11 - error ts(2552): Cannot find name 'element'. Did you mean 'Element'?
+
+103           element.classList.remove('animated');
+              ~~~~~~~
+src/components/ScrollAnimation.astro:102:20 - error ts(2552): Cannot find name 'element'. Did you mean 'Element'?
+
+102         } else if (element.dataset.once === 'false') {
+                       ~~~~~~~
+src/components/ScrollAnimation.astro:94:19 - error ts(2339): Property 'style' does not exist on type 'Element'.
+
+94           element.style.transitionDelay = `${delay}ms`;
+                     ~~~~~
+src/components/ScrollAnimation.astro:93:19 - error ts(2339): Property 'style' does not exist on type 'Element'.
+
+93           element.style.transitionDuration = `${duration}ms`;
+                     ~~~~~
+src/components/ScrollAnimation.astro:91:32 - error ts(2339): Property 'dataset' does not exist on type 'Element'.
+
+91           const once = element.dataset.once === 'true';
+                                  ~~~~~~~
+src/components/ScrollAnimation.astro:90:33 - error ts(2339): Property 'dataset' does not exist on type 'Element'.
+
+90           const delay = element.dataset.delay || '0';
+                                   ~~~~~~~
+src/components/ScrollAnimation.astro:89:36 - error ts(2339): Property 'dataset' does not exist on type 'Element'.
+
+89           const duration = element.dataset.duration || '800';
+                                      ~~~~~~~
+src/components/ScrollAnimation.astro:124:15 - warning ts(6133): 'intersectionCallback' is declared but its value is never read.
+
+124         const intersectionCallback = (entries: IntersectionObserverEntry[]) => {
+                  ~~~~~~~~~~~~~~~~~~~~
+src/components/ScrollAnimation.astro:115:17 - warning ts(6133): 'once' is declared but its value is never read.
+
+115           const once = element.dataset.once === 'true';
+                    ~~~~
+
+src/components/StatsCounter.astro:22:13 - warning ts(6133): 'increment' is declared but its value is never read.
+
+22       const increment = target > 1000 ? 1000 : 1;
+               ~~~~~~~~~
+
+src/components/TeamGallery.astro:15:18 - warning ts(6133): 'accentColor' is declared but its value is never read.
+
+15 const { members, accentColor = "bg-yam-red", textColor = "text-yam-red" } = Astro.props;
+                    ~~~~~~~~~~~
+
+src/pages/actualites.astro:3:1 - warning ts(6133): 'NewsCard' is declared but its value is never read.
+
+3 import NewsCard from '../components/NewsCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/index.astro:3:1 - warning ts(6133): 'ScrollAnimation' is declared but its value is never read.
+
+3 import ScrollAnimation from '../components/ScrollAnimation.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/pages/index.astro:465:11 - warning ts(6133): 'increment' is declared but its value is never read.
+
+465     const increment = target > 1000 ? 1000 : 1;
+              ~~~~~~~~~
+
+src/pages/projets.astro:3:1 - warning ts(6133): 'ProjectCard' is declared but its value is never read.
+
+3 import ProjectCard from '../components/ProjectCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/actualites/tous-les-articles.astro:255:44 - error ts(1005): '}' expected.
+
+255               pageNum = currentPage - 2 + i;
+                                               ~
+src/pages/actualites/tous-les-articles.astro:254:15 - error ts(1005): ';' expected.
+
+254             } else {
+                  ~~~~
+src/pages/actualites/tous-les-articles.astro:253:43 - error ts(1005): '}' expected.
+
+253               pageNum = totalPages - 4 + i;
+                                              ~
+src/pages/actualites/tous-les-articles.astro:252:15 - error ts(1005): ';' expected.
+
+252             } else if (currentPage >= totalPages - 2) {
+                  ~~~~
+src/pages/actualites/tous-les-articles.astro:251:30 - error ts(1005): '}' expected.
+
+251               pageNum = i + 1;
+                                 ~
+
+src/pages/actualites/tribune-libre.astro:4:1 - warning ts(6133): 'NewsCard' is declared but its value is never read.
+
+4 import NewsCard from '../../components/NewsCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/actualites/yam-presse.astro:4:1 - warning ts(6133): 'NewsCard' is declared but its value is never read.
+
+4 import NewsCard from '../../components/NewsCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/karibu/index.astro:4:1 - warning ts(6133): 'FeatureCard' is declared but its value is never read.
+
+4 import FeatureCard from '../../components/FeatureCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/ltc/index.astro:293:13 - warning ts(6385): 'frameborder' is deprecated.
+
+293             frameborder="0"
+                ~~~~~~~~~~~
+src/pages/ltc/index.astro:4:1 - warning ts(6133): 'FeatureCard' is declared but its value is never read.
+
+4 import FeatureCard from '../../components/FeatureCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/pages/ltc/index.astro:3:1 - warning ts(6133): 'NewsCard' is declared but its value is never read.
+
+3 import NewsCard from '../../components/NewsCard.astro';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/ltc/productions.astro:70:23 - error ts(2322): Type '{ items: { type: string; title: string; description: string; url: string; thumbnail: string; }[]; accentColor: string; textColor: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'items' does not exist on type 'IntrinsicAttributes & Props'.
+
+70         <MediaGallery items={mediaItems} accentColor="bg-black" textColor="text-black" />
+                         ~~~~~
+
+src/pages/yenamarre/coordination.astro:15:18 - error ts(2322): Type '{ items: ({ name: string; href: string; current?: undefined; } | { name: string; href: string; current: boolean; })[]; accentColor: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'items' does not exist on type 'IntrinsicAttributes & Props'.
+
+15   <ProjectNavbar items={navItems} accentColor="yam-red" />
+                    ~~~~~
+
+src/pages/yenamarre/historique.astro:56:18 - error ts(2322): Type '{ items: ({ name: string; href: string; current?: undefined; } | { name: string; href: string; current: boolean; })[]; accentColor: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'items' does not exist on type 'IntrinsicAttributes & Props'.
+
+56   <ProjectNavbar items={navItems} accentColor="yam-red" />
+                    ~~~~~
+
+src/pages/yenamarre/index.astro:17:18 - error ts(2322): Type '{ items: ({ name: string; href: string; current: boolean; } | { name: string; href: string; current?: undefined; })[]; accentColor: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'items' does not exist on type 'IntrinsicAttributes & Props'.
+
+17   <ProjectNavbar items={navItems} accentColor="yam-red" />
+                    ~~~~~
+
+src/pages/yenamarre/reseaux.astro:16:18 - error ts(2322): Type '{ items: ({ name: string; href: string; current?: undefined; } | { name: string; href: string; current: boolean; })[]; accentColor: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'items' does not exist on type 'IntrinsicAttributes & Props'.
+
+16   <ProjectNavbar items={navItems} accentColor="yam-red" />
+                    ~~~~~
+
+src/pages/yenamarre/vision-mission.astro:16:18 - error ts(2322): Type '{ items: ({ name: string; href: string; current?: undefined; } | { name: string; href: string; current: boolean; })[]; accentColor: string; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'items' does not exist on type 'IntrinsicAttributes & Props'.
+
+16   <ProjectNavbar items={navItems} accentColor="yam-red" />
+                    ~~~~~
+
+Result (35 files): 
+- 21 errors
+- 0 warnings
+- 18 hints
