@@ -1,109 +1,26 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-
-// Simuler des données de projets
-const allProjects = [
-  {
-    id: 1,
-    title: "Y'EN A MARRE",
-    description: "Le mouvement principal qui promeut la démocratie et la bonne gouvernance au Sénégal.",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp",
-    url: "/yenamarre",
-    category: "Mouvement principal"
-  },
-  {
-    id: 2,
-    title: "Lead The Change (LTC)",
-    description: "La Télé Citoyenne, un média alternatif pour diffuser les messages du mouvement.",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png",
-    url: "/ltc",
-    category: "Média"
-  },
-  {
-    id: 3,
-    title: "Karibu",
-    description: "Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen.",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png",
-    url: "/karibu",
-    category: "Art et culture"
-  },
-  {
-    id: 4,
-    title: "Dox Ak Sa Gox",
-    description: "Programme de promotion de la gouvernance locale et de l'engagement citoyen au niveau des quartiers.",
-    image: "/placeholder.svg?height=400&width=600&query=Community governance in Senegal",
-    url: "/projets/dox-ak-sa-gox",
-    category: "Gouvernance"
-  },
-  {
-    id: 5,
-    title: "Citizen Mic",
-    description: "Formation de rappeurs sur la citoyenneté et l'engagement civique à travers la musique.",
-    image: "/placeholder.svg?height=400&width=600&query=African rappers workshop",
-    url: "/projets/citizen-mic",
-    category: "Art et culture"
-  },
-  {
-    id: 6,
-    title: "Nouveau Type de Sénégalais (NTS)",
-    description: "Campagne visant à promouvoir une nouvelle citoyenneté basée sur la responsabilité et l'engagement civique.",
-    image: "/placeholder.svg?height=400&width=600&query=Senegalese youth civic engagement",
-    url: "/projets/nts",
-    category: "Citoyenneté"
-  },
-  {
-    id: 7,
-    title: "Observatoire de la Démocratie",
-    description: "Surveillance et analyse des pratiques démocratiques et de la gouvernance au Sénégal.",
-    image: "/placeholder.svg?height=400&width=600&query=Democracy monitoring in Africa",
-    url: "/projets/observatoire-democratie",
-    category: "Gouvernance"
-  },
-  {
-    id: 8,
-    title: "Jeunes Reporters Citoyens (JRC)",
-    description: "Formation de jeunes journalistes citoyens pour promouvoir l'information indépendante et engagée.",
-    image: "/placeholder.svg?height=400&width=600&query=Young African journalists training",
-    url: "/projets/jrc",
-    category: "Média"
-  },
-  {
-    id: 9,
-    title: "Mobilités Citoyennes",
-    description: "Programme d'échange et de mobilité pour les militants et les artistes engagés dans la promotion de la démocratie.",
-    image: "/placeholder.svg?height=400&width=600&query=African activists exchange program",
-    url: "/projets/mobilites-citoyennes",
-    category: "Art et culture"
-  }
-];
-
-// Catégories pour le filtre
-const categories = ["Tous", "Mouvement principal", "Média", "Art et culture", "Gouvernance", "Citoyenneté"];
-
-// Pagination (simulée)
-const projectsPerPage = 6;
-const totalPages = Math.ceil(allProjects.length / projectsPerPage);
-const currentPage = 1;
-const projectsToShow = allProjects.slice(0, projectsPerPage);
 ---
 
-<MainLayout title="Projets - Y'EN A MARRE" currentPath="/projets">
-  <!-- Hero Section avec effet de verre -->
-  <section class="relative py-20 bg-gradient-to-br from-gray-900 to-black overflow-hidden">
-    <!-- Overlay pattern -->
+<MainLayout title="Nos Projets - Y'EN A MARRE" currentPath="/projets">
+  <!-- Hero Section -->
+  <section class="relative min-h-[70vh] bg-gradient-to-br from-yam-red via-red-600 to-red-800 overflow-hidden">
+    <!-- Pattern overlay -->
     <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
-    
+
     <!-- Content -->
-    <div class="container-custom relative z-10">
-      <div class="max-w-3xl mx-auto text-center text-white">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Nos Projets</h1>
-        <p class="text-xl text-gray-300">
-          Découvrez les différentes initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique.
+    <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
+      <div class="text-center text-white space-y-6">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
+          Nos Projets
+        </h1>
+        <p class="text-xl md:text-2xl text-red-100 max-w-4xl mx-auto">
+          Découvrez les initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement citoyen au Sénégal et en Afrique.
         </p>
       </div>
     </div>
-    
+
     <!-- Wave divider -->
     <div class="absolute bottom-0 left-0 right-0">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
@@ -111,147 +28,180 @@ const projectsToShow = allProjects.slice(0, projectsPerPage);
       </svg>
     </div>
   </section>
-  
-  <!-- Filtres avec effet de verre -->
-  <section class="py-8 bg-white">
+
+  <!-- Introduction Section -->
+  <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
-        <div class="flex flex-wrap gap-2 justify-center">
-          {categories.map((category, index) => (
-            <button 
-              class={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                index === 0 
-                  ? 'bg-yam-red text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+      <div class="text-center max-w-4xl mx-auto mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          L'écosystème Y'EN A MARRE
+        </h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          Y'EN A MARRE développe plusieurs projets complémentaires pour maximiser son impact sur la société sénégalaise et africaine. Chaque projet répond à des besoins spécifiques tout en contribuant à notre mission globale de promotion de la démocratie et de l'engagement citoyen.
+        </p>
       </div>
     </div>
   </section>
-  
-  <!-- Liste des projets -->
-  <section class="py-12 md:py-16">
+
+  <!-- Projects Grid -->
+  <section class="py-16 md:py-24 bg-gray-50">
     <div class="container-custom">
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projectsToShow.map((project) => (
-          <div class="group">
-            <ProjectCard 
-              title={project.title}
-              description={project.description}
-              image={project.image}
-              url={project.url}
-            />
-            <div class="mt-2 inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-              {project.category}
+      <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+
+        <!-- Lead The Change (LTC) -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+          <div class="relative h-64 bg-gradient-to-br from-gray-900 to-black">
+            <div class="absolute inset-0 bg-[url('/placeholder.svg?height=400&width=600&query=TV studio with African journalists')] bg-cover bg-center opacity-20"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <img 
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png" 
+                alt="Lead The Change (LTC)" 
+                class="w-32 h-32 object-contain"
+              />
             </div>
           </div>
-        ))}
-      </div>
-      
-      <!-- Pagination -->
-      <div class="mt-12 flex justify-center">
-        <nav class="inline-flex rounded-md shadow">
-          <a href="#" class="py-2 px-4 bg-gray-200 text-gray-700 rounded-l-md hover:bg-gray-300 disabled:opacity-50" disabled>
-            Précédent
-          </a>
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <a 
-              href={`/projets?page=${i + 1}`} 
-              class={`py-2 px-4 ${
-                i + 1 === currentPage 
-                  ? 'bg-yam-red text-white' 
-                  : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              {i + 1}
-            </a>
-          ))}
-          <a href="/projets?page=2" class="py-2 px-4 bg-white border border-gray-300 text-gray-700 rounded-r-md hover:bg-gray-100">
-            Suivant
-          </a>
-        </nav>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Appel à l'action avec effet de verre -->
-  <section class="py-16 bg-gray-100 relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
-    <div class="container-custom relative z-10">
-      <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100">
-        <div class="text-center">
-          <h2 class="text-3xl font-bold mb-6">Vous avez une idée de projet ?</h2>
-          <p class="text-lg text-gray-600 mb-8">
-            Nous sommes toujours à la recherche de nouvelles idées et de nouveaux partenaires pour nos projets. N'hésitez pas à nous contacter pour discuter de votre idée.
-          </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="/contact" class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105">
-              Contactez-nous
-            </a>
-            <a href="/rejoindre" class="bg-transparent border-2 border-yam-red text-yam-red hover:bg-yam-red hover:text-white py-3 px-6 rounded-lg transition-colors">
-              Rejoignez-nous
+          <div class="p-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Lead The Change (LTC)</h3>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              La télé citoyenne qui informe, éduque et mobilise les citoyens à travers des programmes télévisés innovants et des contenus numériques engagés.
+            </p>
+
+            <div class="space-y-3 mb-6">
+              <div class="flex items-center text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>Programmes TV et contenus digitaux</span>
+              </div>
+              <div class="flex items-center text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span>Formation de Jeunes Reporters Citoyens</span>
+              </div>
+              <div class="flex items-center text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2M7 4h10M7 4L5.05 5.95A1 1 0 005 6.364V19a1 1 0 001 1h12a1 1 0 001-1V6.364a1 1 0 00-.05-.414L17 4M9 12h6" />
+                </svg>
+                <span>Débats et analyses politiques</span>
+              </div>
+            </div>
+
+            <a href="/ltc" class="inline-flex items-center bg-black text-white hover:bg-gray-800 font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+              Découvrir LTC
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
             </a>
           </div>
         </div>
+
+        <!-- Karibu -->
+        <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+          <div class="relative h-64 bg-gradient-to-br from-karibu-green to-green-700">
+            <div class="absolute inset-0 bg-[url('/placeholder.svg?height=400&width=600&query=African artists in workshop')] bg-cover bg-center opacity-20"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <img 
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png" 
+                alt="Karibu" 
+                class="w-32 h-32 object-contain"
+              />
+            </div>
+          </div>
+          <div class="p-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Karibu</h3>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+              Résidences artistiques et mobilités citoyennes qui promeuvent l'engagement artistique et citoyen à travers des échanges culturels et éducatifs.
+            </p>
+
+            <div class="space-y-3 mb-6">
+              <div class="flex items-center text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-karibu-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0 9c0 5 0 5 0 5s0 0 0-5m0 9c-5 0-9-4-9-9s4-9 9-9m0 9c0-5 0-5 0-5s0 0 0 5" />
+                </svg>
+                <span>Mobilités citoyennes régionales</span>
+              </div>
+              <div class="flex items-center text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-karibu-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                </svg>
+                <span>Résidences artistiques</span>
+              </div>
+              <div class="flex items-center text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-karibu-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span>Production de savoir et connaissances</span>
+              </div>
+            </div>
+
+            <a href="/karibu" class="inline-flex items-center bg-karibu-green text-white hover:bg-green-700 font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+              Découvrir Karibu
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
-  
-  <!-- Témoignages avec effet de verre -->
-  <section class="py-16 bg-white">
+
+  <!-- Impact Section -->
+  <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Ce qu'ils disent de nos projets</h2>
-      
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Impact de nos projets</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Ensemble, nos projets créent un écosystème complet pour le développement démocratique et citoyen.
+        </p>
+      </div>
+
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
-          <div class="text-yam-red mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+        <div class="text-center p-6">
+          <div class="bg-yam-red text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
-          <p class="text-lg text-gray-700 mb-6">
-            Y'EN A MARRE a transformé ma vision de la citoyenneté. Grâce à leur travail, je comprends mieux mon rôle dans la construction d'un Sénégal démocratique.
-          </p>
-          <div>
-            <p class="font-bold">Aminata Diop</p>
-            <p class="text-gray-600">Étudiante, Dakar</p>
-          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Sensibilisation</h3>
+          <p class="text-gray-600">Formation et sensibilisation de milliers de jeunes citoyens engagés</p>
         </div>
-        
-        <div class="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
-          <div class="text-yam-red mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+
+        <div class="text-center p-6">
+          <div class="bg-karibu-green text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0 9c0 5 0 5 0 5s0 0 0-5m0 9c-5 0-9-4-9-9s4-9 9-9m0 9c0-5 0-5 0-5s0 0 0 5" />
             </svg>
           </div>
-          <p class="text-lg text-gray-700 mb-6">
-            Le mouvement Y'EN A MARRE est une source d'inspiration pour toute une génération. Leur courage et leur détermination ont changé le paysage politique sénégalais.
-          </p>
-          <div>
-            <p class="font-bold">Dr. Moussa Sall</p>
-            <p class="text-gray-600">Professeur d'université, Saint-Louis</p>
-          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Mobilisation</h3>
+          <p class="text-gray-600">Mobilisation citoyenne à travers l'art, la culture et les médias</p>
         </div>
-        
-        <div class="bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
-          <div class="text-yam-red mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+
+        <div class="text-center p-6">
+          <div class="bg-black text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
             </svg>
           </div>
-          <p class="text-lg text-gray-700 mb-6">
-            En tant qu'artiste, j'ai trouvé dans Y'EN A MARRE un espace pour exprimer mon engagement citoyen à travers mon art. Leur programme Karibu a changé ma vie.
-          </p>
-          <div>
-            <p class="font-bold">Ibrahima Ndiaye</p>
-            <p class="text-gray-600">Artiste, Thiès</p>
-          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Transformation</h3>
+          <p class="text-gray-600">Changement positif dans la gouvernance et la participation citoyenne</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-16 bg-gradient-to-r from-yam-red to-red-700 text-white">
+    <div class="container-custom text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Rejoignez nos projets</h2>
+      <p class="text-lg max-w-3xl mx-auto mb-8">
+        Participez à la construction d'une société plus démocratique et engagée. Découvrez comment vous pouvez contribuer à nos initiatives.
+      </p>
+      <a href="/contact" class="btn bg-white text-yam-red hover:bg-gray-100 transform transition-all hover:scale-105 py-3 px-8 rounded-lg font-bold">
+        Nous contacter
+      </a>
     </div>
   </section>
 </MainLayout>

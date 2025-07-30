@@ -94,37 +94,52 @@ import FeatureCard from '../../components/FeatureCard.astro';
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold text-karibu-green mb-4">Nos Programmes</h2>
         <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Découvrez les différents programmes de Karibu pour promouvoir l'engagement artistique et citoyen.
+          Découvrez les trois piliers de Karibu pour promouvoir l'engagement artistique et citoyen.
         </p>
       </div>
       
       <div class="grid md:grid-cols-3 gap-8">
-        <FeatureCard 
-          icon="globe"
-          title="Mobilités Citoyennes"
-          description="Programme d'échange et de mobilité pour les militants et les artistes engagés dans la promotion de la démocratie et des droits humains."
-          color="karibu-green"
-          url="/karibu/mobilites-citoyennes"
-          buttonText="En savoir plus"
-        />
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border-t-4 border-karibu-green">
+          <div class="text-center mb-6">
+            <div class="bg-karibu-green text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0 9c0 5 0 5 0 5s0 0 0-5m0 9c-5 0-9-4-9-9s4-9 9-9m0 9c0-5 0-5 0-5s0 0 0 5" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Mobilités Citoyennes</h3>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Programme d'échange et de mobilité pour les militants et les artistes engagés dans la promotion de la démocratie et des droits humains.
+          </p>
+        </div>
         
-        <FeatureCard 
-          icon="palette"
-          title="Résidences Artistiques"
-          description="Résidences pour les artistes engagés dans la promotion de la démocratie, des droits humains et de la bonne gouvernance."
-          color="karibu-red"
-          url="/karibu/residences-artistiques"
-          buttonText="En savoir plus"
-        />
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border-t-4 border-karibu-green">
+          <div class="text-center mb-6">
+            <div class="bg-karibu-green text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Résidences Artistiques</h3>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Résidences pour les artistes engagés dans la promotion de la démocratie, des droits humains et de la bonne gouvernance.
+          </p>
+        </div>
         
-        <FeatureCard 
-          icon="book-open"
-          title="Production de Savoir"
-          description="Conférences, ateliers et publications pour promouvoir la réflexion et le partage de connaissances sur les questions de démocratie et de droits humains."
-          color="karibu-yellow"
-          url="/karibu/production-savoir"
-          buttonText="En savoir plus"
-        />
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border-t-4 border-karibu-green">
+          <div class="text-center mb-6">
+            <div class="bg-karibu-green text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Production de Savoir</h3>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Conférences, ateliers et publications pour promouvoir la réflexion et le partage de connaissances sur les questions de démocratie et de droits humains.
+          </p>
+        </div>
       </div>
     </div>
   </section>

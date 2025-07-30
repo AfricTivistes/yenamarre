@@ -92,45 +92,54 @@ import FeatureCard from '../../components/FeatureCard.astro';
   <section class="py-16 md:py-24 bg-gray-50">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Nos Programmes</h2>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Nos Programmes Phares</h2>
         <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Découvrez les différents programmes de Lead The Change (LTC) pour promouvoir l'engagement citoyen et la bonne gouvernance.
+          Découvrez les programmes emblématiques de Lead The Change (LTC) pour promouvoir l'engagement citoyen et la bonne gouvernance.
         </p>
       </div>
       
       <div class="grid md:grid-cols-3 gap-8">
-        <FeatureCard 
-          icon="users-rectangle"
-          title="Dox Mbokk"
-          description="Programme de discussion sur les questions de gouvernance et de démocratie au Sénégal. Des experts et des citoyens débattent des enjeux actuels."
-          color="black"
-          url="/ltc/programmes/dox-mbokk"
-          buttonText="Voir les épisodes"
-        />
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border-t-4 border-black">
+          <div class="text-center mb-6">
+            <div class="bg-black text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Dox Mbokk</h3>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Programme de discussion sur les questions de gouvernance et de démocratie au Sénégal. Des experts et des citoyens débattent des enjeux actuels.
+          </p>
+        </div>
         
-        <FeatureCard 
-          icon="microphone"
-          title="Sama Kaddu"
-          description="Programme donnant la parole aux jeunes sur les questions qui les concernent. Une plateforme d'expression pour la jeunesse sénégalaise."
-          color="black"
-          url="/ltc/programmes/sama-kaddu"
-          buttonText="Voir les épisodes"
-        />
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border-t-4 border-black">
+          <div class="text-center mb-6">
+            <div class="bg-black text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Sama Kaddu</h3>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Programme donnant la parole aux jeunes sur les questions qui les concernent. Une plateforme d'expression pour la jeunesse sénégalaise.
+          </p>
+        </div>
         
-        <FeatureCard 
-          icon="tv"
-          title="Le Carré"
-          description="Débats entre experts sur les questions politiques, économiques et sociales. Un espace de réflexion et d'analyse approfondie."
-          color="black"
-          url="/ltc/programmes/le-carre"
-          buttonText="Voir les épisodes"
-        />
-      </div>
-      
-      <div class="text-center mt-12">
-        <a href="/ltc/programmes" class="btn-secondary border-2 border-black hover:bg-black hover:text-white transition-colors py-3 px-6 rounded-lg">
-          Voir tous les programmes
-        </a>
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow border-t-4 border-black">
+          <div class="text-center mb-6">
+            <div class="bg-black text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Le Carré</h3>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Débats entre experts sur les questions politiques, économiques et sociales. Un espace de réflexion et d'analyse approfondie.
+          </p>
+        </div>
       </div>
     </div>
   </section>
