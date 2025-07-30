@@ -243,38 +243,32 @@ const getCategoryColor = (category: string) => {
           )}
 
           <!-- Numéros de page -->
-          {(() => {
-            const pageNumbers = [];
-            const maxVisiblePages = Math.min(5, totalPages);
-            
-            for (let i = 0; i < maxVisiblePages; i++) {
-              let pageNum;
-              if (totalPages < 5) {
-                pageNum = i + 1;
-              } else if (currentPage <= 3) {
-                pageNum = i + 1;
-              } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i;
-              } else {
-                pageNum = currentPage - 2 + i;
-              }
-              
-              pageNumbers.push(
-                <a 
-                  href={getPageUrl(pageNum)} 
-                  class={`px-4 py-2 rounded-lg transition-colors ${
-                    pageNum === currentPage 
-                      ? 'bg-yam-red text-white' 
-                      : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  {pageNum}
-                </a>
-              );
+          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+            let pageNum;
+            if (totalPages < 5) {
+              pageNum = i + 1;
+            } else if (currentPage <= 3) {
+              pageNum = i + 1;
+            } else if (currentPage >= totalPages - 2) {
+              pageNum = totalPages - 4 + i;
+            } else {
+              pageNum = currentPage - 2 + i;
             }
+
+            const isCurrentPage = pageNum === currentPage;
+            const baseClasses = "px-4 py-2 rounded-lg transition-colors";
+            const activeClasses = "bg-yam-red text-white";
+            const inactiveClasses = "border border-gray-300 text-gray-600 hover:bg-gray-50";
             
-            return pageNumbers;
-          })()}
+            return (
+              <a 
+                href={getPageUrl(pageNum)} 
+                class={`${baseClasses} ${isCurrentPage ? activeClasses : inactiveClasses}`}
+              >
+                {pageNum}
+              </a>
+            );
+          })}
 
           {totalPages > 5 && currentPage < totalPages - 2 && (
             <>
