@@ -1,0 +1,261 @@
+
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import ProjectNavbar from "../../components/ProjectNavbar.astro";
+
+const navItems = [
+  { name: 'Accueil', href: '/yenamarre' },
+  { name: 'Histoire', href: '/yenamarre/histoire' },
+  { name: 'Vision & Mission', href: '/yenamarre/vision-mission', current: true },
+  { name: 'Coordination', href: '/yenamarre/coordination' },
+  { name: 'Réseaux', href: '/yenamarre/reseaux' },
+];
+---
+
+<MainLayout title="Vision & Mission - Y'EN A MARRE" currentPath="/yenamarre/vision-mission">
+  <ProjectNavbar items={navItems} accentColor="yam-red" />
+
+  <!-- Hero Section -->
+  <section class="py-20 bg-gradient-to-br from-yam-red to-red-700 text-white">
+    <div class="container-custom">
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">Notre Vision & Mission</h1>
+        <div class="w-24 h-1 bg-white mx-auto mb-8"></div>
+        <p class="text-xl md:text-2xl text-red-100 leading-relaxed">
+          Construire une société sénégalaise démocratique, transparente et participative 
+          où chaque citoyen peut exercer pleinement ses droits et participer activement 
+          au développement de son pays.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section class="py-20 bg-white">
+    <div class="container-custom">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="space-y-8">
+          <div>
+            <h2 class="text-4xl font-bold mb-6 text-yam-red flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Notre Vision
+            </h2>
+            <div class="w-16 h-1 bg-yam-red mb-6"></div>
+          </div>
+          
+          <div class="space-y-6 text-lg text-gray-700 leading-relaxed">
+            <p>
+              <strong>Un Sénégal démocratique et participatif</strong> où la jeunesse est 
+              au cœur du changement social et politique, où chaque citoyen peut exercer 
+              pleinement ses droits civiques et politiques.
+            </p>
+            
+            <p>
+              <strong>Une société inclusive</strong> où la gouvernance est transparente, 
+              responsable et redevable devant les citoyens, où la corruption est éradiquée 
+              et où l'État de droit prévaut.
+            </p>
+            
+            <p>
+              <strong>Une nation prospère</strong> où le développement économique et social 
+              profite à tous, où l'égalité des chances est une réalité et où la justice 
+              sociale guide les politiques publiques.
+            </p>
+          </div>
+          
+          <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-yam-red">
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Notre Rêve pour le Sénégal</h3>
+            <p class="text-gray-700 italic">
+              "Un Sénégal où chaque jeune peut s'épanouir, où chaque citoyen peut participer 
+              aux décisions qui l'concernent, et où la démocratie n'est pas seulement un mot 
+              mais une réalité vécue au quotidien."
+            </p>
+          </div>
+        </div>
+        
+        <div class="relative">
+          <img 
+            src="/placeholder.svg?height=600&width=800&query=Young Senegalese citizens in democratic participation" 
+            alt="Vision Y'EN A MARRE" 
+            class="w-full h-auto rounded-2xl shadow-2xl"
+          />
+          <div class="absolute -top-6 -right-6 bg-yam-red text-white p-6 rounded-lg shadow-lg">
+            <div class="text-center">
+              <div class="text-3xl font-bold">2030</div>
+              <div class="text-sm">Notre Horizon</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container-custom">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1">
+          <img 
+            src="/placeholder.svg?height=600&width=800&query=African youth training and civic education" 
+            alt="Mission Y'EN A MARRE" 
+            class="w-full h-auto rounded-2xl shadow-2xl"
+          />
+        </div>
+        
+        <div class="space-y-8 order-1 lg:order-2">
+          <div>
+            <h2 class="text-4xl font-bold mb-6 text-yam-red flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Notre Mission
+            </h2>
+            <div class="w-16 h-1 bg-yam-red mb-6"></div>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Mobiliser les Citoyens</h3>
+                <p class="text-gray-700">
+                  Sensibiliser, organiser et mobiliser la société civile, en particulier 
+                  les jeunes, pour une participation active à la vie démocratique.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Éduquer et Former</h3>
+                <p class="text-gray-700">
+                  Développer l'éducation civique et démocratique pour renforcer 
+                  les capacités citoyennes et promouvoir une culture de la démocratie.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Défendre la Démocratie</h3>
+                <p class="text-gray-700">
+                  Lutter contre toutes les formes d'atteintes à la démocratie, 
+                  promouvoir l'État de droit et défendre les libertés fondamentales.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Promouvoir la Bonne Gouvernance</h3>
+                <p class="text-gray-700">
+                  Œuvrer pour la transparence, la responsabilité et la redevabilité 
+                  dans la gestion des affaires publiques à tous les niveaux.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Valeurs Section -->
+  <section class="py-20 bg-white">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-6 text-yam-red">Nos Valeurs Fondamentales</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Les principes qui guident notre action et notre engagement quotidien.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="text-center group">
+          <div class="bg-yam-red rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Intégrité</h3>
+          <p class="text-gray-600">
+            Agir avec honnêteté, transparence et cohérence dans toutes nos actions.
+          </p>
+        </div>
+        
+        <div class="text-center group">
+          <div class="bg-yam-red rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Solidarité</h3>
+          <p class="text-gray-600">
+            Construire des liens forts entre citoyens pour un engagement collectif.
+          </p>
+        </div>
+        
+        <div class="text-center group">
+          <div class="bg-yam-red rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Justice</h3>
+          <p class="text-gray-600">
+            Lutter pour l'égalité, l'équité et le respect des droits de tous.
+          </p>
+        </div>
+        
+        <div class="text-center group">
+          <div class="bg-yam-red rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">Innovation</h3>
+          <p class="text-gray-600">
+            Adopter des approches créatives pour relever les défis de notre époque.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-16 bg-yam-red text-white">
+    <div class="container-custom text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Partagez Notre Vision</h2>
+      <p class="text-xl max-w-3xl mx-auto mb-8">
+        Rejoignez-nous pour construire ensemble le Sénégal de demain, 
+        un Sénégal démocratique, juste et prospère pour tous.
+      </p>
+      <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-all">
+        Rejoindre le mouvement
+      </a>
+    </div>
+  </section>
+</MainLayout>

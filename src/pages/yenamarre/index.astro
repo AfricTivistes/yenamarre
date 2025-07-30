@@ -1,65 +1,254 @@
+
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
+import ProjectNavbar from '../../components/ProjectNavbar.astro';
+
+const navItems = [
+  { name: 'Accueil', href: '/yenamarre', current: true },
+  { name: 'Histoire', href: '/yenamarre/histoire' },
+  { name: 'Vision & Mission', href: '/yenamarre/vision-mission' },
+  { name: 'Coordination', href: '/yenamarre/coordination' },
+  { name: 'Réseaux', href: '/yenamarre/reseaux' },
+];
 ---
 
 <MainLayout title="Y'EN A MARRE - Mouvement citoyen sénégalais" currentPath="/yenamarre">
-  <!-- Hero Section avec parallax -->
-  <section class="bg-black text-white py-16 md:py-24 relative">
-    <div class="absolute inset-0 bg-fixed bg-center bg-cover opacity-40" style="background-image: url('/placeholder.svg?height=800&width=1600&query=African protest movement with signs and flags')"></div>
-    <div class="container-custom relative z-10">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div class="space-y-6">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Y'EN A MARRE
-          </h1>
-          <p class="text-lg md:text-xl">
-            Un mouvement citoyen sénégalais créé en 2011, en réponse à la frustration liée à la mauvaise gouvernance, à la corruption et aux coupures d'électricité fréquentes.
+  <!-- Navigation du projet -->
+  <ProjectNavbar items={navItems} accentColor="yam-red" />
+
+  <!-- Hero Section modernisé -->
+  <section class="relative min-h-[80vh] bg-gradient-to-br from-black via-gray-900 to-yam-red overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=800&width=1600&query=African protest movement with signs and flags')] bg-cover bg-center opacity-20"></div>
+    
+    <div class="container-custom relative z-10 h-full flex items-center py-20">
+      <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div class="text-white space-y-8">
+          <div class="space-y-4">
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+              Y'EN A <span class="text-yam-red">MARRE</span>
+            </h1>
+            <div class="w-24 h-1 bg-yam-red"></div>
+          </div>
+          
+          <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
+            Un mouvement citoyen qui transforme la société sénégalaise depuis 2011, 
+            en mobilisant la jeunesse pour la démocratie et la bonne gouvernance.
           </p>
-          <div class="flex flex-wrap gap-4">
-            <a href="/rejoindre" class="btn-primary">Rejoignez-nous</a>
-            <a href="/a-propos/yenamarre" class="btn bg-transparent border-2 border-white text-white hover:bg-white hover:text-black">
-              En savoir plus
+          
+          <div class="flex flex-wrap gap-6">
+            <a href="/rejoindre" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 transform hover:scale-105">
+              Rejoignez-nous
+            </a>
+            <a href="/yenamarre/histoire" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
+              Notre histoire
             </a>
           </div>
         </div>
+        
         <div class="relative">
-          <img 
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp" 
-            alt="Y'EN A MARRE Logo" 
-            class="w-64 md:w-80 mx-auto bg-white p-6 rounded-lg shadow-2xl"
-          />
-          <div class="absolute -bottom-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg">
-            Depuis 2011
+          <div class="relative bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
+            <img 
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp" 
+              alt="Y'EN A MARRE Logo" 
+              class="w-full max-w-sm mx-auto"
+            />
+            <div class="absolute -top-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg animate-pulse">
+              Depuis 2011
+            </div>
           </div>
         </div>
       </div>
     </div>
+    
+    <!-- Wave divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
   </section>
-  
-  <!-- About Section avec animation -->
-  <section class="section">
+
+  <!-- Vision & Mission Section -->
+  <section class="py-20 bg-white">
     <div class="container-custom">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Notre Vision & Mission</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
+        <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+          Construire une société sénégalaise démocratique, transparente et participative où chaque citoyen peut exercer pleinement ses droits.
+        </p>
+      </div>
+      
       <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="overflow-hidden rounded-lg shadow-xl">
-          <img 
-            src="/placeholder.svg?height=600&width=800&query=Senegalese activists meeting" 
-            alt="Y'EN A MARRE activists" 
-            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-          />
+        <div class="space-y-8">
+          <div class="bg-gradient-to-r from-yam-red to-red-600 p-8 rounded-2xl text-white">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Notre Vision
+            </h3>
+            <p class="text-lg leading-relaxed">
+              Un Sénégal où la jeunesse est actrice du changement social et politique, 
+              où la démocratie est effective et où la bonne gouvernance est la norme.
+            </p>
+          </div>
+          
+          <div class="bg-gray-50 p-8 rounded-2xl border-l-4 border-yam-red">
+            <h3 class="text-2xl font-bold mb-4 flex items-center text-gray-800">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-yam-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Notre Mission
+            </h3>
+            <p class="text-lg text-gray-700 leading-relaxed">
+              Mobiliser, éduquer et organiser la société civile, particulièrement les jeunes, 
+              pour promouvoir la démocratie participative, la bonne gouvernance et l'engagement citoyen.
+            </p>
+          </div>
         </div>
-        <div class="space-y-6">
-          <h2 class="text-3xl md:text-4xl font-bold text-yam-red">Notre Histoire</h2>
-          <p class="text-lg text-gray-600">
-            Fondé par des rappeurs, des journalistes et des militants, Y'EN A MARRE s'est imposé grâce à son slogan "Y'en a marre" ("On en a assez"), exprimant le mécontentement des citoyens face aux promesses non tenues des dirigeants.
+        
+        <div class="relative">
+          <img 
+            src="/placeholder.svg?height=600&width=800&query=Young African activists discussing democracy" 
+            alt="Vision Y'EN A MARRE" 
+            class="w-full h-auto rounded-2xl shadow-2xl"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl"></div>
+        </div>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <a href="/yenamarre/vision-mission" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-all inline-flex items-center">
+          En savoir plus sur notre vision
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nos Combats Section -->
+  <section class="py-20 bg-gray-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern red and black')] opacity-10"></div>
+    <div class="container-custom relative z-10">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Nos Combats</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
+        <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+          Depuis 2011, nous menons des combats concrets pour transformer la société sénégalaise.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all hover:-translate-y-2">
+          <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Démocratie Participative</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Promouvoir une démocratie où chaque citoyen peut participer activement aux décisions qui l'concernent.
           </p>
-          <p class="text-lg text-gray-600">
-            Depuis sa mobilisation contre la candidature d'Abdoulaye Wade en 2012, qui a conduit à l'élection de Macky Sall, Y'EN A MARRE a diversifié ses initiatives pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique, en ciblant particulièrement les jeunes.
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all hover:-translate-y-2">
+          <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Lutte contre la Corruption</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Combattre la corruption sous toutes ses formes et promouvoir la transparence dans la gestion publique.
           </p>
-          <div class="pt-4">
-            <a href="/yenamarre/historique" class="btn-secondary inline-flex items-center">
-              Découvrir notre histoire
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all hover:-translate-y-2">
+          <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4">Engagement Jeunesse</h3>
+          <p class="text-gray-300 leading-relaxed">
+            Mobiliser et former les jeunes pour qu'ils deviennent des acteurs du changement social et politique.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Initiatives Section améliorée -->
+  <section class="py-20 bg-gray-50">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yam-red">Nos Initiatives Phares</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
+        <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+          Découvrez nos programmes concrets qui transforment les communautés à travers tout le Sénégal.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
+          <div class="h-48 bg-gradient-to-br from-yam-red to-red-600 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3 group-hover:text-yam-red transition-colors">Dox Ak Sa Gox</h3>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              Programme de promotion de la gouvernance locale et de l'engagement citoyen au niveau des quartiers et communes.
+            </p>
+            <a href="/projets/dox-ak-sa-gox" class="text-yam-red font-medium hover:underline flex items-center">
+              Découvrir le programme
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
+          <div class="h-48 bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3 group-hover:text-yam-red transition-colors">Citizen Mic</h3>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              Formation de rappeurs et artistes sur la citoyenneté et l'engagement civique à travers la culture hip-hop.
+            </p>
+            <a href="/projets/citizen-mic" class="text-yam-red font-medium hover:underline flex items-center">
+              Découvrir le programme
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
+          <div class="h-48 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-3 group-hover:text-yam-red transition-colors">Éducation Civique</h3>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              Programmes de formation et sensibilisation pour renforcer la culture démocratique et civique des citoyens.
+            </p>
+            <a href="/projets/education-civique" class="text-yam-red font-medium hover:underline flex items-center">
+              Découvrir le programme
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </a>
@@ -68,83 +257,94 @@ import NewsCard from '../../components/NewsCard.astro';
       </div>
     </div>
   </section>
-  
-  <!-- Initiatives Section avec cartes interactives -->
-  <section class="section bg-gray-50">
+
+  <!-- Coordination Section -->
+  <section class="py-20 bg-white">
     <div class="container-custom">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yam-red">Nos Initiatives</h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Découvrez les différentes initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique.
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yam-red">Coordination Nationale</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
+        <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+          Une organisation structurée et décentralisée qui assure la coordination des actions sur l'ensemble du territoire national.
         </p>
       </div>
       
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="card p-6 hover:-translate-y-2 transition-transform duration-300">
-          <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+          <div class="flex items-start space-x-4">
+            <div class="bg-yam-red rounded-full p-3 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2">Coordination Centrale</h3>
+              <p class="text-gray-600">Basée à Dakar, elle assure la direction stratégique et la coordination générale du mouvement.</p>
+            </div>
           </div>
-          <h3 class="text-xl font-bold mb-2">Dox Ak Sa Gox</h3>
-          <p class="text-gray-600 mb-4">
-            Promotion de la gouvernance locale et de l'engagement citoyen au niveau des quartiers. Ce programme vise à renforcer la participation citoyenne dans la gestion des affaires locales.
-          </p>
-          <a href="/projets/dox-ak-sa-gox" class="text-yam-red font-medium hover:underline flex items-center">
-            En savoir plus
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+          
+          <div class="flex items-start space-x-4">
+            <div class="bg-yam-red rounded-full p-3 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2">Coordinations Régionales</h3>
+              <p class="text-gray-600">Présentes dans les 14 régions du Sénégal pour adapter les actions aux réalités locales.</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-4">
+            <div class="bg-yam-red rounded-full p-3 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2">Coordinations Locales</h3>
+              <p class="text-gray-600">Au niveau des communes et quartiers pour un ancrage territorial fort et une action de proximité.</p>
+            </div>
+          </div>
         </div>
         
-        <div class="card p-6 hover:-translate-y-2 transition-transform duration-300">
-          <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-            </svg>
+        <div class="bg-gray-50 p-8 rounded-2xl">
+          <h3 class="text-2xl font-bold mb-6 text-center">Structure Organisationnelle</h3>
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-lg border-l-4 border-yam-red">
+              <h4 class="font-bold">Assemblée Générale</h4>
+              <p class="text-sm text-gray-600">Organe suprême de décision</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border-l-4 border-yam-red">
+              <h4 class="font-bold">Coordination Nationale</h4>
+              <p class="text-sm text-gray-600">Direction exécutive du mouvement</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border-l-4 border-yam-red">
+              <h4 class="font-bold">Commissions Thématiques</h4>
+              <p class="text-sm text-gray-600">Groupes de travail spécialisés</p>
+            </div>
           </div>
-          <h3 class="text-xl font-bold mb-2">Citizen Mic</h3>
-          <p class="text-gray-600 mb-4">
-            Formation de rappeurs sur la citoyenneté et l'engagement civique à travers la musique. Ce programme utilise le hip-hop comme outil de sensibilisation et de mobilisation des jeunes.
-          </p>
-          <a href="/projets/citizen-mic" class="text-yam-red font-medium hover:underline flex items-center">
-            En savoir plus
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
-        </div>
-        
-        <div class="card p-6 hover:-translate-y-2 transition-transform duration-300">
-          <div class="bg-yam-red rounded-full w-16 h-16 flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 22V12h6v10" />
-            </svg>
+          
+          <div class="mt-6 text-center">
+            <a href="/yenamarre/coordination" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all">
+              Découvrir l'organisation
+            </a>
           </div>
-          <h3 class="text-xl font-bold mb-2">Karibu</h3>
-          <p class="text-gray-600 mb-4">
-            Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen. Ce programme favorise les échanges entre artistes et militants engagés.
-          </p>
-          <a href="/karibu" class="text-yam-red font-medium hover:underline flex items-center">
-            En savoir plus
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
         </div>
       </div>
     </div>
   </section>
-  
-  <!-- Latest News Section avec animation -->
-  <section class="section">
+
+  <!-- Actualités Section -->
+  <section class="py-20 bg-gray-50">
     <div class="container-custom">
       <div class="flex justify-between items-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-yam-red">Actualités Y'EN A MARRE</h2>
+        <div>
+          <h2 class="text-4xl md:text-5xl font-bold mb-4 text-yam-red">Actualités Y'EN A MARRE</h2>
+          <p class="text-xl text-gray-600">Suivez nos dernières actions et campagnes</p>
+        </div>
         <a href="/actualites?category=yenamarre" class="text-yam-red font-bold hover:underline group flex items-center">
-          Voir toutes les actualités
+          Toutes les actualités
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
@@ -181,81 +381,24 @@ import NewsCard from '../../components/NewsCard.astro';
       </div>
     </div>
   </section>
-  
-  <!-- Membres fondateurs -->
-  <section class="section bg-gray-50">
-    <div class="container-custom">
-      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-yam-red">Nos fondateurs</h2>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-          <div class="h-64 overflow-hidden">
-            <img 
-              src="/placeholder.svg?height=400&width=300&query=African male activist portrait" 
-              alt="Thiat" 
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-4">
-            <h3 class="text-xl font-bold mb-1">Thiat</h3>
-            <p class="text-gray-600 text-sm">Rappeur et activiste</p>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-          <div class="h-64 overflow-hidden">
-            <img 
-              src="/placeholder.svg?height=400&width=300&query=African male rapper activist portrait" 
-              alt="Kilifeu" 
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-4">
-            <h3 class="text-xl font-bold mb-1">Kilifeu</h3>
-            <p class="text-gray-600 text-sm">Rappeur et activiste</p>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-          <div class="h-64 overflow-hidden">
-            <img 
-              src="/placeholder.svg?height=400&width=300&query=African male journalist portrait" 
-              alt="Fadel Barro" 
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-4">
-            <h3 class="text-xl font-bold mb-1">Fadel Barro</h3>
-            <p class="text-gray-600 text-sm">Journaliste et activiste</p>
-          </div>
-        </div>
-        
-        <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-          <div class="h-64 overflow-hidden">
-            <img 
-              src="/placeholder.svg?height=400&width=300&query=African female activist portrait" 
-              alt="Denise Sow" 
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-4">
-            <h3 class="text-xl font-bold mb-1">Denise Sow</h3>
-            <p class="text-gray-600 text-sm">Militante et activiste</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Call to Action avec animation -->
-  <section class="section bg-black text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern red and black')] opacity-10"></div>
+
+  <!-- Call to Action final -->
+  <section class="py-20 bg-gradient-to-r from-yam-red to-red-700 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-10"></div>
     <div class="container-custom text-center relative z-10">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">Rejoignez Y'EN A MARRE</h2>
-      <p class="text-lg max-w-3xl mx-auto mb-8">
-        Ensemble, nous pouvons faire la différence. Rejoignez Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique au Sénégal.
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">Rejoignez le Changement</h2>
+      <p class="text-xl max-w-3xl mx-auto mb-8 text-red-100">
+        Ensemble, nous pouvons construire un Sénégal plus démocratique, plus juste et plus prospère. 
+        Votre engagement compte, votre voix compte.
       </p>
-      <a href="/rejoindre" class="btn-primary transform transition-transform hover:scale-105">Rejoignez-nous</a>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg transform hover:scale-105">
+          Rejoindre le mouvement
+        </a>
+        <a href="/faire-un-don" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
+          Soutenir nos actions
+        </a>
+      </div>
     </div>
   </section>
 </MainLayout>

@@ -1,6 +1,16 @@
+
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
 import ProjectTimeline from "../../components/ProjectTimeline.astro";
+import ProjectNavbar from "../../components/ProjectNavbar.astro";
+
+const navItems = [
+  { name: 'Accueil', href: '/yenamarre' },
+  { name: 'Histoire', href: '/yenamarre/histoire', current: true },
+  { name: 'Vision & Mission', href: '/yenamarre/vision-mission' },
+  { name: 'Coordination', href: '/yenamarre/coordination' },
+  { name: 'Réseaux', href: '/yenamarre/reseaux' },
+];
 
 const timelineItems = [
   {
@@ -42,59 +52,200 @@ const timelineItems = [
 ];
 ---
 
-<MainLayout title="Histoire de Y'EN A MARRE" currentPath="/yenamarre/historique">
-  <section class="py-16 md:py-24">
+<MainLayout title="Histoire de Y'EN A MARRE" currentPath="/yenamarre/histoire">
+  <ProjectNavbar items={navItems} accentColor="yam-red" />
+
+  <!-- Hero Section -->
+  <section class="py-20 bg-gradient-to-br from-gray-900 to-yam-red text-white">
+    <div class="container-custom">
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">Notre Histoire</h1>
+        <div class="w-24 h-1 bg-white mx-auto mb-8"></div>
+        <p class="text-xl md:text-2xl text-gray-200 leading-relaxed">
+          Découvrez l'évolution de Y'EN A MARRE depuis sa création en 2011 jusqu'à aujourd'hui, 
+          et comment le mouvement a contribué à façonner le paysage politique et social du Sénégal.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Timeline Section -->
+  <section class="py-20 bg-white">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">Notre Histoire</h1>
+        <h2 class="text-4xl font-bold mb-6 text-yam-red">Chronologie du Mouvement</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Découvrez l'évolution de Y'EN A MARRE depuis sa création en 2011 jusqu'à aujourd'hui, et comment le mouvement a contribué à façonner le paysage politique et social du Sénégal.
+          Plus de 12 années d'engagement citoyen et de lutte pour la démocratie au Sénégal.
         </p>
       </div>
       
-      <div class="mt-16">
-        <ProjectTimeline items={timelineItems} accentColor="bg-yam-red" textColor="text-yam-red" />
+      <ProjectTimeline items={timelineItems} accentColor="bg-yam-red" textColor="text-yam-red" />
+    </div>
+  </section>
+  
+  <!-- Impact Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="container-custom">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="space-y-8">
+          <div>
+            <h2 class="text-4xl font-bold mb-6 text-yam-red">Notre Impact</h2>
+            <div class="w-16 h-1 bg-yam-red mb-6"></div>
+          </div>
+          
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Depuis sa création, Y'EN A MARRE a eu un impact significatif sur la société sénégalaise 
+            et a inspiré de nombreux mouvements citoyens à travers l'Afrique.
+          </p>
+          
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Mobilisation Massive</h3>
+                <p class="text-gray-700">
+                  Plus de 100 000 jeunes mobilisés pour la défense de la démocratie et de la bonne gouvernance
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Alternance Démocratique</h3>
+                <p class="text-gray-700">
+                  Contribution décisive à l'alternance politique en 2012 et à la consolidation de la démocratie au Sénégal
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Campagnes de Sensibilisation</h3>
+                <p class="text-gray-700">
+                  Plus de 50 campagnes nationales sur la citoyenneté, la bonne gouvernance et l'engagement civique
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-4">
+              <div class="bg-yam-red rounded-full p-2 flex-shrink-0 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold mb-2">Rayonnement Continental</h3>
+                <p class="text-gray-700">
+                  Partenariats avec des mouvements citoyens dans plus de 15 pays africains
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="relative">
+          <img 
+            src="/placeholder.svg?height=600&width=800&query=Senegalese youth celebrating democracy" 
+            alt="Impact Y'EN A MARRE" 
+            class="w-full h-auto rounded-2xl shadow-2xl"
+          />
+          <div class="absolute -bottom-6 -right-6 bg-yam-red text-white p-6 rounded-lg shadow-lg">
+            <div class="text-center">
+              <div class="text-3xl font-bold">12+</div>
+              <div class="text-sm">Années d'Impact</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fondateurs Section -->
+  <section class="py-20 bg-white">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-6 text-yam-red">Nos Fondateurs</h2>
+        <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Des rappeurs, journalistes et militants qui ont uni leurs forces pour créer un mouvement citoyen unique.
+        </p>
       </div>
       
-      <div class="mt-16 bg-gray-50 p-8 rounded-lg">
-        <h2 class="text-2xl font-bold mb-4 text-yam-red">Notre Impact</h2>
-        <p class="text-lg mb-6">
-          Depuis sa création, Y'EN A MARRE a eu un impact significatif sur la société sénégalaise :
-        </p>
-        <ul class="space-y-4">
-          <li class="flex items-start">
-            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="text-center group">
+          <div class="relative overflow-hidden rounded-2xl shadow-lg mb-4 group-hover:shadow-xl transition-all">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African male activist portrait" 
+              alt="Thiat" 
+              class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-xl font-bold mb-1">Thiat</h3>
+              <p class="text-sm">Rappeur et activiste</p>
             </div>
-            <p>Mobilisation de plus de 100 000 jeunes pour la défense de la démocratie et de la bonne gouvernance</p>
-          </li>
-          <li class="flex items-start">
-            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
+          </div>
+        </div>
+        
+        <div class="text-center group">
+          <div class="relative overflow-hidden rounded-2xl shadow-lg mb-4 group-hover:shadow-xl transition-all">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African male rapper activist portrait" 
+              alt="Kilifeu" 
+              class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-xl font-bold mb-1">Kilifeu</h3>
+              <p class="text-sm">Rappeur et activiste</p>
             </div>
-            <p>Contribution à l'alternance politique en 2012 et à la consolidation de la démocratie au Sénégal</p>
-          </li>
-          <li class="flex items-start">
-            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
+          </div>
+        </div>
+        
+        <div class="text-center group">
+          <div class="relative overflow-hidden rounded-2xl shadow-lg mb-4 group-hover:shadow-xl transition-all">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African male journalist portrait" 
+              alt="Fadel Barro" 
+              class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-xl font-bold mb-1">Fadel Barro</h3>
+              <p class="text-sm">Journaliste et activiste</p>
             </div>
-            <p>Mise en œuvre de plus de 50 campagnes de sensibilisation sur la citoyenneté et la bonne gouvernance</p>
-          </li>
-          <li class="flex items-start">
-            <div class="bg-yam-red rounded-full p-1 mt-1.5 mr-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
+          </div>
+        </div>
+        
+        <div class="text-center group">
+          <div class="relative overflow-hidden rounded-2xl shadow-lg mb-4 group-hover:shadow-xl transition-all">
+            <img 
+              src="/placeholder.svg?height=400&width=300&query=African female activist portrait" 
+              alt="Denise Sow" 
+              class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-xl font-bold mb-1">Denise Sow</h3>
+              <p class="text-sm">Militante et activiste</p>
             </div>
-            <p>Développement de partenariats avec des mouvements citoyens dans plus de 10 pays africains</p>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -102,12 +253,13 @@ const timelineItems = [
   <!-- Call to Action -->
   <section class="py-16 bg-yam-red text-white">
     <div class="container-custom text-center">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6">Rejoignez le mouvement</h2>
-      <p class="text-lg max-w-3xl mx-auto mb-8">
-        Ensemble, nous pouvons continuer à construire un Sénégal plus démocratique et plus juste. Rejoignez Y'EN A MARRE pour contribuer à cette mission.
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Continuons l'Histoire Ensemble</h2>
+      <p class="text-xl max-w-3xl mx-auto mb-8">
+        L'histoire de Y'EN A MARRE continue de s'écrire. Rejoignez-nous pour contribuer 
+        aux prochains chapitres de cette aventure citoyenne.
       </p>
-      <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-colors">
-        Rejoignez-nous
+      <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-all">
+        Faire partie de l'histoire
       </a>
     </div>
   </section>
