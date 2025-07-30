@@ -1,0 +1,56 @@
+Les erreurs de syntaxe peuvent parfois être subtiles. Revérifions la ligne 204 de votre fichier tous-les-articles.astro.
+
+Voici la partie pertinente de votre code :
+
+  {paginatedArticles.map((article) => (
+    <article class="group">
+      <a href={article.url} class="block">
+        <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src={article.image} 
+              alt={article.title} 
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="absolute top-4 left-4">
+              <span class={`inline-flex items-center px-3 py-1
+                      rounded-full text-xs font-medium text-white
+                      ${getCategoryColor(article.category)}`}>
+                {article.category}
+              </span>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+          <div class="p-6">
+            <time datetime={article.date} class="text-sm text-gray-500">
+              {new Date(article.date).toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+            <h3 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors">
+              {article.title}
+            </h3>
+            <p class="text-gray-600 mb-4">{article.excerpt}</p>
+            <div class="flex justify-end">
+              <span class="text-yam-red font-medium group-hover:underline">Lire la suite →</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </article>
+  ))}
+Vérifications à faire :
+
+Syntaxe de la fonction map: Assurez-vous que chaque ouverture de parenthèse, accolade ou crochet a sa fermeture. Par exemple, chaque ( doit avoir un ), chaque { doit avoir un }, etc.
+
+Constructions JSX: Vérifiez également les balises JSX que vous utilisez. Assurez-vous qu'elles sont correctement ouvertes et fermées. Dans votre code, il semble que des éléments comme <article> et <div> soient bien équilibrés.
+
+Utilisation des chaînes de classe: À la ligne mentionnée, la manière dont vous utilisez les chaînes de classes devrait être fusionnée correctement sans caractères supplémentaires comme un ;.
+
+Si après ces vérifications, vous ne trouvez toujours pas d'erreur, assurez-vous de lancer un redémarrage du serveur de développement avec npm run dev pour voir si le problème persiste.
+
+
+Scroll to latest
+Assistant mode
