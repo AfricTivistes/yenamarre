@@ -1,0 +1,130 @@
+
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+
+// Données pour les tribunes libres
+const tribunesLibres = [
+  {
+    id: 1,
+    title: "Pour une jeunesse africaine engagée et responsable",
+    excerpt: "Réflexion sur l'importance de l'engagement de la jeunesse africaine dans la construction de sociétés démocratiques et justes.",
+    date: "2023-06-12",
+    category: "Tribune libre",
+    image: "/placeholder.svg?height=400&width=600&query=African youth engagement",
+    url: "/actualites/tribune-jeunesse-africaine-engagee",
+    author: "Fadel Barro"
+  },
+  {
+    id: 2,
+    title: "L'art comme vecteur de changement social",
+    excerpt: "Comment l'art et la culture peuvent-ils servir d'outils puissants pour promouvoir le changement social et la conscientisation citoyenne ?",
+    date: "2023-05-30",
+    category: "Tribune libre",
+    image: "/placeholder.svg?height=400&width=600&query=Art social change Africa",
+    url: "/actualites/tribune-art-changement-social",
+    author: "Aliou Sané"
+  },
+  {
+    id: 3,
+    title: "Démocratie et gouvernance locale : défis et opportunités",
+    excerpt: "Analyse des enjeux de la gouvernance locale au Sénégal et propositions pour renforcer la participation citoyenne.",
+    date: "2023-05-18",
+    category: "Tribune libre",
+    image: "/placeholder.svg?height=400&width=600&query=Local governance Senegal",
+    url: "/actualites/tribune-democratie-gouvernance-locale",
+    author: "Thiat"
+  }
+];
+---
+
+<MainLayout title="Tribune libre - Y'EN A MARRE" currentPath="/actualites/tribune-libre">
+  <!-- Hero Section -->
+  <section class="relative py-20 bg-gradient-to-br from-green-900 to-green-700 overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center text-white">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Tribune libre</h1>
+        <p class="text-xl text-gray-100">
+          Espace d'expression libre pour nos membres et sympathisants sur les enjeux de société, de démocratie et de citoyenneté.
+        </p>
+      </div>
+    </div>
+    
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Navigation rapide -->
+  <section class="py-8 bg-white">
+    <div class="container-custom">
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/actualites" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Toutes les actualités
+          </a>
+          <a href="/actualites/communiques-presse" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Communiqués de presse
+          </a>
+          <a href="/actualites/yam-presse" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            YAM dans la presse
+          </a>
+          <a href="/actualites/tribune-libre" class="px-4 py-2 rounded-full text-sm font-medium bg-green-600 text-white">
+            Tribune libre
+          </a>
+          <a href="/actualites/medias" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Médias
+          </a>
+          <a href="/actualites/appels-offres" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Appels d'offres
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Liste des tribunes -->
+  <section class="py-12 md:py-16">
+    <div class="container-custom">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {tribunesLibres.map((tribune) => (
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <img src={tribune.image} alt={tribune.title} class="w-full h-48 object-cover" />
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-3">
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                  Par {tribune.author}
+                </span>
+                <span class="text-gray-500 text-sm">{tribune.date}</span>
+              </div>
+              <h3 class="text-xl font-bold mb-3 line-clamp-2">{tribune.title}</h3>
+              <p class="text-gray-600 mb-4 line-clamp-3">{tribune.excerpt}</p>
+              <a href={tribune.url} class="text-green-600 font-medium hover:text-green-800 transition-colors">
+                Lire la tribune →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Appel à contribution -->
+  <section class="py-16 bg-green-50">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6">Contribuez à notre tribune libre</h2>
+        <p class="text-lg text-gray-600 mb-8">
+          Vous souhaitez partager vos réflexions sur les enjeux de société ? Proposez votre tribune libre.
+        </p>
+        <a href="/contact" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+          Proposer une tribune
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>

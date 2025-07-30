@@ -1,0 +1,133 @@
+
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+
+// Données spécifiques aux communiqués de presse
+const communiques = [
+  {
+    id: 1,
+    title: "Communiqué de presse : Position de Y'EN A MARRE sur les élections",
+    excerpt: "Y'EN A MARRE exprime sa position officielle concernant les prochaines élections et appelle à une participation citoyenne massive.",
+    date: "2023-06-20",
+    category: "Communiqué de presse",
+    image: "/placeholder.svg?height=400&width=600&query=Official statement press conference",
+    url: "/actualites/communique-position-elections"
+  },
+  {
+    id: 2,
+    title: "Déclaration officielle sur la liberté d'expression",
+    excerpt: "Suite aux récents événements, Y'EN A MARRE réaffirme son engagement pour la liberté d'expression et la démocratie.",
+    date: "2023-05-15",
+    category: "Communiqué de presse",
+    image: "/placeholder.svg?height=400&width=600&query=Freedom of expression statement",
+    url: "/actualites/declaration-liberte-expression"
+  },
+  {
+    id: 3,
+    title: "Position du mouvement sur la réforme constitutionnelle",
+    excerpt: "Y'EN A MARRE présente sa position détaillée concernant les propositions de réforme constitutionnelle en cours de discussion.",
+    date: "2023-04-28",
+    category: "Communiqué de presse",
+    image: "/placeholder.svg?height=400&width=600&query=Constitutional reform statement",
+    url: "/actualites/position-reforme-constitutionnelle"
+  }
+];
+---
+
+<MainLayout title="Communiqués de presse - Y'EN A MARRE" currentPath="/actualites/communiques-presse">
+  <!-- Hero Section -->
+  <section class="relative py-20 bg-gradient-to-br from-yam-red to-red-800 overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center text-white">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Communiqués de presse</h1>
+        <p class="text-xl text-gray-100">
+          Retrouvez toutes les positions officielles et déclarations de Y'EN A MARRE sur les enjeux majeurs de notre société.
+        </p>
+      </div>
+    </div>
+    
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Navigation rapide -->
+  <section class="py-8 bg-white">
+    <div class="container-custom">
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/actualites" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Toutes les actualités
+          </a>
+          <a href="/actualites/communiques-presse" class="px-4 py-2 rounded-full text-sm font-medium bg-yam-red text-white">
+            Communiqués de presse
+          </a>
+          <a href="/actualites/yam-presse" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            YAM dans la presse
+          </a>
+          <a href="/actualites/tribune-libre" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Tribune libre
+          </a>
+          <a href="/actualites/medias" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Médias
+          </a>
+          <a href="/actualites/appels-offres" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Appels d'offres
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Liste des communiqués -->
+  <section class="py-12 md:py-16">
+    <div class="container-custom">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {communiques.map((communique) => (
+          <NewsCard 
+            title={communique.title}
+            excerpt={communique.excerpt}
+            date={communique.date}
+            category={communique.category}
+            image={communique.image}
+            url={communique.url}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Newsletter -->
+  <section class="py-16 bg-gray-100">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold mb-6">Restez informé de nos prises de position</h2>
+          <p class="text-lg text-gray-600 mb-8">
+            Recevez nos communiqués officiels directement dans votre boîte email.
+          </p>
+          
+          <form class="flex flex-col md:flex-row gap-4">
+            <input 
+              type="email" 
+              placeholder="Votre adresse email" 
+              class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yam-red border border-gray-300"
+              required
+            />
+            <button 
+              type="submit" 
+              class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              S'abonner
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

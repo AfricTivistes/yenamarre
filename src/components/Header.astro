@@ -70,13 +70,13 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
           Accueil
           <span class="nav-highlight bg-yam-red"></span>
         </a>
-        
+
         <!-- À propos - Redirige directement vers /yenamarre -->
         <a href="/yenamarre" class={`${isActive("/a-propos")} text-gray-800 hover:text-yam-red relative nav-link`}>
           À propos
           <span class="nav-highlight bg-yam-red"></span>
         </a>
-        
+
         <!-- Projets dropdown - Sans Y'EN A MARRE comme sous-menu -->
         <div class="relative group">
           <button class={`flex items-center ${isActive("/projets")} text-gray-800 hover:text-yam-red relative nav-link`}>
@@ -103,11 +103,39 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
             </div>
           </div>
         </div>
-        
-        <a href="/actualites" class={`${isActive("/actualites")} text-gray-800 hover:text-yam-red relative nav-link`}>
-          Actualités
-          <span class="nav-highlight bg-yam-red"></span>
-        </a>
+
+        <div class="relative group">
+          <button class={`flex items-center ${isActive("/actualites")} text-gray-800 hover:text-yam-red relative nav-link`}>
+            Actualités
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            <span class="nav-highlight bg-yam-red"></span>
+          </button>
+          <!-- Dropdown menu -->
+          <div class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+            <div class="py-2 rounded-md bg-gradient-to-br from-white to-gray-50 ring-1 ring-gray-200">
+              <a href="/actualites" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span>Toutes les actualités</span>
+              </a>
+              <a href="/actualites/communiques-presse" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span>Communiqués de presse</span>
+              </a>
+              <a href="/actualites/yam-presse" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span>YAM dans la presse</span>
+              </a>
+              <a href="/actualites/tribune-libre" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span>Tribune libre</span>
+              </a>
+              <a href="/actualites/medias" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span>Médias</span>
+              </a>
+              <a href="/actualites/appels-offres" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+                <span>Appels d'offres</span>
+              </a>
+            </div>
+          </div>
+        </div>
         <a href="/contact" class={`${isActive("/contact")} text-gray-800 hover:text-yam-red relative nav-link`}>
           Contact
           <span class="nav-highlight bg-yam-red"></span>
@@ -139,11 +167,11 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
     padding-bottom: 2px;
     transition: all 0.3s ease;
   }
-  
+
   .nav-link:hover {
     transform: translateY(-2px);
   }
-  
+
   .nav-highlight {
     position: absolute;
     bottom: -2px;
@@ -152,11 +180,11 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
     height: 2px;
     transition: width 0.3s ease;
   }
-  
+
   .nav-link:hover .nav-highlight {
     width: 100%;
   }
-  
+
   /* Active state styling */
   .font-bold .nav-highlight {
     width: 100%;
