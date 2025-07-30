@@ -1,6 +1,5 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import ScrollAnimation from '../components/ScrollAnimation.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import FeatureCard from '../components/FeatureCard.astro';
@@ -462,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const animateCounter = (counter: HTMLElement, target: number) => {
     let currentValue = 0;
-    const increment = target > 1000 ? 1000 : 1;
     const duration = 2000; // 2 secondes
     const stepTime = duration / target;
 
