@@ -258,11 +258,9 @@ const getCategoryColor = (category: string) => {
             return (
               <a 
                 href={getPageUrl(pageNum)} 
-                class={`px-4 py-2 rounded-lg transition-colors ${
-                  pageNum === currentPage 
-                    ? 'bg-yam-red text-white' 
-                    : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
-                }`}
+                class={pageNum === currentPage 
+                  ? 'px-4 py-2 rounded-lg bg-yam-red text-white transition-colors' 
+                  : 'px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors'}
               >
                 {pageNum}
               </a>
