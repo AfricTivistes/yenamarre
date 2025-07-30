@@ -256,14 +256,17 @@ const getCategoryColor = (category: string) => {
             }
 
             const isCurrentPage = pageNum === currentPage;
-            const baseClasses = "px-4 py-2 rounded-lg transition-colors";
-            const activeClasses = "bg-yam-red text-white";
-            const inactiveClasses = "border border-gray-300 text-gray-600 hover:bg-gray-50";
+            let pageClasses;
+            if (isCurrentPage) {
+              pageClasses = "px-4 py-2 rounded-lg transition-colors bg-yam-red text-white";
+            } else {
+              pageClasses = "px-4 py-2 rounded-lg transition-colors border border-gray-300 text-gray-600 hover:bg-gray-50";
+            }
             
             return (
               <a 
                 href={getPageUrl(pageNum)} 
-                class={`${baseClasses} ${isCurrentPage ? activeClasses : inactiveClasses}`}
+                class={pageClasses}
               >
                 {pageNum}
               </a>
