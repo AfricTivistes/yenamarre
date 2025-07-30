@@ -10,8 +10,14 @@ import StatsCounter from '../components/StatsCounter.astro';
 <MainLayout title="Y'EN A MARRE - Mouvement citoyen sénégalais" currentPath="/">
   <!-- Hero Section avec design moderne -->
   <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
+    <!-- Image d'arrière-plan -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+    
+    <!-- Overlay sombre pour la lisibilité -->
+    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/60"></div>
+    
     <!-- Overlay pattern -->
-    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    <div class="absolute inset-0 opacity-5 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
 
     <!-- Content -->
     <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
