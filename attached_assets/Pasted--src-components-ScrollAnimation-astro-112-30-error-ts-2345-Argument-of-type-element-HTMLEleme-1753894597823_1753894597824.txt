@@ -1,0 +1,42 @@
+
+src/components/ScrollAnimation.astro:112:30 - error ts(2345): Argument of type '(element: HTMLElement) => void' is not assignable to parameter of type '(value: Element, key: number, parent: NodeListOf<Element>) => void'.
+  Types of parameters 'element' and 'value' are incompatible.
+
+112     animatedElements.forEach((element: HTMLElement) => {
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/components/ScrollAnimation.astro:103:11 - error ts(2552): Cannot find name 'element'. Did you mean 'Element'?
+
+103           element.classList.remove('animated');
+              ~~~~~~~
+src/components/ScrollAnimation.astro:102:20 - error ts(2552): Cannot find name 'element'. Did you mean 'Element'?
+
+102         } else if (element.dataset.once === 'false') {
+                       ~~~~~~~
+src/components/ScrollAnimation.astro:94:19 - error ts(2339): Property 'style' does not exist on type 'Element'.
+
+94           element.style.transitionDelay = `${delay}ms`;
+                     ~~~~~
+src/components/ScrollAnimation.astro:93:19 - error ts(2339): Property 'style' does not exist on type 'Element'.
+
+93           element.style.transitionDuration = `${duration}ms`;
+                     ~~~~~
+src/components/ScrollAnimation.astro:91:32 - error ts(2339): Property 'dataset' does not exist on type 'Element'.
+
+91           const once = element.dataset.once === 'true';
+                                  ~~~~~~~
+src/components/ScrollAnimation.astro:90:33 - error ts(2339): Property 'dataset' does not exist on type 'Element'.
+
+90           const delay = element.dataset.delay || '0';
+                                   ~~~~~~~
+src/components/ScrollAnimation.astro:89:36 - error ts(2339): Property 'dataset' does not exist on type 'Element'.
+
+89           const duration = element.dataset.duration || '800';
+                                      ~~~~~~~
+src/components/ScrollAnimation.astro:124:15 - warning ts(6133): 'intersectionCallback' is declared but its value is never read.
+
+124         const intersectionCallback = (entries: IntersectionObserverEntry[]) => {
+                  ~~~~~~~~~~~~~~~~~~~~
+src/components/ScrollAnimation.astro:115:17 - warning ts(6133): 'once' is declared but its value is never read.
+
+115           const once = element.dataset.once === 'true';
+                    ~~~~
