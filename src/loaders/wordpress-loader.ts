@@ -38,7 +38,7 @@ export function wordpressLoader(config: { endpoint: string }): LiveLoader<Post> 
     },
     loadEntry: async ({ filter }) => {
       try {
-        const url = new URL(`${config.endpoint}/wp/v2/posts/${filter.id || filter.slug}`);
+        const url = new URL(`https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/posts/${filter.id || filter.slug}`);
         const response = await fetch(url.toString());
         if (!response.ok) return { error: new Error('Post not found') };
         const post = await response.json();

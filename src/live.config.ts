@@ -1,10 +1,9 @@
-
-import { defineLiveCollection, z } from 'astro:content';
-import { wordpressLoader } from '../loaders/wordpress-loader';
+import { defineLiveCollection, z } from "astro/content";
+import { wordpressLoader } from "./loaders/wordpress-loader";
 
 const posts = defineLiveCollection({
   loader: wordpressLoader({
-    endpoint: process.env.WORDPRESS_API_URL,
+    endpoint: "https://yem.yenamarre.sn/yenamarre/wp-json",
   }),
   schema: z
     .object({
@@ -19,5 +18,5 @@ const posts = defineLiveCollection({
       formattedDate: data.date.toLocaleDateString(),
     })),
 });
-
+console.log(posts);
 export const collections = { posts };
