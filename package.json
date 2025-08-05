@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/node": "^9.3.3",
     "@astrojs/tailwind": "^6.0.2",
-    "astro": "^5.7.0",
+    "astro": "^5.12.8",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
   }

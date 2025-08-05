@@ -1,0 +1,21 @@
+---
+export const prerender = false; // Required for runtime fetching
+import { getLiveCollection } from 'astro/content';
+
+const { entries: posts, error } = await getLiveCollection('posts');
+if (error) {
+  console.error(`Error loading posts: ${error.message}`);
+  return Astro.redirect('/500');
+}
+---
+
+<h1>Blog Posts</h1>
+<ul>
+  {posts.map((post) => (
+    <li>
+      <a href={`/post/${post.data.slug}`}>
+        {post.data.title} ({post.data.formattedDate})
+      </a>
+    </li>
+  ))}
+</ul>
