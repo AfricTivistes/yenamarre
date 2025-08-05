@@ -1,6 +1,6 @@
 ---
 export const prerender = false; // Required for runtime fetching
-import { getLiveCollection } from 'astro/content';
+import { getLiveCollection } from 'astro:content';
 
 const { entries: posts, error } = await getLiveCollection('posts');
 if (error) {
