@@ -21,8 +21,24 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post } = Astro.props;
+// Handle SSR mode - fetch the post dynamically if not in props
+let post = Astro.props.post;
 
+if (!post) {
+  const slug = Astro.params.post;
+  const { entries: allPosts, error } = await getLiveCollection('posts');
+  
+  if (error) {
+    console.error(`Error loading posts: ${error.message}`);
+    return Astro.redirect('/actualites');
+  }
+  
+  post = allPosts.find(p => p.data.slug === slug);
+  
+  if (!post) {
+    return Astro.redirect('/actualites');
+  }
+}
 
 const { entries: allPosts } = await getLiveCollection('posts');
 const relatedPosts = allPosts
