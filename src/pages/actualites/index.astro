@@ -1,5 +1,9 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleGrid from '../../components/ArticleGrid.astro';
+import ArticlePagination from '../../components/ArticlePagination.astro';
+import CategorySection from '../../components/CategorySection.astro';
 import { getLiveCollection } from 'astro:content';
 
 
@@ -88,59 +92,18 @@ const newsByCategory = {
 ---
 
 <MainLayout title="Actualités - Y'EN A MARRE" currentPath="/actualites">
-  <!-- Hero Section avec actualité à la une -->
-  <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
-    <div class="absolute inset-0">
-      <img
-        src={featuredNews.data.image || 'https://via.placeholder.com/800x600'}
-        alt={featuredNews.data.title}
-        class="w-full h-full object-cover"
-      />
-      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-    </div>
-
-    <div class="container-custom relative z-10 h-full flex items-center py-20">
-      <div class="max-w-2xl text-white">
-        <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
-          À la une
-        </div>
-
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          <a href={`/actualites/${featuredNews.data.slug}`}>
-            {featuredNews.data.title}
-          </a>
-        </h1>
-
-        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-          {featuredNews.data.excerpt || featuredNews.data.content.slice(0, 150) + '...'}
-        </p>
-
-        <div class="flex flex-wrap items-center gap-6 mb-8">
-          <time class="text-gray-300" datetime={featuredNews.data.date}>
-            {featuredNews.data.formattedDate}
-          </time>
-          <span class="w-2 h-2 bg-yam-red rounded-full"></span>
-          <span class="text-yam-red font-medium">{featuredNews.data.category}</span>
-        </div>
-
-        <a
-          href={`/actualites/${featuredNews.data.slug}`}
-          class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
-        >
-          Lire l'article complet
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </a>
-      </div>
-    </div>
-
-    <div class="absolute bottom-0 left-0 right-0">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
-        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-      </svg>
-    </div>
-  </section>
+  {featuredNews && (
+    <ArticleHero
+      title={featuredNews.data.title}
+      excerpt={featuredNews.data.excerpt || featuredNews.data.content.slice(0, 150) + '...'}
+      date={featuredNews.data.date}
+      formattedDate={featuredNews.data.formattedDate}
+      category={featuredNews.data.category}
+      image={featuredNews.data.image}
+      slug={featuredNews.data.slug}
+      isSticky={true}
+    />
+  )}
 
   <!-- Articles récents -->
   <section class="py-16 md:py-24 bg-white">
