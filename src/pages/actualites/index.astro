@@ -1,45 +1,43 @@
-
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getLiveCollection } from 'astro:content';
 
-export async function getStaticPaths({ paginate }: any) {
-  const { entries: allPosts, error } = await getLiveCollection('posts');
-  if (error) {
-    console.error(`Error loading posts: ${error.message}`);
-    return [];
-  }
 
-  // Sort posts by date (most recent first)
-  const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-  return paginate(sortedPosts, { pageSize: 6 });
-}
-
-const { page } = Astro.props;
 const { entries: allPosts, error } = await getLiveCollection('posts');
-
 if (error) {
   console.error(`Error loading posts: ${error.message}`);
 }
 
-const featuredNews = allPosts?.find(post => post.data.sticky) || allPosts?.[0];
 
-// Transform posts for display
-const recentNews = page.data.map(post => ({
-  id: post.data.id,
-  title: post.data.title,
-  excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
-  date: post.data.date,
-  category: post.data.category,
-  image: post.data.image,
-  url: `/actualites/${post.data.slug}`,
-}));
+const featuredNews = allPosts.find(post => post.data.sticky);
+
+// Recent news (sorted by date, limited to 6 for pagination)
+const articlesPerPage = 6;
+const currentPage = 1;
+const recentNews = allPosts
+  .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+  .slice(0, articlesPerPage)
+  .map(post => ({
+    id: post.data.id,
+    title: post.data.title,
+    excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+    date: post.data.date,
+    category: post.data.category,
+    image: post.data.image,
+    url: `/actualites/${post.data.slug}`,
+  }));
+
+// Pagination
+const totalArticles = allPosts.length;
+const totalPages = Math.ceil(totalArticles / articlesPerPage);
+const startIndex = (currentPage - 1) * articlesPerPage;
+const endIndex = startIndex + articlesPerPage;
+const paginatedNews = recentNews;
 
 // News by category (adjust category names based on WordPress slugs)
 const newsByCategory = {
   'communiques-presse': allPosts
-    ?.filter(post => post.data.category === 'Communiqué de presse')
+    .filter(post => post.data.category === 'Communiqué de presse')
     .slice(0, 2)
     .map(post => ({
       id: post.data.id,
@@ -48,10 +46,10 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.data.slug}`,
-    })) || [],
+      url: `/actualites/${post.slug}`,
+    })),
   'yam-presse': allPosts
-    ?.filter(post => post.data.category === 'YAM dans la presse')
+    .filter(post => post.data.category === 'YAM dans la presse')
     .slice(0, 2)
     .map(post => ({
       id: post.data.id,
@@ -60,10 +58,10 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.data.slug}`,
-    })) || [],
+      url: `/actualites/${post.slug}`,
+    })),
   'medias': allPosts
-    ?.filter(post => post.data.category === 'Médias')
+    .filter(post => post.data.category === 'Médias')
     .slice(0, 2)
     .map(post => ({
       id: post.data.id,
@@ -72,10 +70,10 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.data.slug}`,
-    })) || [],
+      url: `/actualites/${post.slug}`,
+    })),
   'tribune-libre': allPosts
-    ?.filter(post => post.data.category === 'Tribune libre')
+    .filter(post => post.data.category === 'Tribune libre')
     .slice(0, 2)
     .map(post => ({
       id: post.data.id,
@@ -84,68 +82,66 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.data.slug}`,
-    })) || [],
+      url: `/actualites/${post.slug}`,
+    })),
 };
 ---
 
 <MainLayout title="Actualités - Y'EN A MARRE" currentPath="/actualites">
   <!-- Hero Section avec actualité à la une -->
-  {featuredNews && (
-    <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
-      <div class="absolute inset-0">
-        <img 
-          src={featuredNews.data.image || 'https://via.placeholder.com/800x600'} 
-          alt={featuredNews.data.title}
-          class="w-full h-full object-cover"
-        />
-        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-      </div>
-      
-      <div class="container-custom relative z-10 h-full flex items-center py-20">
-        <div class="max-w-2xl text-white">
-          <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
-            À la une
-          </div>
-          
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            <a href={`/actualites/${featuredNews.data.slug}`}>
-              {featuredNews.data.title}
-            </a>
-          </h1>
-          
-          <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-            {featuredNews.data.excerpt || featuredNews.data.content.slice(0, 150) + '...'}
-          </p>
-          
-          <div class="flex flex-wrap items-center gap-6 mb-8">
-            <time class="text-gray-300" datetime={featuredNews.data.date}>
-              {featuredNews.data.formattedDate}
-            </time>
-            <span class="w-2 h-2 bg-yam-red rounded-full"></span>
-            <span class="text-yam-red font-medium">{featuredNews.data.category}</span>
-          </div>
-          
-          <a 
-            href={`/actualites/${featuredNews.data.slug}`} 
-            class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
-          >
-            Lire l'article complet
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+  <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
+    <div class="absolute inset-0">
+      <img 
+        src={featuredNews.data.image || 'https://via.placeholder.com/800x600'} 
+        alt={featuredNews.data.title}
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+    </div>
+
+    <div class="container-custom relative z-10 h-full flex items-center py-20">
+      <div class="max-w-2xl text-white">
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
+          À la une
         </div>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          <a href={`/actualites/${featuredNews.data.slug}`}>
+            {featuredNews.data.title}
+          </a>
+        </h1>
+
+        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+          {featuredNews.data.excerpt || featuredNews.data.content.slice(0, 150) + '...'}
+        </p>
+
+        <div class="flex flex-wrap items-center gap-6 mb-8">
+          <time class="text-gray-300" datetime={featuredNews.data.date}>
+            {featuredNews.data.formattedDate}
+          </time>
+          <span class="w-2 h-2 bg-yam-red rounded-full"></span>
+          <span class="text-yam-red font-medium">{featuredNews.data.category}</span>
+        </div>
+
+        <a 
+          href={`/actualites/${featuredNews.data.slug}`} 
+          class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
+        >
+          Lire l'article complet
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
       </div>
-      
-      <div class="absolute bottom-0 left-0 right-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
-          <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-        </svg>
-      </div>
-    </section>
-  )}
-  
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+
   <!-- Articles récents -->
   <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
@@ -166,9 +162,9 @@ const newsByCategory = {
           </svg>
         </a>
       </div>
-      
+
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        {recentNews.map((article) => (
+        {paginatedNews.map((article) => (
           <article class="group">
             <a href={article.url} class="block">
               <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
@@ -206,61 +202,43 @@ const newsByCategory = {
           </article>
         ))}
       </div>
-      
-      <!-- Pagination -->
+
       <div class="flex flex-col md:flex-row items-center justify-between">
         <div class="text-gray-600 mb-4 md:mb-0">
-          Affichage de {page.start + 1} à {page.end + 1} sur {page.total} articles
+          Affichage de {startIndex + 1} à {Math.min(endIndex, totalArticles)} sur {totalArticles} articles
         </div>
-        
+
         <div class="flex items-center space-x-2">
-          {page.url.prev && (
-            <a 
-              href={page.url.prev}
-              class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
-            >
-              Précédent
-            </a>
-          )}
-          
-          {!page.url.prev && (
-            <span class="px-4 py-2 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed opacity-50">
-              Précédent
-            </span>
-          )}
-          
-          {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => (
-            <a 
-              href={pageNum === 1 ? '/actualites/' : `/actualites/${pageNum}/`}
+          <button 
+            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+            disabled={currentPage === 1}
+          >
+            Précédent
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button 
               class={`px-4 py-2 rounded-lg transition-colors ${
-                pageNum === page.currentPage 
+                page === currentPage 
                   ? 'bg-yam-red text-white' 
                   : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
               }`}
             >
-              {pageNum}
-            </a>
+              {page}
+            </button>
           ))}
-          
-          {page.url.next && (
-            <a 
-              href={page.url.next}
-              class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
-            >
-              Suivant
-            </a>
-          )}
-          
-          {!page.url.next && (
-            <span class="px-4 py-2 border border-gray-300 rounded-lg text-gray-400 cursor-not-allowed opacity-50">
-              Suivant
-            </span>
-          )}
+
+          <button 
+            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+            disabled={currentPage === totalPages}
+          >
+            Suivant
+          </button>
         </div>
       </div>
     </div>
   </section>
-  
+
   <!-- Tribune libre - Section mise en avant -->
   <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
     <div class="container-custom">
@@ -311,7 +289,7 @@ const newsByCategory = {
       </div>
     </div>
   </section>
-  
+
   <!-- Catégories d'actualités -->
   <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
@@ -321,7 +299,7 @@ const newsByCategory = {
           Explorez nos différents types de contenus pour rester informé de toutes nos activités et prises de position.
         </p>
       </div>
-      
+
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
           <div class="h-32 bg-gradient-to-r from-yam-red to-red-600 relative overflow-hidden">
@@ -448,7 +426,7 @@ const newsByCategory = {
       </div>
     </div>
   </section>
-  
+
   <!-- Newsletter -->
   <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
     <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
