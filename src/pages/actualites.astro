@@ -9,24 +9,7 @@ if (error) {
 }
 console.log(allPosts)
 
-const featuredNews = allPosts.find(post => post.data.sticky) || allPosts[0] || {
-  id: '0',
-  slug: 'placeholder',
-  data: {
-    id: 0,
-    title: 'No featured news available',
-    excerpt: 'Check back later for updates.',
-    date: new Date(),
-    category: 'Y\'EN A MARRE',
-    image: 'https://via.placeholder.com/800x600',
-    sticky: false,
-    formattedDate: new Date().toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }),
-  },
-};
+const featuredNews = allPosts.find(post => post.data.sticky);
 
 // Recent news (sorted by date, limited to 6 for pagination)
 const articlesPerPage = 6;
