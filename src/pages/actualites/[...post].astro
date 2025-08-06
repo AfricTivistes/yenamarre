@@ -5,46 +5,20 @@ import ArticleSidebar from '../../components/ArticleSidebar.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import { getLiveCollection } from 'astro:content';
 
-export const prerender = true;
 
-export async function getStaticPaths() {
-  const { entries: allPosts, error } = await getLiveCollection('posts');
-  
-  if (error) {
-    console.error(`Error loading posts: ${error.message}`);
-    return [];
-  }
+const slug = Astro.params.post;
+const { entries: allPosts, error } = await getLiveCollection('posts');
 
-  return allPosts.map((post) => ({
-    params: { 
-      post: post.data.slug 
-    },
-    props: { 
-      post 
-    },
-  }));
+if (error) {
+  console.error(`Error loading posts: ${error.message}`);
+  return Astro.redirect('/actualites');
 }
 
-
-let post = Astro.props.post;
+const post = allPosts.find(p => p.data.slug === slug);
 
 if (!post) {
-  const slug = Astro.params.post;
-  const { entries: allPosts, error } = await getLiveCollection('posts');
-  
-  if (error) {
-    console.error(`Error loading posts: ${error.message}`);
-    return Astro.redirect('/actualites');
-  }
-  
-  post = allPosts.find(p => p.data.slug === slug);
-  
-  if (!post) {
-    return Astro.redirect('/actualites');
-  }
+  return Astro.redirect('/actualites');
 }
-console.log(post);
-const { entries: allPosts } = await getLiveCollection('posts');
 const relatedPosts = allPosts
   .filter(p => p.data.category === post.data.category && p.data.id !== post.data.id)
   .slice(0, 3)
