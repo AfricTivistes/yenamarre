@@ -69,8 +69,17 @@ export function wordpressLoader(config: {
         const response = await fetch(url.toString());
         if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
         const posts = await response.json();
+        
+        // Fetch all media URLs first
+        const mediaPromises = posts.map((post: any) => 
+          post.featured_media 
+            ? fetchMediaUrl(post.featured_media, config.endpoint)
+            : Promise.resolve(undefined)
+        );
+        const mediaUrls = await Promise.all(mediaPromises);
+        
         return {
-          entries: posts.map((post: any) => ({
+          entries: posts.map((post: any, index: number) => ({
             id: post.id.toString(),
             data: {
               id: post.id,
@@ -83,9 +92,7 @@ export function wordpressLoader(config: {
               category: post.categories?.length
                 ? categoryMap[post.categories[0]]
                 : undefined,
-              image: post.featured_media
-                ? await fetchMediaUrl(post.featured_media, config.endpoint)
-                : undefined,
+              image: mediaUrls[index],
               sticky: post.sticky || false,
             },
           })),
