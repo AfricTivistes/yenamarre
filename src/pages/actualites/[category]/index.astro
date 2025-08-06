@@ -51,6 +51,11 @@ export async function getStaticPaths() {
 const { category } = Astro.params;
 const { categoryData } = Astro.props;
 
+// Handle case where category doesn't exist
+if (!categoryData) {
+  return Astro.redirect('/actualites');
+}
+
 // Récupérer les articles de la catégorie depuis WordPress
 const { entries: allPosts, error } = await getLiveCollection('posts');
 if (error) {
