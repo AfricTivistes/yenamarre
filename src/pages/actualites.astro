@@ -9,7 +9,17 @@ if (error) {
 }
 console.log(allPosts)
 
-const featuredNews = allPosts.find(post => post.data.sticky);
+const featuredNews = allPosts.find(post => post.data.sticky) || allPosts[0] || {
+  data: {
+    title: 'Aucune actualité disponible',
+    excerpt: 'Aucune actualité à afficher pour le moment.',
+    image: 'https://via.placeholder.com/800x600',
+    date: new Date(),
+    category: 'Y\'EN A MARRE',
+    formattedDate: new Date().toLocaleDateString('fr-FR')
+  },
+  slug: '#'
+};
 
 // Recent news (sorted by date, limited to 6 for pagination)
 const articlesPerPage = 6;
@@ -92,7 +102,7 @@ const newsByCategory = {
   <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
     <div class="absolute inset-0">
       <img 
-        src={featuredNews.data.image} 
+        src={featuredNews.data.image || 'https://via.placeholder.com/800x600'} 
         alt={featuredNews.data.title}
         class="w-full h-full object-cover"
       />
@@ -168,7 +178,7 @@ const newsByCategory = {
               <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
                 <div class="relative h-48 overflow-hidden">
                   <img 
-                    src={article.image} 
+                    src={article.image || 'https://via.placeholder.com/400x300'} 
                     alt={article.title} 
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />

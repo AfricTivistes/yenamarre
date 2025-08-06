@@ -18,6 +18,18 @@ export function wordpressLoader(config: {
   // Cache category names to avoid repeated fetches
   let categoryMap: Record<number, string> = {};
 
+  async function fetchMediaUrl(mediaId: number, endpoint: string): Promise<string | undefined> {
+    try {
+      const response = await fetch(`${endpoint}/wp/v2/media/${mediaId}`);
+      if (!response.ok) return undefined;
+      const media = await response.json();
+      return media.source_url || undefined;
+    } catch (error) {
+      console.error(`Error fetching media ${mediaId}: ${error.message}`);
+      return undefined;
+    }
+  }
+
   async function fetchCategories(): Promise<void> {
     try {
       const response = await fetch(`${config.endpoint}/wp/v2/categories`);
@@ -72,7 +84,7 @@ export function wordpressLoader(config: {
                 ? categoryMap[post.categories[0]]
                 : undefined,
               image: post.featured_media
-                ? `${config.endpoint}/wp/v2/media/${post.featured_media}`
+                ? await fetchMediaUrl(post.featured_media, config.endpoint)
                 : undefined,
               sticky: post.sticky || false,
             },
@@ -109,7 +121,7 @@ export function wordpressLoader(config: {
               ? categoryMap[post.categories[0]]
               : undefined,
             image: post.featured_media
-              ? `${config.endpoint}/wp/v2/media/${post.featured_media}`
+              ? await fetchMediaUrl(post.featured_media, config.endpoint)
               : undefined,
             sticky: post.sticky || false,
           },
