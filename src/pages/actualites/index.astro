@@ -91,8 +91,8 @@ const newsByCategory = {
   <!-- Hero Section avec actualité à la une -->
   <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
     <div class="absolute inset-0">
-      <img 
-        src={featuredNews.data.image || 'https://via.placeholder.com/800x600'} 
+      <img
+        src={featuredNews.data.image || 'https://via.placeholder.com/800x600'}
         alt={featuredNews.data.title}
         class="w-full h-full object-cover"
       />
@@ -123,8 +123,8 @@ const newsByCategory = {
           <span class="text-yam-red font-medium">{featuredNews.data.category}</span>
         </div>
 
-        <a 
-          href={`/actualites/${featuredNews.data.slug}`} 
+        <a
+          href={`/actualites/${featuredNews.data.slug}`}
           class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
         >
           Lire l'article complet
@@ -152,8 +152,8 @@ const newsByCategory = {
             Découvrez nos dernières publications et prises de position.
           </p>
         </div>
-        <a 
-          href="/actualites/tous-les-articles" 
+        <a
+          href="/actualites/tous-les-articles"
           class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center"
         >
           Voir tous les articles
@@ -169,9 +169,9 @@ const newsByCategory = {
             <a href={article.url} class="block">
               <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
                 <div class="relative h-48 overflow-hidden">
-                  <img 
-                    src={article.image || 'https://via.placeholder.com/400x300'} 
-                    alt={article.title} 
+                  <img
+                    src={article.image || 'https://via.placeholder.com/400x300'}
+                    alt={article.title}
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div class="absolute top-4 left-4">
@@ -209,18 +209,18 @@ const newsByCategory = {
         </div>
 
         <div class="flex items-center space-x-2">
-          <button 
-            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+          <button
+            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={currentPage === 1}
           >
             Précédent
           </button>
 
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button 
+            <button
               class={`px-4 py-2 rounded-lg transition-colors ${
-                page === currentPage 
-                  ? 'bg-yam-red text-white' 
+                page === currentPage
+                  ? 'bg-yam-red text-white'
                   : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
               }`}
             >
@@ -228,8 +228,8 @@ const newsByCategory = {
             </button>
           ))}
 
-          <button 
-            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+          <button
+            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={currentPage === totalPages}
           >
             Suivant
@@ -275,7 +275,7 @@ const newsByCategory = {
                     <div class="flex items-start space-x-4">
                       <img src={news.image || 'https://via.placeholder.com/60'} alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
                       <div class="flex-1">
-                        <h4 class="font-bold text-lg mb-2 group-hover:text-gray-700">{news.title}</h4>
+                        <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
                         <p class="text-sm text-gray-500 mb-2">{new Date(news.date).toLocaleDateString('fr-FR')} • {news.category}</p>
                         <p class="text-gray-600 text-sm line-clamp-2">{news.excerpt}</p>
                       </div>
@@ -317,7 +317,7 @@ const newsByCategory = {
             <div class="space-y-3 mb-6">
               {newsByCategory['communiques-presse']?.slice(0, 2).map((news) => (
                 <div class="text-sm">
-                  <h4 class="font-medium text-gray-800 line-clamp-1">{news.title}</h4>
+                  <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
                   <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
                 </div>
               ))}
@@ -347,7 +347,7 @@ const newsByCategory = {
             <div class="space-y-3 mb-6">
               {newsByCategory['yam-presse']?.slice(0, 2).map((news) => (
                 <div class="text-sm">
-                  <h4 class="font-medium text-gray-800 line-clamp-1">{news.title}</h4>
+                  <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
                   <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
                 </div>
               ))}
@@ -377,7 +377,7 @@ const newsByCategory = {
             <div class="space-y-3 mb-6">
               {newsByCategory['medias']?.slice(0, 2).map((news) => (
                 <div class="text-sm">
-                  <h4 class="font-medium text-gray-800 line-clamp-1">{news.title}</h4>
+                  <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
                   <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
                 </div>
               ))}
@@ -438,14 +438,14 @@ const newsByCategory = {
         </p>
 
         <form class="flex flex-col md:flex-row gap-4 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
-          <input 
-            type="email" 
-            placeholder="Votre adresse email" 
+          <input
+            type="email"
+            placeholder="Votre adresse email"
             class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yam-red text-black bg-white"
             required
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105"
           >
             S'inscrire
