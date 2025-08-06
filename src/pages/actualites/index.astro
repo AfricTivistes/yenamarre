@@ -38,7 +38,7 @@ const startIndex = (currentPage - 1) * articlesPerPage;
 const endIndex = startIndex + articlesPerPage;
 const paginatedNews = recentNews;
 
-// News by category (adjust category names based on WordPress slugs)
+
 const newsByCategory = {
   'communiques-presse': allPosts
     .filter(post => post.data.category === 'Communiqué de presse')

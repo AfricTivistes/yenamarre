@@ -12,6 +12,67 @@ interface Post {
   sticky: boolean;
 }
 
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | undefined;
+  count: number;
+}
+
+export function wordpressCategoryLoader(config: {
+  endpoint: string;
+}): LiveLoader<Category> {
+  return {
+    name: "wordpress-category-loader",
+    loadCollection: async () => {
+      try {
+        const response = await fetch(`${config.endpoint}/wp/v2/categories`);
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        const categories = await response.json();
+        
+        return {
+          entries: categories.map((category: any) => ({
+            id: category.id.toString(),
+            data: {
+              id: category.id,
+              name: category.name,
+              slug: category.slug,
+              description: category.description || undefined,
+              count: category.count,
+            },
+          })),
+        };
+      } catch (error) {
+        return { error: new Error(`Failed to load categories: ${error.message}`) };
+      }
+    },
+    loadEntry: async ({ filter }) => {
+      try {
+        const url = new URL(
+          `${config.endpoint}/wp/v2/categories/${filter.id || filter.slug}`,
+        );
+        const response = await fetch(url.toString());
+        if (!response.ok) return { error: new Error("Category not found") };
+        const category = await response.json();
+        
+        return {
+          id: category.id.toString(),
+          data: {
+            id: category.id,
+            name: category.name,
+            slug: category.slug,
+            description: category.description || undefined,
+            count: category.count,
+          },
+        };
+      } catch (error) {
+        return { error: new Error(`Failed to load category: ${error.message}`) };
+      }
+    },
+  };
+}
+
 export function wordpressLoader(config: {
   endpoint: string;
 }): LiveLoader<Post> {
