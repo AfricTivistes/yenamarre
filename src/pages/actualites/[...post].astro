@@ -3,6 +3,8 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getLiveCollection } from 'astro:content';
 
+export const prerender = false;
+
 export async function getStaticPaths() {
   const { entries: allPosts, error } = await getLiveCollection('posts');
   
