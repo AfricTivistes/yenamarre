@@ -1,0 +1,312 @@
+
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getLiveCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const categories = [
+    { 
+      slug: 'appels-offres',
+      name: 'Appels d\'offres',
+      description: 'Découvrez nos opportunités d\'emploi, de consultation et de collaboration avec Y\'EN A MARRE et ses projets.',
+      color: 'orange',
+      bgGradient: 'from-orange-900 to-orange-700'
+    },
+    { 
+      slug: 'communiques-presse',
+      name: 'Communiqués de presse',
+      description: 'Retrouvez toutes les positions officielles et déclarations de Y\'EN A MARRE sur les enjeux majeurs de notre société.',
+      color: 'yam-red',
+      bgGradient: 'from-yam-red to-red-800'
+    },
+    { 
+      slug: 'yam-presse',
+      name: 'Y\'EN A MARRE dans la presse',
+      description: 'Découvrez comment les médias couvrent nos actions et notre engagement pour la démocratie et la bonne gouvernance.',
+      color: 'blue',
+      bgGradient: 'from-blue-900 to-blue-700'
+    },
+    { 
+      slug: 'tribune-libre',
+      name: 'Tribune libre',
+      description: 'Espace d\'expression libre pour nos membres et sympathisants sur les enjeux de société, de démocratie et de citoyenneté.',
+      color: 'green',
+      bgGradient: 'from-green-900 to-green-700'
+    },
+    { 
+      slug: 'medias',
+      name: 'Médias',
+      description: 'Découvrez nos contenus multimédias : documentaires, podcasts, galeries photos et vidéos de nos actions.',
+      color: 'purple',
+      bgGradient: 'from-purple-900 to-purple-700'
+    }
+  ];
+
+  return categories.map(category => ({
+    params: { category: category.slug },
+    props: { categoryData: category }
+  }));
+}
+
+const { category } = Astro.params;
+const { categoryData } = Astro.props;
+
+// Récupérer les articles de la catégorie depuis WordPress
+const { entries: allPosts, error } = await getLiveCollection('posts');
+if (error) {
+  console.error(`Error loading posts: ${error.message}`);
+}
+
+// Filtrer par catégorie si nécessaire (selon la logique de votre WordPress)
+const categoryPosts = allPosts || [];
+
+// Pagination
+const POSTS_PER_PAGE = 9;
+const currentPage = 1;
+const totalPages = Math.ceil(categoryPosts.length / POSTS_PER_PAGE);
+const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+const paginatedPosts = categoryPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
+
+// Configuration des couleurs par catégorie
+const getColorClass = (color: string, type: 'bg' | 'text' | 'border' | 'hover') => {
+  const colorMap = {
+    'orange': {
+      bg: 'bg-orange-600',
+      text: 'text-orange-600',
+      border: 'border-orange-600',
+      hover: 'hover:bg-orange-700'
+    },
+    'yam-red': {
+      bg: 'bg-yam-red',
+      text: 'text-yam-red',
+      border: 'border-yam-red',
+      hover: 'hover:bg-red-700'
+    },
+    'blue': {
+      bg: 'bg-blue-600',
+      text: 'text-blue-600',
+      border: 'border-blue-600',
+      hover: 'hover:bg-blue-700'
+    },
+    'green': {
+      bg: 'bg-green-600',
+      text: 'text-green-600',
+      border: 'border-green-600',
+      hover: 'hover:bg-green-700'
+    },
+    'purple': {
+      bg: 'bg-purple-600',
+      text: 'text-purple-600',
+      border: 'border-purple-600',
+      hover: 'hover:bg-purple-700'
+    }
+  };
+  return colorMap[color]?.[type] || colorMap['yam-red'][type];
+};
+---
+
+<MainLayout title={`${categoryData.name} - Y'EN A MARRE`} currentPath={`/actualites/${category}`}>
+  <!-- Hero Section -->
+  <section class={`relative py-20 bg-gradient-to-br ${categoryData.bgGradient} overflow-hidden`}>
+    <div class="absolute inset-0 opacity-10 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center text-white">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">{categoryData.name}</h1>
+        <p class="text-xl text-gray-100">
+          {categoryData.description}
+        </p>
+      </div>
+    </div>
+    
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- Navigation rapide -->
+  <section class="py-8 bg-white">
+    <div class="container-custom">
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-6 -mt-16 relative z-20 border border-gray-100">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/actualites" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            Toutes les actualités
+          </a>
+          <a href="/actualites/communiques-presse" class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === 'communiques-presse' ? getColorClass('yam-red', 'bg') + ' text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+            Communiqués de presse
+          </a>
+          <a href="/actualites/yam-presse" class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === 'yam-presse' ? getColorClass('blue', 'bg') + ' text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+            YAM dans la presse
+          </a>
+          <a href="/actualites/tribune-libre" class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === 'tribune-libre' ? getColorClass('green', 'bg') + ' text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+            Tribune libre
+          </a>
+          <a href="/actualites/medias" class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === 'medias' ? getColorClass('purple', 'bg') + ' text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+            Médias
+          </a>
+          <a href="/actualites/appels-offres" class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === 'appels-offres' ? getColorClass('orange', 'bg') + ' text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+            Appels d'offres
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Filtres spécifiques selon la catégorie -->
+  {category === 'appels-offres' && (
+    <section class="py-8">
+      <div class="container-custom">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <button class={`px-6 py-3 ${getColorClass('orange', 'bg')} text-white rounded-lg font-medium`}>
+            Tous les appels
+          </button>
+          <button class="px-6 py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+            Ouverts
+          </button>
+          <button class="px-6 py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+            Clôturés
+          </button>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {category === 'medias' && (
+    <section class="py-8">
+      <div class="container-custom">
+        <div class="flex flex-wrap gap-4 justify-center">
+          <button class={`px-6 py-3 ${getColorClass('purple', 'bg')} text-white rounded-lg font-medium`}>
+            Tous les médias
+          </button>
+          <button class="px-6 py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+            Vidéos
+          </button>
+          <button class="px-6 py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+            Podcasts
+          </button>
+          <button class="px-6 py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+            Galeries photo
+          </button>
+        </div>
+      </div>
+    </section>
+  )}
+  
+  <!-- Liste des articles -->
+  <section class="py-12 md:py-16">
+    <div class="container-custom">
+      {paginatedPosts.length > 0 ? (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {paginatedPosts.map((post) => (
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+              {post.data.image && (
+                <img src={post.data.image} alt={post.data.title} class="w-full h-48 object-cover" />
+              )}
+              <div class="p-6">
+                <div class="flex items-center justify-between mb-3">
+                  <span class={`${getColorClass(categoryData.color, 'bg')} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
+                    {post.data.category || categoryData.name}
+                  </span>
+                  <span class="text-gray-500 text-sm">{post.data.formattedDate}</span>
+                </div>
+                <h3 class="text-xl font-bold mb-3 line-clamp-2">{post.data.title}</h3>
+                {post.data.excerpt && (
+                  <p class="text-gray-600 mb-4 line-clamp-3">{post.data.excerpt}</p>
+                )}
+                <a href={`/actualites/${post.data.slug}`} class={`${getColorClass(categoryData.color, 'text')} font-medium ${getColorClass(categoryData.color, 'text').replace('text-', 'hover:text-').replace('-600', '-800')} transition-colors`}>
+                  Lire l'article →
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-gray-600 text-lg">Aucun article disponible dans cette catégorie pour le moment.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Sections spécifiques selon la catégorie -->
+  {category === 'appels-offres' && (
+    <section class="py-16 bg-orange-50">
+      <div class="container-custom">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold mb-6">Recevez les nouveaux appels d'offres</h2>
+          <p class="text-lg text-gray-600 mb-8">
+            Inscrivez-vous pour être alerté des nouvelles opportunités dès leur publication.
+          </p>
+          
+          <form class="flex flex-col md:flex-row gap-4">
+            <input 
+              type="email" 
+              placeholder="Votre adresse email" 
+              class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 border border-gray-300"
+              required
+            />
+            <button 
+              type="submit" 
+              class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
+            >
+              S'abonner aux alertes
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {category === 'tribune-libre' && (
+    <section class="py-16 bg-green-50">
+      <div class="container-custom">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold mb-6">Contribuez à notre tribune libre</h2>
+          <p class="text-lg text-gray-600 mb-8">
+            Vous souhaitez partager vos réflexions sur les enjeux de société ? Proposez votre tribune libre.
+          </p>
+          <a href="/contact" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+            Proposer une tribune
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {(category === 'communiques-presse' || category === 'yam-presse') && (
+    <section class="py-16 bg-gray-100">
+      <div class="container-custom">
+        <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md p-8 rounded-xl shadow-lg border border-gray-100">
+          <div class="text-center">
+            <h2 class="text-3xl font-bold mb-6">
+              {category === 'communiques-presse' ? 'Restez informé de nos prises de position' : 'Suivez notre couverture médiatique'}
+            </h2>
+            <p class="text-lg text-gray-600 mb-8">
+              {category === 'communiques-presse' 
+                ? 'Recevez nos communiqués officiels directement dans votre boîte email.' 
+                : 'Recevez les dernières nouvelles de notre couverture dans les médias.'
+              }
+            </p>
+            
+            <form class="flex flex-col md:flex-row gap-4">
+              <input 
+                type="email" 
+                placeholder="Votre adresse email" 
+                class={`flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 ${category === 'communiques-presse' ? 'focus:ring-yam-red' : 'focus:ring-blue-600'} border border-gray-300`}
+                required
+              />
+              <button 
+                type="submit" 
+                class={`${category === 'communiques-presse' ? 'bg-yam-red hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} text-white font-bold py-3 px-6 rounded-lg transition-colors`}
+              >
+                S'abonner
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+</MainLayout>
