@@ -6,21 +6,30 @@ import ArticlePagination from '../../components/ArticlePagination.astro';
 import CategorySection from '../../components/CategorySection.astro';
 import { getLiveCollection } from 'astro:content';
 
-
 const { entries: allPosts, error } = await getLiveCollection('posts');
 if (error) {
   console.error(`Error loading posts: ${error.message}`);
 }
 
+const featuredNews = allPosts.find(post => post.data.sticky) || allPosts[0] || {
+  id: '0',
+  data: {
+    id: 0,
+    slug: 'placeholder',
+    title: 'No featured news available',
+    excerpt: 'Check back later for updates.',
+    date: new Date(),
+    category: 'Y\'EN A MARRE',
+    image: 'https://via.placeholder.com/800x600',
+    sticky: false,
+    formattedDate: new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }),
+  },
+};
 
-const featuredNews = allPosts.find(post => post.data.sticky);
-
-// Recent news (sorted by date, limited to 6 for pagination)
 const articlesPerPage = 6;
-const currentPage = 1;
+const currentPage = Number(Astro.url.searchParams.get('page') || 1);
 const recentNews = allPosts
   .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
-  .slice(0, articlesPerPage)
   .map(post => ({
     id: post.data.id,
     title: post.data.title,
@@ -31,13 +40,11 @@ const recentNews = allPosts
     url: `/actualites/${post.data.slug}`,
   }));
 
-// Pagination
 const totalArticles = allPosts.length;
 const totalPages = Math.ceil(totalArticles / articlesPerPage);
 const startIndex = (currentPage - 1) * articlesPerPage;
 const endIndex = startIndex + articlesPerPage;
-const paginatedNews = recentNews;
-
+const paginatedNews = recentNews.slice(startIndex, endIndex);
 
 const newsByCategory = {
   'communiques-presse': allPosts
@@ -50,10 +57,10 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.slug}`,
+      url: `/actualites/${post.data.slug}`,
     })),
-  'yam-presse': allPosts
-    .filter(post => post.data.category === 'YAM dans la presse')
+  'appels-offres': allPosts
+    .filter(post => post.data.category === 'Appel d\'offres')
     .slice(0, 2)
     .map(post => ({
       id: post.data.id,
@@ -62,7 +69,7 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.slug}`,
+      url: `/actualites/${post.data.slug}`,
     })),
   'medias': allPosts
     .filter(post => post.data.category === 'Médias')
@@ -74,7 +81,7 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.slug}`,
+      url: `/actualites/${post.data.slug}`,
     })),
   'tribune-libre': allPosts
     .filter(post => post.data.category === 'Tribune libre')
@@ -86,8 +93,41 @@ const newsByCategory = {
       date: post.data.date,
       category: post.data.category,
       image: post.data.image,
-      url: `/actualites/${post.slug}`,
+      url: `/actualites/${post.data.slug}`,
     })),
+  'dox-ak-sa-gox': allPosts
+    .filter(post => post.data.category === 'Dox Ak Sa Gox')
+    .slice(0, 2)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      image: post.data.image,
+      url: `/actualites/${post.data.slug}`,
+    })),
+  'citizen-mic': allPosts
+    .filter(post => post.data.category === 'Citizen Mic')
+    .slice(0, 2)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      image: post.data.image,
+      url: `/actualites/${post.data.slug}`,
+    })),
+};
+
+const colorMap = {
+  'communiques-presse': { color: 'yam-red', bgGradient: 'from-yam-red to-red-800', icon: 'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z' },
+  'appels-offres': { color: 'orange', bgGradient: 'from-orange-900 to-orange-700', icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6' },
+  'medias': { color: 'purple', bgGradient: 'from-purple-900 to-purple-700', icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z' },
+  'tribune-libre': { color: 'green', bgGradient: 'from-green-900 to-green-700', icon: 'M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z' },
+  'dox-ak-sa-gox': { color: 'blue', bgGradient: 'from-blue-900 to-blue-700', icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+  'citizen-mic': { color: 'teal', bgGradient: 'from-teal-900 to-teal-700', icon: 'M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z' },
 };
 ---
 
@@ -101,7 +141,7 @@ const newsByCategory = {
       category={featuredNews.data.category}
       image={featuredNews.data.image}
       slug={featuredNews.data.slug}
-      isSticky={true}
+      isSticky={featuredNews.data.sticky}
     />
   )}
 
@@ -126,132 +166,28 @@ const newsByCategory = {
         </a>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        {paginatedNews.map((article) => (
-          <article class="group">
-            <a href={article.url} class="block">
-              <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
-                <div class="relative h-48 overflow-hidden">
-                  <img
-                    src={article.image || 'https://via.placeholder.com/400x300'}
-                    alt={article.title}
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div class="absolute top-4 left-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yam-red text-white">
-                      {article.category}
-                    </span>
-                  </div>
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div class="p-6">
-                  <time datetime={article.date} class="text-sm text-gray-500">
-                    {new Date(article.date).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
-                  <h3 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p class="text-gray-600 mb-4 line-clamp-3">{article.excerpt}</p>
-                  <div class="flex justify-end">
-                    <span class="text-yam-red font-medium group-hover:underline">Lire la suite →</span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </article>
-        ))}
-      </div>
+      <ArticleGrid articles={paginatedNews} />
 
-      <div class="flex flex-col md:flex-row items-center justify-between">
-        <div class="text-gray-600 mb-4 md:mb-0">
-          Affichage de {startIndex + 1} à {Math.min(endIndex, totalArticles)} sur {totalArticles} articles
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <button
-            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={currentPage === 1}
-          >
-            Précédent
-          </button>
-
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              class={`px-4 py-2 rounded-lg transition-colors ${
-                page === currentPage
-                  ? 'bg-yam-red text-white'
-                  : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-
-          <button
-            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={currentPage === totalPages}
-          >
-            Suivant
-          </button>
-        </div>
-      </div>
+      <ArticlePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        startIndex={startIndex}
+        endIndex={Math.min(endIndex, totalArticles)}
+        totalArticles={totalArticles}
+        baseUrl="/actualites"
+      />
     </div>
   </section>
 
   <!-- Tribune libre - Section mise en avant -->
-  <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
-    <div class="container-custom">
-      <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-        <div class="grid md:grid-cols-2 gap-0">
-          <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-white p-8 md:p-12 flex flex-col justify-center">
-            <div class="flex items-center mb-6">
-              <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-2xl md:text-3xl font-bold mb-2">Tribune libre</h3>
-                <p class="text-gray-300">Espace d'expression citoyenne</p>
-              </div>
-            </div>
-            <p class="text-lg text-gray-200 mb-6">
-              Découvrez les réflexions et analyses de nos membres et sympathisants sur les enjeux démocratiques du Sénégal.
-            </p>
-            <a href="/actualites/tribune-libre" class="inline-flex items-center bg-white text-gray-900 hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition-all group">
-              Lire toutes les tribunes
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </a>
-          </div>
-
-          <div class="p-8 bg-gray-50">
-            <div class="space-y-6">
-              {newsByCategory['tribune-libre']?.slice(0, 2).map((news) => (
-                <article class="group cursor-pointer">
-                  <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
-                    <div class="flex items-start space-x-4">
-                      <img src={news.image || 'https://via.placeholder.com/60'} alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
-                      <div class="flex-1">
-                        <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
-                        <p class="text-sm text-gray-500 mb-2">{new Date(news.date).toLocaleDateString('fr-FR')} • {news.category}</p>
-                        <p class="text-gray-600 text-sm line-clamp-2">{news.excerpt}</p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <CategorySection
+    title="Tribune libre"
+    description="Découvrez les réflexions et analyses de nos membres et sympathisants sur les enjeux démocratiques du Sénégal."
+    articles={newsByCategory['tribune-libre']}
+    link="/actualites/tribune-libre"
+    icon={colorMap['tribune-libre'].icon}
+    gradient={colorMap['tribune-libre'].bgGradient}
+  />
 
   <!-- Catégories d'actualités -->
   <section class="py-16 md:py-24 bg-white">
@@ -264,114 +200,51 @@ const newsByCategory = {
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
-          <div class="h-32 bg-gradient-to-r from-yam-red to-red-600 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-3 group-hover:text-yam-red transition-colors">Communiqués de presse</h3>
-            <p class="text-gray-600 mb-4">Nos positions officielles et déclarations publiques</p>
-            <div class="space-y-3 mb-6">
-              {newsByCategory['communiques-presse']?.slice(0, 2).map((news) => (
-                <div class="text-sm">
-                  <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
-                  <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
-                </div>
-              ))}
-            </div>
-            <a href="/actualites/communiques-presse" class="text-yam-red font-medium group-hover:underline flex items-center">
-              Voir tous les communiqués
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
-          <div class="h-32 bg-gradient-to-r from-gray-600 to-gray-700 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-3 group-hover:text-gray-700 transition-colors">YAM dans la presse</h3>
-            <p class="text-gray-600 mb-4">Notre couverture médiatique nationale et internationale</p>
-            <div class="space-y-3 mb-6">
-              {newsByCategory['yam-presse']?.slice(0, 2).map((news) => (
-                <div class="text-sm">
-                  <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
-                  <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
-                </div>
-              ))}
-            </div>
-            <a href="/actualites/yam-presse" class="text-gray-700 font-medium group-hover:underline flex items-center">
-              Voir toute la couverture
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
-          <div class="h-32 bg-gradient-to-r from-gray-500 to-gray-600 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-3 group-hover:text-gray-600 transition-colors">Médias</h3>
-            <p class="text-gray-600 mb-4">Documentaires, photos, vidéos et podcasts</p>
-            <div class="space-y-3 mb-6">
-              {newsByCategory['medias']?.slice(0, 2).map((news) => (
-                <div class="text-sm">
-                  <h4 class="font-medium text-gray-800 line-clamp-1" set:html={news.title}></h4>
-                  <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
-                </div>
-              ))}
-            </div>
-            <a href="/actualites/medias" class="text-gray-600 font-medium group-hover:underline flex items-center">
-              Découvrir les médias
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-        </div>
+        <CategorySection
+          title="Communiqués de presse"
+          description="Nos positions officielles et déclarations publiques"
+          articles={newsByCategory['communiques-presse']}
+          link="/actualites/communiques-presse"
+          icon={colorMap['communiques-presse'].icon}
+          gradient={colorMap['communiques-presse'].bgGradient}
+        />
+        <CategorySection
+          title="Appels d'offres"
+          description="Opportunités d'emploi et collaborations"
+          articles={newsByCategory['appels-offres']}
+          link="/actualites/appels-offres"
+          icon={colorMap['appels-offres'].icon}
+          gradient={colorMap['appels-offres'].bgGradient}
+        />
+        <CategorySection
+          title="Médias"
+          description="Documentaires, photos, vidéos et podcasts"
+          articles={newsByCategory['medias']}
+          link="/actualites/medias"
+          icon={colorMap['medias'].icon}
+          gradient={colorMap['medias'].bgGradient}
+        />
+        <CategorySection
+          title="Dox Ak Sa Gox"
+          description="Initiatives pour la démocratie et la bonne gouvernance"
+          articles={newsByCategory['dox-ak-sa-gox']}
+          link="/actualites/dox-ak-sa-gox"
+          icon={colorMap['dox-ak-sa-gox'].icon}
+          gradient={colorMap['dox-ak-sa-gox'].bgGradient}
+        />
+        <CategorySection
+          title="Citizen Mic"
+          description="Compétition de rap engagé pour la citoyenneté"
+          articles={newsByCategory['citizen-mic']}
+          link="/actualites/citizen-mic"
+          icon={colorMap['citizen-mic'].icon}
+          gradient={colorMap['citizen-mic'].bgGradient}
+        />
       </div>
 
       <div class="bg-gray-50 rounded-xl p-8 border border-gray-100">
         <h4 class="text-xl font-bold mb-6 text-center text-gray-800">Autres contenus</h4>
         <div class="grid md:grid-cols-2 gap-6">
-          <a href="/actualites/appels-offres" class="group block p-6 rounded-lg bg-white hover:bg-gray-50 transition-all border border-gray-100">
-            <div class="flex items-center space-x-4">
-              <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6" />
-                </svg>
-              </div>
-              <div>
-                <h5 class="font-bold text-gray-800 mb-1">Appels d'offres</h5>
-                <p class="text-gray-600 text-sm">Opportunités d'emploi et collaborations</p>
-              </div>
-            </div>
-          </a>
-
           <a href="/actualites/archives" class="group block p-6 rounded-lg bg-white hover:bg-gray-50 transition-all border border-gray-100">
             <div class="flex items-center space-x-4">
               <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
@@ -399,7 +272,6 @@ const newsByCategory = {
         <p class="text-lg mb-8">
           Inscrivez-vous à notre newsletter pour recevoir les dernières actualités et informations sur nos campagnes.
         </p>
-
         <form class="flex flex-col md:flex-row gap-4 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
           <input
             type="email"
@@ -414,7 +286,6 @@ const newsByCategory = {
             S'inscrire
           </button>
         </form>
-
         <p class="text-sm mt-4 text-gray-400">
           En vous inscrivant, vous acceptez de recevoir nos emails et confirmez avoir lu notre politique de confidentialité.
         </p>
