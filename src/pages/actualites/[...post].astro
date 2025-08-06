@@ -25,7 +25,7 @@ export async function getStaticPaths() {
   }));
 }
 
-
+// Handle SSR mode - fetch the post dynamically if not in props
 let post = Astro.props.post;
 
 if (!post) {
