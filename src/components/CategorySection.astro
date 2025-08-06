@@ -1,32 +1,3 @@
-
----
-export interface CategoryNews {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  image: string;
-  url: string;
-}
-
-export interface CategoryConfig {
-  name: string;
-  slug: string;
-  color: string;
-  bgGradient: string;
-  icon: string;
-  description: string;
-  news: CategoryNews[];
-}
-
-export interface Props {
-  categories: CategoryConfig[];
-}
-
-const { categories } = Astro.props;
----
-
 <section class="py-16 md:py-24 bg-white">
   <div class="container-custom">
     <div class="text-center max-w-3xl mx-auto mb-16">
