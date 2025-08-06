@@ -5,20 +5,37 @@ import ArticleSidebar from '../../components/ArticleSidebar.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import { getLiveCollection } from 'astro:content';
 
-
+// Récupération du slug depuis les paramètres
 const slug = Astro.params.post;
-const { entries: allPosts, error } = await getLiveCollection('posts');
 
-if (error) {
-  console.error(`Error loading posts: ${error.message}`);
+if (!slug) {
+  console.error('No slug provided');
   return Astro.redirect('/actualites');
 }
 
-const post = allPosts.find(p => p.data.slug === slug);
-
-if (!post) {
+// Chargement des articles
+let allPosts, post;
+try {
+  const result = await getLiveCollection('posts');
+  
+  if (result.error) {
+    console.error(`Error loading posts: ${result.error.message}`);
+    return Astro.redirect('/actualites');
+  }
+  
+  allPosts = result.entries;
+  post = allPosts.find(p => p.data.slug === slug);
+  
+  if (!post) {
+    console.error(`Post not found for slug: ${slug}`);
+    return Astro.redirect('/actualites');
+  }
+} catch (error) {
+  console.error('Unexpected error:', error);
   return Astro.redirect('/actualites');
 }
+
+// Articles liés
 const relatedPosts = allPosts
   .filter(p => p.data.category === post.data.category && p.data.id !== post.data.id)
   .slice(0, 3)
