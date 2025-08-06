@@ -1,6 +1,6 @@
 // src/live.config.ts
 import { defineLiveCollection, z } from "astro:content";
-import { wordpressLoader, wordpressCategoryLoader } from "./loaders/wordpress-loader";
+import { wordpressLoader } from "./loaders/wordpress-loader";
 
 const posts = defineLiveCollection({
   loader: wordpressLoader({
@@ -31,17 +31,4 @@ const posts = defineLiveCollection({
     })),
 });
 
-const categories = defineLiveCollection({
-  loader: wordpressCategoryLoader({
-    endpoint: "https://yem.yenamarre.sn/yenamarre/wp-json",
-  }),
-  schema: z.object({
-    id: z.number(),
-    name: z.string(),
-    slug: z.string(),
-    description: z.string().optional(),
-    count: z.number(),
-  }),
-});
-
-export const collections = { posts, categories };
+export const collections = { posts };
