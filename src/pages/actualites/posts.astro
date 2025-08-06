@@ -1,12 +1,13 @@
 ---
 export const prerender = false; // Required for runtime fetching
-import { getLiveCollection } from 'astro:content';
+import { getLiveCollection, getLiveEntry } from 'astro:content';
 
-const { entries: posts, error } = await getLiveCollection('posts');
+
+const { entries: allPosts, error } = await getLiveCollection('posts');
 if (error) {
-  console.error(`Error loading posts: ${error.message}`);
-  return Astro.redirect('/500');
+  console.error(error.message);
 }
+console.log(allPosts)
 ---
 
 <h1>Blog Posts</h1>
