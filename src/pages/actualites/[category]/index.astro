@@ -4,47 +4,30 @@ import MainLayout from '../../../layouts/MainLayout.astro';
 import { getLiveCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const categories = [
-    { 
-      slug: 'appels-offres',
-      name: 'Appels d\'offres',
-      description: 'Découvrez nos opportunités d\'emploi, de consultation et de collaboration avec Y\'EN A MARRE et ses projets.',
-      color: 'orange',
-      bgGradient: 'from-orange-900 to-orange-700'
-    },
-    { 
-      slug: 'communiques-presse',
-      name: 'Communiqués de presse',
-      description: 'Retrouvez toutes les positions officielles et déclarations de Y\'EN A MARRE sur les enjeux majeurs de notre société.',
-      color: 'yam-red',
-      bgGradient: 'from-yam-red to-red-800'
-    },
-    { 
-      slug: 'yam-presse',
-      name: 'Y\'EN A MARRE dans la presse',
-      description: 'Découvrez comment les médias couvrent nos actions et notre engagement pour la démocratie et la bonne gouvernance.',
-      color: 'blue',
-      bgGradient: 'from-blue-900 to-blue-700'
-    },
-    { 
-      slug: 'tribune-libre',
-      name: 'Tribune libre',
-      description: 'Espace d\'expression libre pour nos membres et sympathisants sur les enjeux de société, de démocratie et de citoyenneté.',
-      color: 'green',
-      bgGradient: 'from-green-900 to-green-700'
-    },
-    { 
-      slug: 'medias',
-      name: 'Médias',
-      description: 'Découvrez nos contenus multimédias : documentaires, podcasts, galeries photos et vidéos de nos actions.',
-      color: 'purple',
-      bgGradient: 'from-purple-900 to-purple-700'
-    }
-  ];
+  const { entries: categories, error } = await getLiveCollection('categories');
+  
+  if (error) {
+    console.error(`Error loading categories: ${error.message}`);
+    return [];
+  }
+
+  // Mapping des couleurs par slug de catégorie (vous pouvez ajuster selon vos besoins)
+  const colorMap = {
+    'appels-offres': { color: 'orange', bgGradient: 'from-orange-900 to-orange-700' },
+    'communiques-presse': { color: 'yam-red', bgGradient: 'from-yam-red to-red-800' },
+    'yam-presse': { color: 'blue', bgGradient: 'from-blue-900 to-blue-700' },
+    'tribune-libre': { color: 'green', bgGradient: 'from-green-900 to-green-700' },
+    'medias': { color: 'purple', bgGradient: 'from-purple-900 to-purple-700' },
+  };
 
   return categories.map(category => ({
-    params: { category: category.slug },
-    props: { categoryData: category }
+    params: { category: category.data.slug },
+    props: { 
+      categoryData: {
+        ...category.data,
+        ...(colorMap[category.data.slug] || { color: 'yam-red', bgGradient: 'from-yam-red to-red-800' })
+      }
+    }
   }));
 }
 
