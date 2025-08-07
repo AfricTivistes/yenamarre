@@ -1,4 +1,3 @@
-// src/live.config.ts
 import { defineLiveCollection, z } from "astro:content";
 import { wordpressLoader } from "./loaders/wordpress-loader";
 
@@ -14,11 +13,12 @@ const posts = defineLiveCollection({
       content: z.string(),
       excerpt: z.string().optional(),
       date: z.string().transform((str) => new Date(str)),
+      categories: z.array(z.string()).optional().default([]),
       category: z.string().optional().default("Y'EN A MARRE"),
       image: z
         .string()
         .optional()
-        .default("https://via.placeholder.com/800x600"),
+        .default("https://placehold.co/800x600?text=Y+EN+MARRE"),
       sticky: z.boolean().optional().default(false),
     })
     .transform((data) => ({

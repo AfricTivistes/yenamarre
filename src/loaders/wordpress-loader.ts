@@ -58,6 +58,7 @@ export function wordpressLoader(config: {
         }
 
         const url = new URL(`${config.endpoint}/wp/v2/posts`);
+        url.searchParams.append("per_page", "100"); // Récupérer jusqu'à 100 articles
         if (filter?.category) {
           const categoryId = Object.keys(categoryMap).find(
             (id) => categoryMap[Number(id)] === filter.category,
@@ -89,6 +90,9 @@ export function wordpressLoader(config: {
               excerpt:
                 post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || undefined,
               date: post.date,
+              categories: post.categories?.length
+                ? post.categories.map(catId => categoryMap[catId]).filter(Boolean)
+                : [],
               category: post.categories?.length
                 ? categoryMap[post.categories[0]]
                 : undefined,
@@ -124,6 +128,9 @@ export function wordpressLoader(config: {
             excerpt:
               post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || undefined,
             date: post.date,
+            categories: post.categories?.length
+              ? post.categories.map(catId => categoryMap[catId]).filter(Boolean)
+              : [],
             category: post.categories?.length
               ? categoryMap[post.categories[0]]
               : undefined,

@@ -3,6 +3,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import ArticleSidebar from '../../components/ArticleSidebar.astro';
 import SocialShare from '../../components/SocialShare.astro';
+import RelatedArticles from '../../components/RelatedArticles.astro';
 import { getLiveCollection } from 'astro:content';
 
 export const prerender = false;
@@ -46,7 +47,15 @@ if (!post) {
 
 const { entries: allPosts } = await getLiveCollection('posts');
 const relatedPosts = allPosts
-  .filter(p => p.data.category === post.data.category && p.data.id !== post.data.id)
+  .filter(p => {
+    // Vérifier si l'article a des catégories communes
+    const hasCommonCategory = 
+      p.data.category === post.data.category ||
+      (post.data.categories && p.data.categories && 
+       post.data.categories.some(cat => p.data.categories.includes(cat)));
+    
+    return hasCommonCategory && p.data.id !== post.data.id;
+  })
   .slice(0, 3)
   .map(p => ({
     id: p.data.id,
@@ -64,7 +73,7 @@ const relatedPosts = allPosts
   <section class="relative min-h-[60vh] bg-gray-900 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src={post.data.image || 'https://via.placeholder.com/1200x600'}
+        src={post.data.image || 'https://placehold.co/1200x600?text=Y+EN+MARRE'}
         alt={post.data.title}
         class="w-full h-full object-cover object-center"
         style="object-position: center 30%;"
@@ -145,54 +154,7 @@ const relatedPosts = allPosts
   </article>
 
   <!-- Related Articles -->
-  {relatedPosts.length > 0 && (
-    <section class="py-16 bg-gray-50">
-      <div class="container-custom">
-        <div class="max-w-4xl mx-auto">
-          <h2 class="text-3xl font-bold mb-12 text-center">Articles similaires</h2>
-          
-          <div class="grid md:grid-cols-3 gap-8">
-            {relatedPosts.map((article) => (
-              <article class="group">
-                <a href={article.url} class="block">
-                  <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
-                    <div class="relative h-48 overflow-hidden">
-                      <img
-                        src={article.image || 'https://via.placeholder.com/400x300'}
-                        alt={article.title}
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div class="absolute top-4 left-4">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yam-red text-white">
-                          {article.category}
-                        </span>
-                      </div>
-                    </div>
-                    <div class="p-6">
-                      <time datetime={article.date} class="text-sm text-gray-500">
-                        {new Date(article.date).toLocaleDateString('fr-FR', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </time>
-                      <h3 class="text-lg font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p class="text-gray-600 text-sm line-clamp-3">{article.excerpt}</p>
-                      <div class="flex justify-end mt-4">
-                        <span class="text-yam-red font-medium group-hover:underline text-sm">Lire la suite →</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </article>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )}
+  <RelatedArticles articles={relatedPosts} />
 
   <!-- Back to articles -->
   <section class="py-12 bg-white">

@@ -1,0 +1,54 @@
+
+---
+export interface Props {
+  name: string;
+  slug: string;
+  description: string;
+  bgGradient: string;
+  textColor: string;
+  icon: string;
+  news: {
+    id: number;
+    title: string;
+    date: string;
+    slug: string;
+  }[];
+}
+
+const { name, slug, description, bgGradient, textColor, icon, news } = Astro.props;
+---
+
+<div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
+  <div class={`h-32 ${bgGradient} relative overflow-hidden`}>
+    <div class="absolute top-4 left-4">
+      <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+        <Fragment set:html={icon} />
+      </div>
+    </div>
+  </div>
+  <div class="p-6">
+    <h3 class={`text-xl font-bold mb-3 group-hover:${textColor} transition-colors`}>
+      {name}
+    </h3>
+    <p class="text-gray-600 mb-4">{description}</p>
+    <div class="space-y-3 mb-6">
+      {news?.slice(0, 2).map((article) => (
+        <a href={`/actualites/${article.slug}`} class="block text-sm hover:bg-gray-50 p-2 rounded transition-colors">
+          <h4 class="font-medium text-gray-800 line-clamp-1 hover:text-yam-red transition-colors" set:html={article.title}></h4>
+          <p class="text-gray-500 text-xs">{new Date(article.date).toLocaleDateString('fr-FR')}</p>
+        </a>
+      ))}
+      {(!news || news.length === 0) && (
+        <div class="text-sm text-gray-500">
+          Aucun article disponible pour le moment.
+        </div>
+      )}
+    </div>
+    <a href={`/actualites/${slug}`} class={`${textColor} font-medium group-hover:underline flex items-center`}>
+      Voir tous les {name.toLowerCase()}
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</div>
