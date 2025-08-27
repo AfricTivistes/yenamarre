@@ -10,28 +10,22 @@ import StatsCounter from '../components/StatsCounter.astro';
   <!-- Hero Section avec design moderne -->
   <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
     <!-- Image d'arrière-plan -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1573152958734-1922c188fba3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');"></div>
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/rassemblement1.webp');"></div>
 
     <!-- Overlay sombre pour la lisibilité -->
     <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/60"></div>
 
     <!-- Overlay pattern -->
-    <div class="absolute inset-0 opacity-5 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] bg-repeat"></div>
+    <div class="absolute inset-0 opacity-5 bg-[url('/images/groupe.webp')] bg-repeat"></div>
 
     <!-- Content -->
     <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="text-white space-y-6">
-          <div class="mb-8">
-            <img 
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp" 
-              alt="Y'EN A MARRE Logo" 
-              class="w-48 md:w-64 mb-6"
-            />
-          </div>
+         
 
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Nous apportons des solutions <span class="text-yam-red">pour un Sénégal meilleur</span>
+            Il n'y a pas de destin forclos, il n'y a que des  <span class="text-yam-red">responsabilités désertées.</span>
           </h1>
 
           <p class="text-xl md:text-2xl text-gray-300 mt-6">
@@ -42,23 +36,9 @@ import StatsCounter from '../components/StatsCounter.astro';
             <a href="/rejoindre" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30">
               Rejoignez le mouvement
             </a>
-            <a href="/a-propos/yenamarre" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
+            <a href="/yenamarre" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
               En savoir plus
             </a>
-          </div>
-        </div>
-
-        <div class="hidden md:block relative">
-          <div class="relative rounded-lg overflow-hidden shadow-2xl">
-            <img 
-              src="/placeholder.svg?height=600&width=800&query=African youth protest movement with signs and flags in Senegal" 
-              alt="Y'EN A MARRE en action" 
-              class="w-full h-auto rounded-lg"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-          </div>
-          <div class="absolute -bottom-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg">
-            Depuis 2011
           </div>
         </div>
       </div>
@@ -109,7 +89,7 @@ import StatsCounter from '../components/StatsCounter.astro';
 
   <!-- Statistiques avec design moderne -->
   <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern red and black')] opacity-5"></div>
+    <div class="absolute inset-0 bg-[url('/images/yem1.webp')] opacity-5"></div>
     <div class="container-custom relative z-10">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-5xl font-bold mb-6">Notre impact</h2>
@@ -172,7 +152,7 @@ import StatsCounter from '../components/StatsCounter.astro';
 
   <!-- Appel à l'action avec design moderne -->
   <section class="py-16 bg-yam-red text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-10"></div>
+    <div class="absolute inset-0 bg-[url('/images/groupe2.webp')] opacity-10"></div>
     <div class="container-custom text-center relative z-10">
       <h2 class="text-3xl md:text-5xl font-bold mb-6">Passez à l'action maintenant</h2>
       <p class="text-xl max-w-3xl mx-auto mb-8">
@@ -396,7 +376,7 @@ import StatsCounter from '../components/StatsCounter.astro';
           excerpt="Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption."
           date="2023-06-15"
           category="Y'EN A MARRE"
-          image="/placeholder.svg?height=400&width=600&query=African protest in Dakar"
+          image="/images/rassemblement3.webp"
           url="/actualites/manifestation-democratie-dakar"
         />
 
@@ -405,7 +385,7 @@ import StatsCounter from '../components/StatsCounter.astro';
           excerpt="Y'EN A MARRE lance un nouveau programme pour promouvoir la gouvernance locale et l'engagement citoyen."
           date="2023-05-22"
           category="Projets"
-          image="/placeholder.svg?height=400&width=600&query=Community meeting in Senegal"
+          image="/images/dafa-doy.webp"
           url="/actualites/lancement-dox-ak-sa-gox"
         />
 
@@ -414,7 +394,7 @@ import StatsCounter from '../components/StatsCounter.astro';
           excerpt="Karibu lance un appel à candidatures pour sa prochaine résidence artistique qui se tiendra à Dakar en septembre 2023."
           date="2023-04-10"
           category="Karibu"
-          image="/placeholder.svg?height=400&width=600&query=Artists workshop in Africa"
+          image="/images/art.webp"
           url="/actualites/residence-artistique-karibu-appel-candidatures"
         />
       </div>
@@ -423,7 +403,7 @@ import StatsCounter from '../components/StatsCounter.astro';
 
   <!-- Newsletter avec design moderne -->
   <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
+    <div class="absolute inset-0 bg-[url('/images/rassemblement2.webp')] opacity-5"></div>
     <div class="container-custom relative z-10">
       <div class="max-w-3xl mx-auto text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">Restez informé</h2>

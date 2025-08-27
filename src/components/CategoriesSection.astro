@@ -1,0 +1,86 @@
+
+---
+import CategoryCard from './CategoryCard.astro';
+
+export interface CategoryData {
+  name: string;
+  slug: string;
+  description: string;
+  bgGradient: string;
+  textColor: string;
+  icon: string;
+  news: {
+    id: number;
+    title: string;
+    date: string;
+  }[];
+}
+
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  categories: CategoryData[];
+}
+
+const { 
+  title = "Nos actualités par catégorie",
+  subtitle = "Explorez nos différents types de contenus pour rester informé de toutes nos activités et prises de position.",
+  categories 
+} = Astro.props;
+---
+
+<section class="py-16 md:py-24 bg-white">
+  <div class="container-custom">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="text-3xl md:text-5xl font-bold mb-6">{title}</h2>
+      <p class="text-xl text-gray-600">{subtitle}</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      {categories.map((category) => (
+        <CategoryCard
+          name={category.name}
+          slug={category.slug}
+          description={category.description}
+          bgGradient={category.bgGradient}
+          textColor={category.textColor}
+          icon={category.icon}
+          news={category.news}
+        />
+      ))}
+    </div>
+
+    <div class="bg-gray-50 rounded-xl p-8 border border-gray-100">
+      <h4 class="text-xl font-bold mb-6 text-center text-gray-800">Autres contenus</h4>
+      <div class="grid md:grid-cols-2 gap-6">
+        <a href="/actualites/appels-offres" class="group block p-6 rounded-lg bg-white hover:bg-gray-50 transition-all border border-gray-100">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+              </svg>
+            </div>
+            <div>
+              <h5 class="font-bold text-gray-800 mb-1">Appels d'offres</h5>
+              <p class="text-gray-600 text-sm">Opportunités d'emploi et collaborations</p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/actualites/archives" class="group block p-6 rounded-lg bg-white hover:bg-gray-50 transition-all border border-gray-100">
+          <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <div>
+              <h5 class="font-bold text-gray-800 mb-1">Archives</h5>
+              <p class="text-gray-600 text-sm">Historique de nos publications</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,79 @@
+
+---
+export interface Props {
+  title: string;
+  excerpt?: string;
+  date: string;
+  formattedDate: string;
+  category: string;
+  image: string;
+  slug: string;
+  isSticky?: boolean;
+}
+
+const { 
+  title, 
+  excerpt, 
+  date, 
+  formattedDate, 
+  category, 
+  image, 
+  slug, 
+  isSticky = false 
+} = Astro.props;
+---
+
+<section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
+  <div class="absolute inset-0">
+    <img
+      src={image || 'https://placehold.co/800x600?text=Y+EN+MARRE'}
+      alt={title}
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+  </div>
+
+  <div class="container-custom relative z-10 h-full flex items-center py-20">
+    <div class="max-w-2xl text-white">
+      <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
+        {isSticky ? 'À la une' : category}
+      </div>
+
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+        <a href={`/actualites/${slug}`}>
+          {title}
+        </a>
+      </h1>
+
+      {excerpt && (
+        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+          {excerpt}
+        </p>
+      )}
+
+      <div class="flex flex-wrap items-center gap-6 mb-8">
+        <time class="text-gray-300" datetime={date}>
+          {formattedDate}
+        </time>
+        <span class="w-2 h-2 bg-yam-red rounded-full"></span>
+        <span class="text-yam-red font-medium">{category}</span>
+      </div>
+
+      <a
+        href={`/actualites/${slug}`}
+        class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
+      >
+        Lire l'article complet
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
+      <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
+  </div>
+</section>

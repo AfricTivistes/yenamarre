@@ -4,11 +4,12 @@ export interface Props {
   excerpt: string;
   date: string;
   category: string;
+  categories?: string[];
   image: string;
   url: string;
 }
 
-const { title, excerpt, date, category, image, url } = Astro.props;
+const { title, excerpt, date, category, categories, image, url } = Astro.props;
 
 // Format date
 const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
@@ -17,10 +18,15 @@ const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
   day: 'numeric'
 });
 
-// Déterminer la couleur de la catégorie
-let categoryColor = "bg-yam-red";
-if (category === "Karibu") categoryColor = "bg-karibu-green";
-if (category === "LTC") categoryColor = "bg-black";
+// Fonction pour déterminer la couleur de la catégorie
+function getCategoryColor(cat: string) {
+  if (cat === "Karibu") return "bg-karibu-green";
+  if (cat === "LTC") return "bg-black";
+  return "bg-yam-red";
+}
+
+// Utiliser les catégories multiples ou la catégorie principale
+const displayCategories = categories && categories.length > 0 ? categories : [category];
 ---
 
 <article class="group">
@@ -32,8 +38,14 @@ if (category === "LTC") categoryColor = "bg-black";
           alt={title} 
           class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div class="absolute top-0 left-0 px-3 py-1 text-sm font-medium text-white" class:list={[categoryColor]}>
-          {category}
+        <div class="absolute top-2 left-2 flex flex-wrap gap-1">
+          {displayCategories.map((cat) => (
+            <span 
+              class={`px-2 py-1 text-xs font-medium text-white rounded ${getCategoryColor(cat)}`}
+            >
+              {cat}
+            </span>
+          ))}
         </div>
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>

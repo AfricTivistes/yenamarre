@@ -1,7 +1,37 @@
+modules = ["nodejs-20", "web", "nix"]
 run = "npm run dev"
-modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "npm run dev"]
+
+[[ports]]
+localPort = 43
+externalPort = 3001
 
 [[ports]]
 localPort = 4321
 externalPort = 80
+
+[[ports]]
+localPort = 4322
+externalPort = 3000
 exposeLocalhost = true
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[workflows]
+runButton = "Dev Server"
+
+[[workflows.workflow]]
+name = "Dev Server"
+author = 38311320
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"

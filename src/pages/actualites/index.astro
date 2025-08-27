@@ -1,0 +1,303 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import ArticleHero from '../../components/ArticleHero.astro';
+import ArticleGrid from '../../components/ArticleGrid.astro';
+import ArticlePagination from '../../components/ArticlePagination.astro';
+import CategorySection from '../../components/CategorySection.astro';
+import TribuneLibreSection from '../../components/TribuneLibreSection.astro';
+import CategoriesSection from '../../components/CategoriesSection.astro';
+import { getLiveCollection } from 'astro:content';
+
+// Get current page from URL parameters
+const url = new URL(Astro.request.url);
+const currentPage = parseInt(url.searchParams.get('page') || '1', 10);
+
+const { entries: allPosts, error } = await getLiveCollection('posts');
+if (error) {
+  console.error(`Error loading posts: ${error.message}`);
+}
+
+// Vérifier si allPosts existe avant de continuer
+if (!allPosts || allPosts.length === 0) {
+  // Rediriger ou afficher une page d'erreur si nécessaire
+  console.warn('Aucun post disponible ou erreur de chargement');
+}
+
+const featuredNews = allPosts?.find(post => post.data.sticky);
+
+// Pagination setup
+const articlesPerPage = 9;
+const totalArticles = allPosts?.length || 0;
+const totalPages = Math.ceil(totalArticles / articlesPerPage);
+const startIndex = (currentPage - 1) * articlesPerPage;
+const endIndex = startIndex + articlesPerPage;
+
+// Get sorted posts and apply pagination
+const sortedPosts = allPosts 
+  ? allPosts.sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+  : [];
+
+const paginatedNews = sortedPosts
+  .slice(startIndex, endIndex)
+  .map(post => ({
+    id: post.data.id,
+    title: post.data.title,
+    excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+    date: post.data.date,
+    category: post.data.category,
+    categories: post.data.categories || [],
+    image: post.data.image,
+    url: `/actualites/${post.data.slug}`,
+  }));
+
+// News by category (adjust category names based on WordPress slugs)
+const newsByCategory = {
+  'communiques-presse': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'Communiqué de presse' || 
+        post.data.categories?.includes('Communiqué de presse')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+        date: post.data.date,
+        category: post.data.category,
+        categories: post.data.categories || [],
+        image: post.data.image,
+        url: `/actualites/${post.data.slug}`,
+      }))
+    : [],
+  'yam-dans-la-presse': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'YAM dans la presse' || 
+        post.data.categories?.includes('YAM dans la presse')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+        date: post.data.date,
+        category: post.data.category,
+        categories: post.data.categories || [],
+        image: post.data.image,
+        url: `/actualites/${post.data.slug}`,
+      }))
+    : [],
+  'medias': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'Médias' || 
+        post.data.categories?.includes('Médias')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+        date: post.data.date,
+        category: post.data.category,
+        categories: post.data.categories || [],
+        image: post.data.image,
+        url: `/actualites/${post.data.slug}`,
+      }))
+    : [],
+  'tribune-libre': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'Tribune libre' || 
+        post.data.categories?.includes('Tribune libre')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+        date: post.data.date,
+        category: post.data.category,
+        categories: post.data.categories || [],
+        image: post.data.image,
+        url: `/actualites/${post.data.slug}`,
+      }))
+    : [],
+};
+
+// Configuration des catégories pour le composant
+const categoriesData = [
+  {
+    name: "Communiqués de presse",
+    slug: "communiques-presse",
+    description: "Nos positions officielles et déclarations publiques",
+    bgGradient: "bg-gradient-to-r from-yam-red to-red-600",
+    textColor: "text-yam-red",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+    </svg>`,
+    news: newsByCategory['communiques-presse']?.map(news => ({
+      id: news.id,
+      title: news.title,
+      date: news.date,
+      slug: news.url.split('/').pop()
+    })) || []
+  },
+  {
+    name: "YAM dans la presse",
+    slug: "yam-dans-la-presse",
+    description: "Notre couverture médiatique nationale et internationale",
+    bgGradient: "bg-gradient-to-r from-gray-600 to-gray-700",
+    textColor: "text-gray-700",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+    </svg>`,
+    news: newsByCategory['yam-dans-la-presse']?.map(news => ({
+      id: news.id,
+      title: news.title,
+      date: news.date,
+      slug: news.url.split('/').pop()
+    })) || []
+  },
+  {
+    name: "Médias",
+    slug: "medias",
+    description: "Documentaires, photos, vidéos et podcasts",
+    bgGradient: "bg-gradient-to-r from-gray-500 to-gray-600",
+    textColor: "text-gray-600",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+    </svg>`,
+    news: newsByCategory['medias']?.map(news => ({
+      id: news.id,
+      title: news.title,
+      date: news.date,
+      slug: news.url.split('/').pop()
+    })) || []
+  }
+];
+---
+
+<MainLayout title="Actualités - Y'EN A MARRE" currentPath="/actualites">
+  {featuredNews && (
+    <ArticleHero
+      title={featuredNews.data.title}
+      excerpt={featuredNews.data.excerpt || featuredNews.data.content.slice(0, 150) + '...'}
+      date={featuredNews.data.date}
+      formattedDate={featuredNews.data.formattedDate}
+      category={featuredNews.data.category}
+      image={featuredNews.data.image}
+      slug={featuredNews.data.slug}
+      isSticky={true}
+    />
+  )}
+
+  <!-- Articles récents -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">Articles récents</h2>
+          <p class="text-xl text-gray-600 max-w-2xl">
+            Découvrez nos dernières publications et prises de position.
+          </p>
+        </div>
+        <a
+          href="/actualites/tous-les-articles"
+          class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center"
+        >
+          Voir tous les articles
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {paginatedNews.map((article) => (
+          <article class="group">
+            <a href={article.url} class="block">
+              <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
+                <div class="relative h-48 overflow-hidden">
+                  <img
+                    src={article.image || 'https://placehold.co/400x300?text=Y+EN+MARRE'}
+                    alt={article.title}
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div class="absolute top-4 left-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yam-red text-white">
+                      {article.category}
+                    </span>
+                  </div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div class="p-6">
+                  <time datetime={article.date} class="text-sm text-gray-500">
+                    {new Date(article.date).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                  <h3 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p class="text-gray-600 mb-4 line-clamp-3">{article.excerpt}</p>
+                  <div class="flex justify-end">
+                    <span class="text-yam-red font-medium group-hover:underline">Lire la suite →</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <ArticlePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        startIndex={startIndex}
+        endIndex={endIndex}
+        totalArticles={totalArticles}
+        basePath="/actualites"
+      />
+    </div>
+  </section>
+
+  <TribuneLibreSection tribuneArticles={newsByCategory['tribune-libre'] || []} />
+
+  <CategoriesSection categories={categoriesData} />
+
+  <!-- Newsletter -->
+  <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern dots')] opacity-5"></div>
+    <div class="container-custom relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Restez informé</h2>
+        <p class="text-lg mb-8">
+          Inscrivez-vous à notre newsletter pour recevoir les dernières actualités et informations sur nos campagnes.
+        </p>
+
+        <form class="flex flex-col md:flex-row gap-4 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+          <input
+            type="email"
+            placeholder="Votre adresse email"
+            class="flex-grow px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yam-red text-black bg-white"
+            required
+          />
+          <button
+            type="submit"
+            class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105"
+          >
+            S'inscrire
+          </button>
+        </form>
+
+        <p class="text-sm mt-4 text-gray-400">
+          En vous inscrivant, vous acceptez de recevoir nos emails et confirmez avoir lu notre politique de confidentialité.
+        </p>
+      </div>
+    </div>
+  </section>
+</MainLayout>

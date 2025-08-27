@@ -1,163 +1,104 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import { getLiveCollection } from 'astro:content';
 
-// Actualité principale (à la une)
-const featuredNews = {
-  id: 1,
-  title: "Manifestation pour la démocratie à Dakar",
-  excerpt: "Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption. Cette mobilisation historique marque un tournant dans l'engagement citoyen au Sénégal.",
-  date: "2023-06-15",
-  category: "Y'EN A MARRE",
-  image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-  url: "/actualites/manifestation-democratie-dakar"
-};
 
-// Articles récents (tous types confondus)
-const recentNews = [
-  {
-    id: 1,
-    title: "Manifestation pour la démocratie à Dakar",
-    excerpt: "Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption.",
-    date: "2023-06-15",
-    category: "Y'EN A MARRE",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
-    url: "/actualites/manifestation-democratie-dakar"
-  },
-  {
-    id: 8,
-    title: "Nouveau partenariat avec l'Union Européenne",
-    excerpt: "Y'EN A MARRE signe un accord de partenariat stratégique avec l'UE pour renforcer la démocratie.",
-    date: "2023-06-12",
-    category: "Communiqué de presse",
-    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&h=300&fit=crop",
-    url: "/actualites/partenariat-union-europeenne"
-  },
-  {
-    id: 9,
-    title: "Atelier de formation des jeunes leaders",
-    excerpt: "Formation de 50 jeunes leaders dans les régions de Thiès et Kaolack sur le leadership démocratique.",
-    date: "2023-06-10",
-    category: "Y'EN A MARRE",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop",
-    url: "/actualites/formation-jeunes-leaders"
-  },
-  {
-    id: 10,
-    title: "Podcast : Dialogue sur la gouvernance",
-    excerpt: "Nouvelle série de podcasts sur les enjeux de gouvernance avec des experts nationaux et internationaux.",
-    date: "2023-06-08",
-    category: "Médias",
-    image: "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=400&h=300&fit=crop",
-    url: "/actualites/podcast-gouvernance"
-  },
-  {
-    id: 11,
-    title: "Tribune : Pour une jeunesse engagée",
-    excerpt: "Réflexion sur l'importance de l'engagement citoyen chez les jeunes sénégalais d'aujourd'hui.",
-    date: "2023-06-05",
-    category: "Tribune libre",
-    image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=300&fit=crop",
-    url: "/actualites/tribune-jeunesse-engagee"
-  },
-  {
-    id: 12,
-    title: "Campagne de sensibilisation électorale",
-    excerpt: "Lancement d'une vaste campagne de sensibilisation des citoyens sur l'importance du vote.",
-    date: "2023-06-03",
-    category: "Y'EN A MARRE",
-    image: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=400&h=300&fit=crop",
-    url: "/actualites/campagne-sensibilisation-electorale"
-  }
-];
+const { entries: allPosts, error } = await getLiveCollection('posts');
+if (error) {
+  console.error(`Error loading posts: ${error.message}`);
+}
 
-// Paramètres de pagination
+
+const featuredNews = allPosts.find(post => post.data.sticky);
+
+// Recent news (sorted by date, limited to 6 for pagination)
 const articlesPerPage = 6;
 const currentPage = 1;
-const totalArticles = recentNews.length;
+const recentNews = allPosts
+  .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+  .slice(0, articlesPerPage)
+  .map(post => ({
+    id: post.data.id,
+    title: post.data.title,
+    excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+    date: post.data.date,
+    category: post.data.category,
+    image: post.data.image,
+    url: `/actualites/${post.data.slug}`,
+  }));
+
+// Pagination
+const totalArticles = allPosts.length;
 const totalPages = Math.ceil(totalArticles / articlesPerPage);
 const startIndex = (currentPage - 1) * articlesPerPage;
 const endIndex = startIndex + articlesPerPage;
-const paginatedNews = recentNews.slice(startIndex, endIndex);
+const paginatedNews = recentNews;
 
-// Actualités par catégorie
+// News by category (adjust category names based on WordPress slugs)
 const newsByCategory = {
-  "communiques-presse": [
-    {
-      id: 2,
-      title: "Position officielle sur les réformes électorales",
-      excerpt: "Y'EN A MARRE exprime sa position sur les récentes propositions de réformes du système électoral sénégalais.",
-      date: "2023-06-10",
-      category: "Communiqué de presse",
-      image: "https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=400&h=300&fit=crop",
-      url: "/actualites/position-reformes-electorales"
-    },
-    {
-      id: 3,
-      title: "Appel à la transparence budgétaire",
-      excerpt: "Le mouvement demande plus de transparence dans la gestion des finances publiques.",
-      date: "2023-05-28",
-      category: "Communiqué de presse",
-      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop",
-      url: "/actualites/appel-transparence-budgetaire"
-    }
-  ],
-  "yam-presse": [
-    {
-      id: 4,
-      title: "Y'EN A MARRE dans Le Quotidien",
-      excerpt: "Interview exclusive de nos dirigeants sur les enjeux démocratiques actuels.",
-      date: "2023-06-08",
-      category: "YAM dans la presse",
-      image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=300&fit=crop",
-      url: "/actualites/interview-quotidien"
-    },
-    {
-      id: 5,
-      title: "Reportage RTS sur nos actions",
-      excerpt: "La télévision nationale couvre nos dernières initiatives citoyennes.",
-      date: "2023-05-25",
-      category: "YAM dans la presse",
-      image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400&h=300&fit=crop",
-      url: "/actualites/reportage-rts"
-    }
-  ],
-  "medias": [
-    {
-      id: 6,
-      title: "Documentaire : 12 ans d'activisme",
-      excerpt: "Découvrez notre parcours à travers un documentaire retraçant 12 années d'engagement.",
-      date: "2023-06-05",
-      category: "Médias",
-      image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=300&fit=crop",
-      url: "/actualites/documentaire-12-ans"
-    },
-    {
-      id: 7,
-      title: "Galerie photos : Marche citoyenne",
-      excerpt: "Revivez en images la dernière marche citoyenne organisée à Dakar.",
-      date: "2023-05-20",
-      category: "Médias",
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
-      url: "/actualites/galerie-marche-citoyenne"
-    }
-  ]
+  'communiques-presse': allPosts
+    .filter(post => post.data.category === 'Communiqué de presse')
+    .slice(0, 2)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      image: post.data.image,
+      url: `/actualites/${post.slug}`,
+    })),
+  'yam-presse': allPosts
+    .filter(post => post.data.category === 'YAM dans la presse')
+    .slice(0, 2)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      image: post.data.image,
+      url: `/actualites/${post.slug}`,
+    })),
+  'medias': allPosts
+    .filter(post => post.data.category === 'Médias')
+    .slice(0, 2)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      image: post.data.image,
+      url: `/actualites/${post.slug}`,
+    })),
+  'tribune-libre': allPosts
+    .filter(post => post.data.category === 'Tribune libre')
+    .slice(0, 2)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      image: post.data.image,
+      url: `/actualites/${post.slug}`,
+    })),
 };
 ---
 
 <MainLayout title="Actualités - Y'EN A MARRE" currentPath="/actualites">
   <!-- Hero Section avec actualité à la une -->
   <section class="relative min-h-[80vh] bg-gray-900 overflow-hidden">
-    <!-- Image de fond -->
     <div class="absolute inset-0">
       <img 
-        src={featuredNews.image} 
-        alt={featuredNews.title}
+        src={featuredNews.data.image || 'https://via.placeholder.com/800x600'} 
+        alt={featuredNews.data.title}
         class="w-full h-full object-cover"
       />
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
     </div>
     
-    <!-- Content -->
     <div class="container-custom relative z-10 h-full flex items-center py-20">
       <div class="max-w-2xl text-white">
         <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
@@ -165,27 +106,25 @@ const newsByCategory = {
         </div>
         
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          {featuredNews.title}
+          <a href={`/actualites/${featuredNews.data.slug}`}>
+            {featuredNews.data.title}
+          </a>
         </h1>
         
         <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-          {featuredNews.excerpt}
+          {featuredNews.data.excerpt || featuredNews.data.content.slice(0, 150) + '...'}
         </p>
         
         <div class="flex flex-wrap items-center gap-6 mb-8">
-          <time class="text-gray-300" datetime={featuredNews.date}>
-            {new Date(featuredNews.date).toLocaleDateString('fr-FR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
+          <time class="text-gray-300" datetime={featuredNews.data.date}>
+            {featuredNews.data.formattedDate}
           </time>
           <span class="w-2 h-2 bg-yam-red rounded-full"></span>
-          <span class="text-yam-red font-medium">{featuredNews.category}</span>
+          <span class="text-yam-red font-medium">{featuredNews.data.category}</span>
         </div>
         
         <a 
-          href={featuredNews.url} 
+          href={`/actualites/${featuredNews.data.slug}`} 
           class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
         >
           Lire l'article complet
@@ -196,7 +135,6 @@ const newsByCategory = {
       </div>
     </div>
     
-    <!-- Wave divider -->
     <div class="absolute bottom-0 left-0 right-0">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
         <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
@@ -225,7 +163,6 @@ const newsByCategory = {
         </a>
       </div>
       
-      <!-- Grille des articles -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         {paginatedNews.map((article) => (
           <article class="group">
@@ -233,7 +170,7 @@ const newsByCategory = {
               <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1">
                 <div class="relative h-48 overflow-hidden">
                   <img 
-                    src={article.image} 
+                    src={article.image || 'https://via.placeholder.com/400x300'} 
                     alt={article.title} 
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -249,7 +186,7 @@ const newsByCategory = {
                     {new Date(article.date).toLocaleDateString('fr-FR', {
                       year: 'numeric',
                       month: 'long',
-                      day: 'numeric'
+                      day: 'numeric',
                     })}
                   </time>
                   <h3 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors line-clamp-2">
@@ -266,14 +203,12 @@ const newsByCategory = {
         ))}
       </div>
       
-      <!-- Pagination -->
       <div class="flex flex-col md:flex-row items-center justify-between">
         <div class="text-gray-600 mb-4 md:mb-0">
           Affichage de {startIndex + 1} à {Math.min(endIndex, totalArticles)} sur {totalArticles} articles
         </div>
         
         <div class="flex items-center space-x-2">
-          <!-- Bouton précédent -->
           <button 
             class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
             disabled={currentPage === 1}
@@ -281,7 +216,6 @@ const newsByCategory = {
             Précédent
           </button>
           
-          <!-- Numéros de page -->
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button 
               class={`px-4 py-2 rounded-lg transition-colors ${
@@ -294,7 +228,6 @@ const newsByCategory = {
             </button>
           ))}
           
-          <!-- Bouton suivant -->
           <button 
             class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
             disabled={currentPage === totalPages}
@@ -311,7 +244,6 @@ const newsByCategory = {
     <div class="container-custom">
       <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
         <div class="grid md:grid-cols-2 gap-0">
-          <!-- En-tête Tribune libre -->
           <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-white p-8 md:p-12 flex flex-col justify-center">
             <div class="flex items-center mb-6">
               <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm mr-4">
@@ -335,34 +267,22 @@ const newsByCategory = {
             </a>
           </div>
 
-          <!-- Aperçus des tribunes -->
           <div class="p-8 bg-gray-50">
             <div class="space-y-6">
-              <article class="group cursor-pointer">
-                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
-                  <div class="flex items-start space-x-4">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face" alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
-                    <div class="flex-1">
-                      <h4 class="font-bold text-lg mb-2 group-hover:text-gray-700">Pour une jeunesse engagée</h4>
-                      <p class="text-sm text-gray-500 mb-2">Par Amadou Diallo • 15 juin 2023</p>
-                      <p class="text-gray-600 text-sm line-clamp-2">Réflexion sur l'importance de l'engagement citoyen chez les jeunes sénégalais d'aujourd'hui...</p>
+              {newsByCategory['tribune-libre']?.slice(0, 2).map((news) => (
+                <article class="group cursor-pointer">
+                  <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
+                    <div class="flex items-start space-x-4">
+                      <img src={news.image || 'https://via.placeholder.com/60'} alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
+                      <div class="flex-1">
+                        <h4 class="font-bold text-lg mb-2 group-hover:text-gray-700">{news.title}</h4>
+                        <p class="text-sm text-gray-500 mb-2">{new Date(news.date).toLocaleDateString('fr-FR')} • {news.category}</p>
+                        <p class="text-gray-600 text-sm line-clamp-2">{news.excerpt}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
-
-              <article class="group cursor-pointer">
-                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
-                  <div class="flex items-start space-x-4">
-                    <img src="https://images.unsplash.com/photo-1494790108755-2616c669c8b3?w=60&h=60&fit=crop&crop=face" alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
-                    <div class="flex-1">
-                      <h4 class="font-bold text-lg mb-2 group-hover:text-gray-700">Démocratie et digitalisation</h4>
-                      <p class="text-sm text-gray-500 mb-2">Par Fatou Sène • 12 juin 2023</p>
-                      <p class="text-gray-600 text-sm line-clamp-2">Comment les nouvelles technologies peuvent renforcer la participation citoyenne...</p>
-                    </div>
-                  </div>
-                </div>
-              </article>
+                </article>
+              ))}
             </div>
           </div>
         </div>
@@ -370,7 +290,7 @@ const newsByCategory = {
     </div>
   </section>
   
-  <!-- Catégories d'actualités - Design harmonisé -->
+  <!-- Catégories d'actualités -->
   <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
       <div class="text-center max-w-3xl mx-auto mb-16">
@@ -380,9 +300,7 @@ const newsByCategory = {
         </p>
       </div>
       
-      <!-- Grille des catégories principales -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <!-- Communiqués de presse -->
         <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
           <div class="h-32 bg-gradient-to-r from-yam-red to-red-600 relative overflow-hidden">
             <div class="absolute top-4 left-4">
@@ -397,7 +315,7 @@ const newsByCategory = {
             <h3 class="text-xl font-bold mb-3 group-hover:text-yam-red transition-colors">Communiqués de presse</h3>
             <p class="text-gray-600 mb-4">Nos positions officielles et déclarations publiques</p>
             <div class="space-y-3 mb-6">
-              {newsByCategory["communiques-presse"]?.slice(0, 2).map((news) => (
+              {newsByCategory['communiques-presse']?.slice(0, 2).map((news) => (
                 <div class="text-sm">
                   <h4 class="font-medium text-gray-800 line-clamp-1">{news.title}</h4>
                   <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
@@ -413,7 +331,6 @@ const newsByCategory = {
           </div>
         </div>
 
-        <!-- YAM dans la presse -->
         <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
           <div class="h-32 bg-gradient-to-r from-gray-600 to-gray-700 relative overflow-hidden">
             <div class="absolute top-4 left-4">
@@ -428,7 +345,7 @@ const newsByCategory = {
             <h3 class="text-xl font-bold mb-3 group-hover:text-gray-700 transition-colors">YAM dans la presse</h3>
             <p class="text-gray-600 mb-4">Notre couverture médiatique nationale et internationale</p>
             <div class="space-y-3 mb-6">
-              {newsByCategory["yam-presse"]?.slice(0, 2).map((news) => (
+              {newsByCategory['yam-presse']?.slice(0, 2).map((news) => (
                 <div class="text-sm">
                   <h4 class="font-medium text-gray-800 line-clamp-1">{news.title}</h4>
                   <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
@@ -444,7 +361,6 @@ const newsByCategory = {
           </div>
         </div>
 
-        <!-- Médias -->
         <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
           <div class="h-32 bg-gradient-to-r from-gray-500 to-gray-600 relative overflow-hidden">
             <div class="absolute top-4 left-4">
@@ -459,7 +375,7 @@ const newsByCategory = {
             <h3 class="text-xl font-bold mb-3 group-hover:text-gray-600 transition-colors">Médias</h3>
             <p class="text-gray-600 mb-4">Documentaires, photos, vidéos et podcasts</p>
             <div class="space-y-3 mb-6">
-              {newsByCategory["medias"]?.slice(0, 2).map((news) => (
+              {newsByCategory['medias']?.slice(0, 2).map((news) => (
                 <div class="text-sm">
                   <h4 class="font-medium text-gray-800 line-clamp-1">{news.title}</h4>
                   <p class="text-gray-500 text-xs">{new Date(news.date).toLocaleDateString('fr-FR')}</p>
@@ -476,7 +392,6 @@ const newsByCategory = {
         </div>
       </div>
 
-      <!-- Catégories secondaires - Design discret -->
       <div class="bg-gray-50 rounded-xl p-8 border border-gray-100">
         <h4 class="text-xl font-bold mb-6 text-center text-gray-800">Autres contenus</h4>
         <div class="grid md:grid-cols-2 gap-6">

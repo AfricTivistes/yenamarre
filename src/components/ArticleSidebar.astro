@@ -1,0 +1,74 @@
+
+---
+export interface SidebarArticle {
+  id: number;
+  title: string;
+  date: string;
+  formattedDate: string;
+  category: string;
+  image: string;
+  slug: string;
+}
+
+export interface Props {
+  articles: SidebarArticle[];
+  currentArticleId: number;
+  title?: string;
+}
+
+const { 
+  articles, 
+  currentArticleId, 
+  title = "Articles récents" 
+} = Astro.props;
+
+const filteredArticles = articles
+  .filter(article => article.id !== currentArticleId)
+  .slice(0, 5);
+---
+
+<aside class="lg:col-span-1">
+  <div class="sticky top-24">
+    <h3 class="text-xl font-bold mb-6 text-gray-900 border-b-2 border-yam-red pb-2">
+      {title}
+    </h3>
+    <div class="space-y-6">
+      {filteredArticles.map((article) => (
+        <article class="group">
+          <a href={`/actualites/${article.slug}`} class="block">
+            <div class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+              <div class="flex-shrink-0">
+                <img
+                  src={article.image || 'https://placehold.co/80x60?text=Y+EN+MARRE'}
+                  alt={article.title}
+                  class="w-20 h-15 object-cover rounded-md"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yam-red text-white mb-2">
+                  {article.category}
+                </div>
+                <h4 class="text-sm font-semibold text-gray-900 group-hover:text-yam-red transition-colors line-clamp-2 mb-2">
+                  {article.title}
+                </h4>
+                <time datetime={article.date} class="text-xs text-gray-500">
+                  {article.formattedDate}
+                </time>
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+    
+    <!-- Lien vers toutes les actualités -->
+    <div class="mt-8 pt-6 border-t border-gray-200">
+      <a
+        href="/actualites"
+        class="block text-center bg-yam-red text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm"
+      >
+        Voir toutes les actualités
+      </a>
+    </div>
+  </div>
+</aside>
