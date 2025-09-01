@@ -4,6 +4,94 @@ import ProjectCard from '../components/ProjectCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import StatsCounter from '../components/StatsCounter.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import TribuneLibreSection from '../components/TribuneLibreSection.astro';
+import CategoriesSection from '../components/CategoriesSection.astro';
+import { getLiveCollection } from 'astro:content';
+
+// Récupérer les articles WordPress
+const { entries: allPosts, error } = await getLiveCollection('posts');
+if (error) {
+  console.error(`Error loading posts: ${error.message}`);
+}
+
+// Organiser les articles par catégorie
+const newsByCategory = {
+  'communiques-presse': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'Communiqué de presse' || 
+        post.data.categories?.includes('Communiqué de presse')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        date: post.data.date,
+        slug: post.data.slug,
+      }))
+    : [],
+  'yam-dans-la-presse': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === "Y'EN A MARRE" || 
+        post.data.categories?.includes("Y'EN A MARRE")
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        date: post.data.date,
+        slug: post.data.slug,
+      }))
+    : [],
+  'medias': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'Médias' || 
+        post.data.categories?.includes('Médias')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        date: post.data.date,
+        slug: post.data.slug,
+      }))
+    : [],
+  'tribune-libre': allPosts 
+    ? allPosts
+      .filter(post => 
+        post.data.category === 'Tribune libre' || 
+        post.data.categories?.includes('Tribune libre')
+      )
+      .slice(0, 2)
+      .map(post => ({
+        id: post.data.id,
+        title: post.data.title,
+        date: post.data.date,
+        slug: post.data.slug,
+        image: post.data.image,
+      }))
+    : [],
+};
+
+// Articles récents pour la section actualités
+const recentNews = allPosts 
+  ? allPosts
+    .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+    .slice(0, 3)
+    .map(post => ({
+      id: post.data.id,
+      title: post.data.title,
+      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
+      date: post.data.date,
+      category: post.data.category,
+      categories: post.data.categories || [],
+      image: post.data.image,
+      url: `/actualites/${post.data.slug}`,
+    }))
+  : [];
 ---
 
 <MainLayout title="Y'EN A MARRE - Mouvement citoyen sénégalais" currentPath="/">
@@ -127,10 +215,10 @@ import StatsCounter from '../components/StatsCounter.astro';
 
       <div class="grid md:grid-cols-3 gap-8">
         <ProjectCard 
-          title="Y'EN A MARRE" 
-          description="Le mouvement principal qui promeut la démocratie et la bonne gouvernance au Sénégal."
+          title="Citizen Mic" 
+          description="Un lieu où s’expriment librement opinions, visions et solutions, pour faire naître un mouvement collectif de changement positif."
           image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp"
-          url="/yenamarre"
+          url=""
         />
 
         <ProjectCard 
@@ -144,13 +232,13 @@ import StatsCounter from '../components/StatsCounter.astro';
           title="Karibu" 
           description="Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen."
           image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
-          url="/karibu"
+          url="https://www.karibu.yenamarre.sn/"
         />
       </div>
     </div>
   </section>
 
-  <!-- Appel à l'action avec design moderne -->
+  <!-- Appel à l'action avec design moderne >
   <section class="py-16 bg-yam-red text-white relative overflow-hidden">
     <div class="absolute inset-0 bg-[url('/images/groupe2.webp')] opacity-10"></div>
     <div class="container-custom text-center relative z-10">
@@ -162,195 +250,57 @@ import StatsCounter from '../components/StatsCounter.astro';
         <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg">
           Rejoignez-nous
         </a>
-        <a href="/faire-un-don" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 py-4 px-8 text-lg rounded-lg transition-all">
-          Faire un don
-        </a>
       </div>
     </div>
-  </section>
+  </section-->
 
-  <!-- Catégories d'actualités avec aperçus -->
-  <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
-    <div class="container-custom">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Nos actualités par catégorie</h2>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Explorez nos différents types de contenus pour rester informé de toutes nos activités.
-        </p>
-      </div>
+  
 
       <!-- Tribune libre - Section mise en avant -->
-      <div class="mb-12">
-        <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-          <div class="grid md:grid-cols-2 gap-0">
-            <!-- En-tête Tribune libre -->
-            <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-white p-8 md:p-12 flex flex-col justify-center">
-              <div class="flex items-center mb-6">
-                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm mr-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="text-2xl md:text-3xl font-bold mb-2">Tribune libre</h3>
-                  <p class="text-gray-300">Espace d'expression citoyenne</p>
-                </div>
-              </div>
-              <p class="text-lg text-gray-200 mb-6">
-                Découvrez les réflexions et analyses de nos membres et sympathisants sur les enjeux démocratiques du Sénégal.
-              </p>
-              <a href="/actualites/tribune-libre" class="inline-flex items-center bg-white text-gray-900 hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition-all group">
-                Lire toutes les tribunes
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
-            </div>
+      <TribuneLibreSection tribuneArticles={newsByCategory['tribune-libre'] || []} />
 
-            <!-- Aperçus des tribunes -->
-            <div class="p-8 bg-gray-50">
-              <div class="space-y-6">
-                <article class="group cursor-pointer">
-                  <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
-                    <div class="flex items-start space-x-4">
-                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face" alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
-                      <div class="flex-1">
-                        <h4 class="font-bold text-lg mb-2 group-hover:text-gray-700">Pour une jeunesse engagée</h4>
-                        <p class="text-sm text-gray-500 mb-2">Par Amadou Diallo • 15 juin 2023</p>
-                        <p class="text-gray-600 text-sm line-clamp-2">Réflexion sur l'importance de l'engagement citoyen chez les jeunes sénégalais d'aujourd'hui...</p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="group cursor-pointer">
-                  <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
-                    <div class="flex items-start space-x-4">
-                      <img src="https://images.unsplash.com/photo-1494790108755-2616c669c8b3?w=60&h=60&fit=crop&crop=face" alt="Auteur" class="w-12 h-12 rounded-full object-cover" />
-                      <div class="flex-1">
-                        <h4 class="font-bold text-lg mb-2 group-hover:text-gray-700">Démocratie et digitalisation</h4>
-                        <p class="text-sm text-gray-500 mb-2">Par Fatou Sène • 12 juin 2023</p>
-                        <p class="text-gray-600 text-sm line-clamp-2">Comment les nouvelles technologies peuvent renforcer la participation citoyenne...</p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Autres catégories - Grille simplifiée -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Communiqués de presse -->
-        <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
-          <div class="h-24 bg-gradient-to-r from-yam-red to-red-600 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-lg font-bold mb-2 group-hover:text-yam-red transition-colors">Communiqués de presse</h3>
-            <p class="text-gray-600 text-sm mb-3">Positions officielles du mouvement</p>
-            <a href="/actualites/communiques-presse" class="text-yam-red font-medium text-sm group-hover:underline">
-              Explorer →
-            </a>
-          </div>
-        </div>
-
-        <!-- YAM dans la presse -->
-        <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
-          <div class="h-24 bg-gradient-to-r from-gray-600 to-gray-700 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-lg font-bold mb-2 group-hover:text-gray-700 transition-colors">YAM dans la presse</h3>
-            <p class="text-gray-600 text-sm mb-3">Couverture médiatique</p>
-            <a href="/actualites/yam-presse" class="text-gray-700 font-medium text-sm group-hover:underline">
-              Explorer →
-            </a>
-          </div>
-        </div>
-
-        <!-- Médias -->
-        <div class="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100">
-          <div class="h-24 bg-gradient-to-r from-gray-500 to-gray-600 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-lg font-bold mb-2 group-hover:text-gray-600 transition-colors">Médias</h3>
-            <p class="text-gray-600 text-sm mb-3">Photos, vidéos et podcasts</p>
-            <a href="/actualites/medias" class="text-gray-600 font-medium text-sm group-hover:underline">
-              Explorer →
-            </a>
-          </div>
-        </div>
-
-        <!-- Toutes les actualités -->
-        <div class="group bg-gradient-to-r from-yam-red to-red-600 text-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-          <div class="h-24 relative overflow-hidden">
-            <div class="absolute top-4 left-4">
-              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-lg font-bold mb-2">Toutes les actualités</h3>
-            <p class="text-white/90 text-sm mb-3">Accès complet aux contenus</p>
-            <a href="/actualites" class="text-white font-medium text-sm group-hover:underline">
-              Tout voir →
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Catégories secondaires - Bloc discret -->
-      <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-100">
-        <h4 class="text-xl font-bold mb-6 text-center text-gray-800">Autres contenus</h4>
-        <div class="grid md:grid-cols-2 gap-6 text-center">
-          <a href="/actualites/appels-offres" class="group block p-6 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all">
-            <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-300 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6" />
-              </svg>
-            </div>
-            <h5 class="font-bold text-gray-800 mb-2">Appels d'offres</h5>
-            <p class="text-gray-600 text-sm">Opportunités d'emploi et collaborations</p>
-          </a>
-
-          <a href="/actualites/archives" class="group block p-6 rounded-lg bg-gray-50 hover:bg-gray-100 transition-all">
-            <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-300 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </div>
-            <h5 class="font-bold text-gray-800 mb-2">Archives</h5>
-            <p class="text-gray-600 text-sm">Historique de nos publications</p>
-          </a>
-        </div>
-      </div>
+      <!-- Utilisation du composant CategoriesSection -->
+      <CategoriesSection 
+        title="Nos actualités par catégorie"
+        subtitle="Explorez nos différents types de contenus pour rester informé de toutes nos activités."
+        categories={[
+          {
+            name: "Communiqués de presse",
+            slug: "communiques-presse", 
+            description: "Positions officielles du mouvement",
+            bgGradient: "bg-gradient-to-r from-yam-red to-red-600",
+            textColor: "text-yam-red",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>`,
+            news: newsByCategory['communiques-presse'] || []
+          },
+          {
+            name: "YAM dans la presse",
+            slug: "yam-dans-la-presse",
+            description: "Couverture médiatique", 
+            bgGradient: "bg-gradient-to-r from-gray-600 to-gray-700",
+            textColor: "text-gray-700",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>`,
+            news: newsByCategory['yam-dans-la-presse'] || []
+          },
+          {
+            name: "Médias",
+            slug: "medias",
+            description: "Photos, vidéos et podcasts",
+            bgGradient: "bg-gradient-to-r from-gray-500 to-gray-600", 
+            textColor: "text-gray-600",
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>`,
+            news: newsByCategory['medias'] || []
+          }
+        ]}
+      />
     </div>
-  </section>
+
 
   <!-- Actualités récentes avec design moderne -->
   <section class="py-16 md:py-24">
@@ -371,32 +321,17 @@ import StatsCounter from '../components/StatsCounter.astro';
       </div>
 
       <div class="grid md:grid-cols-3 gap-8">
-        <NewsCard 
-          title="Manifestation pour la démocratie à Dakar" 
-          excerpt="Plus de 1000 personnes se sont réunies à Dakar pour manifester en faveur de la démocratie et contre la corruption."
-          date="2023-06-15"
-          category="Y'EN A MARRE"
-          image="/images/rassemblement3.webp"
-          url="/actualites/manifestation-democratie-dakar"
-        />
-
-        <NewsCard 
-          title="Lancement du programme Dox Ak Sa Gox" 
-          excerpt="Y'EN A MARRE lance un nouveau programme pour promouvoir la gouvernance locale et l'engagement citoyen."
-          date="2023-05-22"
-          category="Projets"
-          image="/images/dafa-doy.webp"
-          url="/actualites/lancement-dox-ak-sa-gox"
-        />
-
-        <NewsCard 
-          title="Résidence artistique Karibu : Appel à candidatures" 
-          excerpt="Karibu lance un appel à candidatures pour sa prochaine résidence artistique qui se tiendra à Dakar en septembre 2023."
-          date="2023-04-10"
-          category="Karibu"
-          image="/images/art.webp"
-          url="/actualites/residence-artistique-karibu-appel-candidatures"
-        />
+        {recentNews.map((article) => (
+          <NewsCard 
+            title={article.title}
+            excerpt={article.excerpt}
+            date={article.date}
+            category={article.category}
+            categories={article.categories}
+            image={article.image}
+            url={article.url}
+          />
+        ))}
       </div>
     </div>
   </section>
