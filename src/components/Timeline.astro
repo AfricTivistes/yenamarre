@@ -1,0 +1,46 @@
+
+---
+export interface TimelineItem {
+  date: string;
+  title: string;
+  description: string;
+  highlight?: boolean;
+}
+
+export interface Props {
+  items: TimelineItem[];
+  accentColor?: string;
+}
+
+const { items, accentColor = "bg-yam-red" } = Astro.props;
+---
+
+<div class="relative max-w-6xl mx-auto">
+  <!-- Ligne verticale principale -->
+  <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-gray-200"></div>
+  
+  <div class="space-y-12">
+    {items.map((item, index) => (
+      <div class={`relative flex flex-col md:flex-row items-start ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+        <!-- Point sur la timeline -->
+        <div class={`absolute left-0 md:left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full border-4 border-white shadow-md z-10 bg-yam-red`}></div>
+        
+        <!-- Contenu -->
+        <div class={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'} pl-20 md:pl-0`}>
+          <div class="md:text-right mb-4">
+            <div class={`inline-block px-4 py-2 rounded-full text-sm font-bold ${accentColor} text-white`}>
+              {item.date}
+            </div>
+          </div>
+          <div class={`bg-white rounded-lg shadow-lg p-6 ${item.highlight ? 'border-l-4 border-yam-red' : ''}`}>
+            <h3 class={`text-xl font-bold mb-3 text-yam-red ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>{item.title}</h3>
+            <p class={`text-gray-700 leading-relaxed ${index % 2 === 0 ? 'left' : 'text-left'}`}>{item.description}</p>
+          </div>
+        </div>
+        
+        <!-- Espaceur pour la disposition alternée -->
+        <div class="hidden md:block md:w-1/2"></div>
+      </div>
+    ))}
+  </div>
+</div>

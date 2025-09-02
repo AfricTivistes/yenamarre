@@ -1,0 +1,192 @@
+[
+  {
+    "id": 2317,
+    "date": "2025-09-08T16:43:39",
+    "date_gmt": "2025-09-08T14:43:39",
+    "guid": {
+      "rendered": "https://yem.yenamarre.sn/yenamarre/?post_type=timeline_event&#038;p=2317"
+    },
+    "modified": "2025-09-08T16:43:39",
+    "modified_gmt": "2025-09-08T14:43:39",
+    "slug": "lancement-de-mille-plaintes-contre-le-gouvernement-du-senegal",
+    "status": "publish",
+    "type": "timeline_event",
+    "link": "https://yem.yenamarre.sn/yenamarre/timeline-events/lancement-de-mille-plaintes-contre-le-gouvernement-du-senegal/",
+    "title": {
+      "rendered": "Lancement de mille plaintes contre le gouvernement du Sénégal"
+    },
+    "content": {
+      "rendered": "\n\u003Cp\u003EÀ Rufisque, des plaintes populaires sont lancées pour dénoncer les maux des citoyens. Cette action vise à interpeller le gouvernement pour recentrer son action sur les préoccupations des Sénégalais.\u003C/p\u003E\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "\u003Cp\u003EÀ Rufisque, des plaintes populaires sont lancées pour dénoncer les maux des citoyens. Cette action vise à interpeller le gouvernement pour recentrer son action sur les préoccupations des Sénégalais.\u003C/p\u003E\n",
+      "protected": false
+    },
+    "featured_media": 0,
+    "template": "",
+    "meta": {
+      "_acf_changed": false,
+      "timeline_event_date": "02 Mars 2011",
+      "timeline_event_highlight": true,
+      "footnotes": ""
+    },
+    "timeline_category": [],
+    "class_list": [
+      "post-2317",
+      "timeline_event",
+      "type-timeline_event",
+      "status-publish",
+      "hentry"
+    ],
+    "acf": [],
+    "_links": {
+      "self": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event/2317",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/types/timeline_event"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 1,
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event/2317/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 2318,
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event/2317/revisions/2318"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/media?parent=2317"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "timeline_category",
+          "embeddable": true,
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_category?post=2317"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 2315,
+    "date": "2025-09-08T16:43:10",
+    "date_gmt": "2025-09-08T14:43:10",
+    "guid": {
+      "rendered": "https://yem.yenamarre.sn/yenamarre/?post_type=timeline_event&#038;p=2315"
+    },
+    "modified": "2025-09-08T16:43:10",
+    "modified_gmt": "2025-09-08T14:43:10",
+    "slug": "lancement-officiel-de-yen-a-marre",
+    "status": "publish",
+    "type": "timeline_event",
+    "link": "https://yem.yenamarre.sn/yenamarre/timeline-events/lancement-officiel-de-yen-a-marre/",
+    "title": {
+      "rendered": "Lancement officiel de Y&rsquo;EN A MARRE"
+    },
+    "content": {
+      "rendered": "\n\u003Cp\u003EDans la nuit du 16 au 17 janvier 2011, un groupe de jeunes, incluant artistes, journalistes et étudiants, crée le mouvement social &lsquo;Y en a Marre&rsquo; à Dakar. Face à la crise économique, politique et sociale marquée par le népotisme et la corruption, ils lancent officiellement ce cadre le 18 janvier, réunissant la jeunesse sénégalaise\u003C/p\u003E\n",
+      "protected": false
+    },
+    "excerpt": {
+      "rendered": "\u003Cp\u003EDans la nuit du 16 au 17 janvier 2011, un groupe de jeunes, incluant artistes, journalistes et étudiants, crée le mouvement social &lsquo;Y en a Marre&rsquo; à Dakar. Face à la crise économique, politique et sociale marquée par le népotisme et la corruption, ils lancent officiellement ce cadre le 18 janvier, réunissant la jeunesse sénégalaise\u003C/p\u003E\n",
+      "protected": false
+    },
+    "featured_media": 0,
+    "template": "",
+    "meta": {
+      "_acf_changed": false,
+      "timeline_event_date": "18 Janvier 2011",
+      "timeline_event_highlight": true,
+      "footnotes": ""
+    },
+    "timeline_category": [],
+    "class_list": [
+      "post-2315",
+      "timeline_event",
+      "type-timeline_event",
+      "status-publish",
+      "hentry"
+    ],
+    "acf": [],
+    "_links": {
+      "self": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event/2315",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/types/timeline_event"
+        }
+      ],
+      "version-history": [
+        {
+          "count": 1,
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event/2315/revisions"
+        }
+      ],
+      "predecessor-version": [
+        {
+          "id": 2316,
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event/2315/revisions/2316"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/media?parent=2315"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "timeline_category",
+          "embeddable": true,
+          "href": "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_category?post=2315"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]

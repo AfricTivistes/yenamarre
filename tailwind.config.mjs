@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'yam-red': '#FF0000',
+        'yam-red': '#EC0002',
         'yam-black': '#000000',
         'yam-white': '#FFFFFF',
         'yam-green': '#00A651',
