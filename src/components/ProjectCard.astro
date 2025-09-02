@@ -9,7 +9,7 @@ export interface Props {
 const { title, description, image, url } = Astro.props;
 ---
 
-<a href={url} class="block group">
+<a href={url} target="_blank" class="block group">
   <div class="card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
     <div class="relative h-48 overflow-hidden">
       <img 
