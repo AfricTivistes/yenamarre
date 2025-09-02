@@ -138,7 +138,7 @@ function getIcon(iconName: string) {
 }
 ---
 
-<MainLayout title={`${currentCategory.title} - Y'EN A MARRE`} currentPath={`/actualites/${category}`}>
+<MainLayout title={`${currentCategory.title} - Y'EN A MARRE`} currentPath={`/actualites/categories/${category}`}>
   <!-- Hero Section -->
   <section class="relative py-20 overflow-hidden">
     <div class="absolute inset-0 bg-[url('/images/yem.jpg')] bg-cover bg-center"></div>
@@ -182,11 +182,11 @@ function getIcon(iconName: string) {
           </a>
           {Object.entries(categoryConfig).map(([slug, config]) => (
             <a 
-              href={`/actualites/${slug}`} 
+              href={`/actualites/categories/${slug}`} 
               class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 category === slug 
-                  ? slug === 'communiques-presse' ? 'bg-yam-red text-white' :
-                    slug === 'yam-dans-la-presse' ? 'bg-gray-600 text-white' :
+                  ? slug === 'communique-de-presse' ? 'bg-yam-red text-white' :
+                    slug === 'yen-a-marre' ? 'bg-gray-600 text-white' :
                     slug === 'tribune-libre' ? 'bg-blue-600 text-white' :
                     slug === 'medias' ? 'bg-purple-600 text-white' :
                     'bg-green-600 text-white'
@@ -227,7 +227,7 @@ function getIcon(iconName: string) {
               startIndex={startIndex}
               endIndex={endIndex}
               totalArticles={totalArticles}
-              basePath={`/actualites/${category}`}
+              basePath={`/actualites/categories/${category}`}
             />
           )}
         </>

@@ -10,7 +10,7 @@ export const prerender = false;
 
 export async function getStaticPaths() {
   const { entries: allPosts, error } = await getLiveCollection('posts');
-
+  
   if (error) {
     console.error(`Error loading posts: ${error.message}`);
     return [];
@@ -32,14 +32,14 @@ let post = Astro.props.post;
 if (!post) {
   const slug = Astro.params.post;
   const { entries: allPosts, error } = await getLiveCollection('posts');
-
+  
   if (error) {
     console.error(`Error loading posts: ${error.message}`);
     return Astro.redirect('/actualites');
   }
-
+  
   post = allPosts.find(p => p.data.slug === slug);
-
+  
   if (!post) {
     return Astro.redirect('/actualites');
   }
@@ -53,7 +53,7 @@ const relatedPosts = allPosts
       p.data.category === post.data.category ||
       (post.data.categories && p.data.categories && 
        post.data.categories.some(cat => p.data.categories.includes(cat)));
-
+    
     return hasCommonCategory && p.data.id !== post.data.id;
   })
   .slice(0, 3)
@@ -122,7 +122,7 @@ const relatedPosts = allPosts
     <div class="container-custom">
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-
+          
           <!-- Article principal -->
           <div class="lg:col-span-2">
             <!-- Article content -->
@@ -179,7 +179,7 @@ const relatedPosts = allPosts
   document.addEventListener('DOMContentLoaded', function() {
     const shareButtons = document.querySelectorAll('button');
     const copyButton = Array.from(shareButtons).find(btn => btn.querySelector('svg[stroke]'));
-
+    
     if (copyButton) {
       copyButton.addEventListener('click', async () => {
         try {
