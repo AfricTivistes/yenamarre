@@ -4,7 +4,13 @@ import MobileMenu from "./MobileMenu.astro"
 const { currentPath = "" } = Astro.props
 
 const isActive = (path: string) => {
-  return currentPath.startsWith(path) ? "font-bold" : ""
+  if (path === "/" && currentPath === "/") {
+    return "font-bold nav-active"
+  }
+  if (path !== "/" && currentPath.startsWith(path)) {
+    return "font-bold nav-active"
+  }
+  return ""
 }
 
 // Determine project-specific styling
@@ -71,7 +77,7 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
         </a>
 
         <!-- À propos - Redirige directement vers /yenamarre -->
-        <a href="/yenamarre" class={`${isActive("/a-propos")} text-gray-800 hover:text-yam-red relative nav-link`}>
+        <a href="/yenamarre" class={`${isActive("/yenamarre")} text-gray-800 hover:text-yam-red relative nav-link`}>
           À propos
           <span class="nav-highlight bg-yam-red"></span>
         </a>
@@ -182,6 +188,10 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
   }
 
   /* Active state styling */
+  .nav-active .nav-highlight {
+    width: 100%;
+  }
+  
   .font-bold .nav-highlight {
     width: 100%;
   }
