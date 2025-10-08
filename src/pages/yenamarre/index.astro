@@ -244,34 +244,48 @@ const navItems = [
   <section class="py-20 bg-gray-50">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yam-red">Nos Initiatives Phares</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yam-red">Nos Projets Phares</h2>
         <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-600 max-w-4xl mx-auto">
           Découvrez nos programmes concrets qui transforment les communautés à travers tout le Sénégal.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-8">
-        <ProjectCard 
-          title="Citizen Mic" 
-          description="Un lieu où s’expriment librement opinions, visions et solutions, pour faire naître un mouvement collectif de changement positif."
-          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp"
-          url=""
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+
+      <ProjectCard
+        title="Dox ak Sa Gox"
+        description="Marcher avec sa communauté pour bâtir une citoyenneté active et un contrôle citoyen fort."
+        image="/images/doxaksagox.jpg"
+        url="/dox-ak-sa-gox"
+        isExternal={false}
+      />
+
+        <ProjectCard
+          title="Citizen Mic"
+          description="Un lieu où s'expriment librement opinions, visions et solutions, pour faire naître un mouvement collectif de changement positif."
+          image="/images/citizenMic.jpeg"
+          url="#"
+          isExternal={false}
         />
 
-        <ProjectCard 
-          title="La Télé Citoyenne (LTC)" 
+        <ProjectCard
+          title="La Télé Citoyenne (LTC)"
           description="La Télé Citoyenne, un média alternatif pour diffuser les messages du mouvement."
-          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png"
-          url="/ltc"
+          image="/images/logo-ltc.jpeg"
+          url="#"
+          isExternal={false}
         />
 
-        <ProjectCard 
-          title="Karibu" 
+        <ProjectCard
+          title="Karibu"
           description="Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen."
           image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
           url="https://www.karibu.yenamarre.sn/"
+          isExternal={true}
         />
+
       </div>
     </div>
   </section>
