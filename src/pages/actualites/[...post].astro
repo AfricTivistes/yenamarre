@@ -4,7 +4,9 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import ArticleSidebar from '../../components/ArticleSidebar.astro';
 import SocialShare from '../../components/SocialShare.astro';
 import RelatedArticles from '../../components/RelatedArticles.astro';
+import Gallery from '../../components/Gallery.astro';
 import { getLiveCollection } from 'astro:content';
+import { load } from 'cheerio';
 
 export const prerender = false;
 
@@ -44,6 +46,41 @@ if (!post) {
     return Astro.redirect('/actualites');
   }
 }
+
+// Extract images from content
+const $ = load(post.data.content);
+const images = $('img').map((i, el) => ({
+  src: $(el).attr('src') || '',
+  alt: $(el).attr('alt') || `Image ${i + 1}`,
+  width: parseInt($(el).attr('width') || '1200'),
+  height: parseInt($(el).attr('height') || '800')
+})).get().filter(img => img.src);
+
+// Remove images from content to avoid duplication
+$('img').remove();
+
+// Convert YouTube links to embedded videos
+let htmlContent = $.html();
+
+// Regex to match YouTube URLs (youtube.com/watch?v= and youtu.be/)
+const youtubeRegex = /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)(?:[?&][^\s]*)?/gi;
+
+htmlContent = htmlContent.replace(youtubeRegex, (match, videoId) => {
+  return `<div class="video-container my-6">
+    <iframe 
+      width="100%" 
+      height="480" 
+      src="https://www.youtube.com/embed/${videoId}" 
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen
+      class="rounded-lg shadow-lg"
+    ></iframe>
+  </div>`;
+});
+
+const contentWithoutImages = htmlContent;
 
 const { entries: allPosts } = await getLiveCollection('posts');
 const relatedPosts = allPosts
@@ -127,8 +164,15 @@ const relatedPosts = allPosts
           <div class="lg:col-span-2">
             <!-- Article content -->
             <div class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-montserrat prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-yam-red prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-l-yam-red prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg">
-              <div set:html={post.data.content}></div>
+              <div set:html={contentWithoutImages}></div>
             </div>
+
+            <!-- Gallery for extracted images -->
+            {images.length > 0 && (
+              <div class="mt-8">
+                <Gallery images={images} />
+              </div>
+            )}
 
             <!-- Social sharing -->
             <SocialShare />
@@ -155,6 +199,24 @@ const relatedPosts = allPosts
 
   <!-- Related Articles -->
   <RelatedArticles articles={relatedPosts} />
+
+  <style>
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+    }
+    
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 
   <!-- Back to articles -->
   <section class="py-12 bg-white">
