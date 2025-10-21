@@ -1,5 +1,6 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import FeatureCard from '../components/FeatureCard.astro';
@@ -8,6 +9,10 @@ import CategoryCard from '../components/CategoryCard.astro';
 import TribuneLibreSection from '../components/TribuneLibreSection.astro';
 import CategoriesSection from '../components/CategoriesSection.astro';
 import { getLiveCollection } from 'astro:content';
+import { getProjects } from '../utils/cms';
+
+// Récupérer les projets depuis le CMS
+const cmsProjects = getProjects();
 
 // Récupérer les articles WordPress
 const { entries: allPosts, error } = await getLiveCollection('posts');
@@ -99,49 +104,16 @@ const recentNews = allPosts
 
 <MainLayout title="Y'EN A MARRE - Mouvement citoyen sénégalais" currentPath="/">
   <!-- Hero Section avec design moderne -->
-  <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
-    <!-- Image d'arrière-plan -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/rassemblement1.webp');"></div>
-
-    <!-- Overlay sombre pour la lisibilité -->
-    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/70 to-black/60"></div>
-
-    <!-- Overlay pattern -->
-    <div class="absolute inset-0 opacity-5 bg-[url('/images/groupe.webp')] bg-repeat"></div>
-
-    <!-- Content -->
-    <div class="container-custom relative z-20 h-full flex flex-col justify-center py-20 md:py-32">
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="text-white space-y-6">
-
-
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Il n'y a pas de destin forclos, il n'y a que des  <span class="text-yam-red">responsabilités désertées.</span>
-          </h1>
-
-          <p class="text-xl md:text-2xl text-gray-300 mt-6">
-            Un mouvement citoyen qui lutte pour la démocratie, la bonne gouvernance et l'engagement civique depuis 2011.
-          </p>
-
-          <div class="flex flex-wrap gap-4 mt-8">
-            <!--a href="/rejoindre" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30">
-              Rejoignez le mouvement
-            </a-->
-            <a href="/yenamarre" class="btn bg-yam-red hover:bg-red-700 text-white font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30">
-              En savoir plus
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Wave divider -->
-    <div class="absolute bottom-0 left-0 right-0">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
-        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
-      </svg>
-    </div>
-  </section>
+  <HeroSection
+    page="index"
+    title="Il n'y a pas de destin forclos, il n'y a que des"
+    highlightedText="responsabilités désertées."
+    description="Un mouvement citoyen qui lutte pour la démocratie, la bonne gouvernance et l'engagement civique depuis 2011."
+    backgroundImage="/images/rassemblement1.webp"
+    ctaText="En savoir plus"
+    ctaUrl="/yenamarre"
+    showWaveDivider={true}
+  />
 
   <!-- Services Section inspiré du design Sandbox -->
   <section class="py-16 md:py-24 bg-white">
@@ -217,40 +189,15 @@ const recentNews = allPosts
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-
-      <ProjectCard
-        title="Dox ak Sa Gox"
-        description="Marcher avec sa communauté pour bâtir une citoyenneté active et un contrôle citoyen fort."
-        image="/images/doxaksagox.jpg"
-        url="/dox-ak-sa-gox"
-        isExternal={false}
-      />
-
-        <ProjectCard
-          title="Citizen Mic"
-          description="Un lieu où s'expriment librement opinions, visions et solutions, pour faire naître un mouvement collectif de changement positif."
-          image="/images/citizenMic.jpeg"
-          url="#"
-          isExternal={false}
-        />
-
-        <ProjectCard
-          title="La Télé Citoyenne (LTC)"
-          description="La Télé Citoyenne, un média alternatif pour diffuser les messages du mouvement."
-          image="/images/logo-ltc.jpeg"
-          url="#"
-          isExternal={false}
-        />
-
-        <ProjectCard
-          title="Karibu"
-          description="Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen."
-          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
-          url="https://www.karibu.yenamarre.sn/"
-          isExternal={true}
-        />
-
+        {cmsProjects.slice(0, 4).map((projet) => (
+          <ProjectCard
+            title={projet.title}
+            description={projet.description}
+            image={projet.logo}
+            url={projet.url || '#'}
+            isExternal={projet.url ? projet.url.startsWith('http') : false}
+          />
+        ))}
       </div>
     </div>
   </section>

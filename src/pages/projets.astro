@@ -1,8 +1,13 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ProjectDetailCard from '../components/ProjectDetailCard.astro';
+import { getProjects } from '../utils/cms';
 
-const projets = [
+// Charger les projets depuis le CMS
+const cmsProjects = getProjects();
+
+// Projets par défaut
+const defaultProjects = [
   {
     title: "Dox ak Sa Gox",
     description: "Marcher avec sa communauté : un projet pour mobiliser et renforcer la participation citoyenne, en soutenant le contrôle citoyen de l’action publique et la reddition des comptes à travers des formations, des jurys citoyens et des mobilisations populaires.",
@@ -96,6 +101,9 @@ const projets = [
     ]
   }
 ];
+
+// Utiliser les projets CMS s'ils existent, sinon utiliser les projets par défaut
+const projets = cmsProjects.length > 0 ? cmsProjects : defaultProjects;
 ---
 
 <MainLayout title="Nos Projets - Y'EN A MARRE" currentPath="/projets">

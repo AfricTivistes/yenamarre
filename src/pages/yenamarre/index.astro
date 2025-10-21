@@ -3,6 +3,7 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import ProjectNavbar from '../../components/ProjectNavbar.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../utils/cms';
 
 const navItems = [
   { name: 'Accueil', href: '/yenamarre', current: true },
@@ -11,6 +12,8 @@ const navItems = [
   { name: 'Coordination', href: '/yenamarre/coordination' },
   { name: 'Réseaux', href: '/yenamarre/reseaux' },
 ];
+
+const cmsProjects = getProjects();
 ---
 
 <MainLayout title="Y'EN A MARRE - Mouvement citoyen sénégalais" currentPath="/yenamarre">
@@ -252,40 +255,15 @@ const navItems = [
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-
-      <ProjectCard
-        title="Dox ak Sa Gox"
-        description="Marcher avec sa communauté pour bâtir une citoyenneté active et un contrôle citoyen fort."
-        image="/images/doxaksagox.jpg"
-        url="/dox-ak-sa-gox"
-        isExternal={false}
-      />
-
-        <ProjectCard
-          title="Citizen Mic"
-          description="Un lieu où s'expriment librement opinions, visions et solutions, pour faire naître un mouvement collectif de changement positif."
-          image="/images/citizenMic.jpeg"
-          url="#"
-          isExternal={false}
-        />
-
-        <ProjectCard
-          title="La Télé Citoyenne (LTC)"
-          description="La Télé Citoyenne, un média alternatif pour diffuser les messages du mouvement."
-          image="/images/logo-ltc.jpeg"
-          url="#"
-          isExternal={false}
-        />
-
-        <ProjectCard
-          title="Karibu"
-          description="Résidences artistiques et mobilités citoyennes pour promouvoir l'engagement artistique et citoyen."
-          image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
-          url="https://www.karibu.yenamarre.sn/"
-          isExternal={true}
-        />
-
+        {cmsProjects.map((projet) => (
+          <ProjectCard
+            title={projet.title}
+            description={projet.description}
+            image={projet.logo}
+            url={projet.url || '#'}
+            isExternal={projet.url ? projet.url.startsWith('http') : false}
+          />
+        ))}
       </div>
     </div>
   </section>

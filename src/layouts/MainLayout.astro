@@ -24,9 +24,13 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/yem.webp" />
     <meta name="generator" content={Astro.generator} />
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <title>{title}</title>
     <meta name="description" content={description} />
-    
+
+    <!-- Netlify Identity Widget -->
+      <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,11 +39,11 @@ const {
   <body>
     <Header currentPath={currentPath} />
     <ProjectNavbar currentPath={currentPath} />
-    
+
     <main>
       <slot />
     </main>
-    
+
     <Footer currentPath={currentPath} />
   </body>
 </html>
