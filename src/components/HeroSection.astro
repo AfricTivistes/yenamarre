@@ -19,15 +19,13 @@ const props = Astro.props;
 const customHero = props.page ? getActiveHero(props.page) : null;
 
 // Utiliser les données du CMS si disponibles, sinon utiliser les props
-const { 
-  title = customHero?.title || props.title, 
-  highlightedText = customHero?.highlightedText || props.highlightedText, 
-  description = customHero?.description || props.description, 
-  backgroundImage = customHero?.backgroundImage || props.backgroundImage,
-  ctaText = customHero?.ctaText || props.ctaText || "En savoir plus",
-  ctaUrl = customHero?.ctaUrl || props.ctaUrl || "/yenamarre",
-  showWaveDivider = customHero?.showWaveDivider ?? props.showWaveDivider ?? true
-} = props;
+const title = customHero?.title || props.title;
+const highlightedText = customHero?.highlightedText || props.highlightedText;
+const description = customHero?.description || props.description;
+const backgroundImage = customHero?.backgroundImage || props.backgroundImage;
+const ctaText = customHero?.ctaText || props.ctaText || "En savoir plus";
+const ctaUrl = customHero?.ctaUrl || props.ctaUrl || "/yenamarre";
+const showWaveDivider = customHero?.showWaveDivider !== undefined ? customHero.showWaveDivider : (props.showWaveDivider ?? true);
 ---
 
 <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
