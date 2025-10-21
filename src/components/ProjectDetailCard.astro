@@ -31,14 +31,16 @@ const { title, description, logo, features, bgGradient, buttonColor, buttonHover
       {description}
     </p>
 
-    <div class="space-y-3 mb-6">
-      {features.map((feature) => (
-        <div class="flex items-center text-sm text-gray-600">
-          <Fragment set:html={feature.icon} />
-          <span>{feature.text}</span>
-        </div>
-      ))}
-    </div>
+    {features && features.length > 0 && (
+      <div class="space-y-3 mb-6">
+        {features.map((feature) => (
+          <div class="flex items-center text-sm text-gray-600">
+            <Fragment set:html={feature.icon} />
+            <span>{feature.text}</span>
+          </div>
+        ))}
+      </div>
+    )}
 
     <a href={url} class={`inline-flex items-center ${buttonColor} text-white ${buttonHoverColor} font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105`}>
       Découvrir {title}

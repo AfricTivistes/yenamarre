@@ -13,6 +13,7 @@ import { getProjects } from '../utils/cms';
 
 // Récupérer les projets depuis le CMS
 const cmsProjects = getProjects();
+console.log(cmsProjects);
 
 // Récupérer les articles WordPress
 const { entries: allPosts, error } = await getLiveCollection('posts');

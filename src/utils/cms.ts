@@ -80,17 +80,25 @@ export function getProjects(): Project[] {
     return [];
   }
 
-  const files = fs.readdirSync(projectsDir).filter(file => file.endsWith('.md'));
+  const files = fs.readdirSync(projectsDir).filter(file => file.endsWith('.md') && !file.startsWith('.'));
   
   return files.map((file, index) => {
-    const content = fs.readFileSync(path.join(projectsDir, file), 'utf-8');
-    const { data } = matter(content);
+    const filePath = path.join(projectsDir, file);
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    
+    // Parse the frontmatter with gray-matter
+    const parsed = matter(fileContent);
+    const data = parsed.data;
     
     // Assigner une couleur de la palette (rotation circulaire)
     const colors = COLOR_PALETTE[index % COLOR_PALETTE.length];
     
     return {
-      ...data,
+      title: data.title || file.replace('.md', '').replace(/-/g, ' '),
+      description: data.description || '',
+      logo: data.logo || '/images/yem.webp',
+      url: data.url || '#',
+      features: Array.isArray(data.features) ? data.features : [],
       bgGradient: colors.bgGradient,
       buttonColor: colors.buttonColor,
       buttonHoverColor: colors.buttonHoverColor,
