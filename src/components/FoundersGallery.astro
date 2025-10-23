@@ -1,0 +1,54 @@
+
+---
+export interface Founder {
+  name: string;
+  role: string;
+  description?: string;
+  image: string;
+}
+
+export interface Props {
+  founders: Founder[];
+  title?: string;
+  subtitle?: string;
+  accentColor?: string;
+}
+
+const { founders, title, subtitle, accentColor = "yam-red" } = Astro.props;
+---
+
+<section class="py-20 bg-white">
+  <div class="container-custom">
+    {title && (
+      <div class="text-center mb-16">
+        <h2 class={`text-4xl font-bold mb-6 text-${accentColor}`}>{title}</h2>
+        <div class={`w-24 h-1 bg-${accentColor} mx-auto mb-8`}></div>
+        {subtitle && (
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">{subtitle}</p>
+        )}
+      </div>
+    )}
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {founders.map((founder) => (
+        <div class="text-center group">
+          <div class="relative overflow-hidden rounded-2xl shadow-lg mb-4 group-hover:shadow-xl transition-all">
+            <img 
+              src={founder.image}
+              alt={founder.name}
+              class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 text-white">
+              <h3 class="text-xl font-bold mb-1">{founder.name}</h3>
+              <p class="text-sm">{founder.role}</p>
+            </div>
+          </div>
+          {founder.description && (
+            <p class="text-sm text-gray-600 mt-4">{founder.description}</p>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

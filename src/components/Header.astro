@@ -4,7 +4,13 @@ import MobileMenu from "./MobileMenu.astro"
 const { currentPath = "" } = Astro.props
 
 const isActive = (path: string) => {
-  return currentPath.startsWith(path) ? "font-bold" : ""
+  if (path === "/" && currentPath === "/") {
+    return "font-bold nav-active"
+  }
+  if (path !== "/" && currentPath.startsWith(path)) {
+    return "font-bold nav-active"
+  }
+  return ""
 }
 
 // Determine project-specific styling
@@ -71,29 +77,41 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
         </a>
 
         <!-- À propos - Redirige directement vers /yenamarre -->
-        <a href="/yenamarre" class={`${isActive("/a-propos")} text-gray-800 hover:text-yam-red relative nav-link`}>
+        <a href="/yenamarre" class={`${isActive("/yenamarre")} text-gray-800 hover:text-yam-red relative nav-link`}>
           À propos
           <span class="nav-highlight bg-yam-red"></span>
         </a>
 
-        <!-- Projets dropdown - Sans Y'EN A MARRE comme sous-menu -->
+        <!-- Projets dropdown -->
         <div class="relative group">
-          <button class={`flex items-center ${isActive("/projets")} text-gray-800 hover:text-yam-red relative nav-link`}>
+          <a href="/projets" class={`flex items-center ${isActive("/projets")} text-gray-800 hover:text-yam-red relative nav-link`}>
             Projets
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
             <span class="nav-highlight bg-yam-red"></span>
-          </button>
-          <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
+          </a>
+          <div class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top scale-95 group-hover:scale-100">
             <div class="py-2 rounded-md bg-gradient-to-br from-white to-gray-50 ring-1 ring-gray-200">
-              <a href="/ltc" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
+              <a href="/dox-ak-sa-gox" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-yam-red flex items-center space-x-2 border-l-4 border-transparent hover:border-yam-red">
                 <span class="w-6 h-6 flex-shrink-0">
-                  <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ltc-8W4L2tgdjU72mMqlBWEQghrV3Vj7Z1.png" alt="LTC" class="w-full h-full object-contain" />
+                  <img src="/images/doxaksagox.jpg" alt="Dox ak Sa Gox" class="w-full h-full object-cover rounded" />
                 </span>
-                <span>Lead The Change (LTC)</span>
+                <span>Dox ak Sa Gox</span>
               </a>
-              <a href="/karibu" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-karibu-green flex items-center space-x-2 border-l-4 border-transparent hover:border-karibu-green">
+              <a href="#" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-black flex items-center space-x-2 border-l-4 border-transparent hover:border-black">
+                <span class="w-6 h-6 flex-shrink-0">
+                  <img src="/images/logo-ltc.jpeg" alt="LTC" class="w-full h-full object-contain" />
+                </span>
+                <span>La Télé Citoyenne (LTC)</span>
+              </a>
+              <a href="#" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-gray-700 flex items-center space-x-2 border-l-4 border-transparent hover:border-gray-700">
+                <span class="w-6 h-6 flex-shrink-0">
+                  <img src="/images/citizenMic.jpeg" alt="Citizen Mic" class="w-full h-full object-cover rounded" />
+                </span>
+                <span>Citizen Mic</span>
+              </a>
+              <a href="https://karibu.yenamarre.sn/" target="_blank" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 hover:text-karibu-green flex items-center space-x-2 border-l-4 border-transparent hover:border-karibu-green">
                 <span class="w-6 h-6 flex-shrink-0">
                   <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png" alt="Karibu" class="w-full h-full object-contain" />
                 </span>
@@ -138,12 +156,12 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
         </a>
       </nav>
 
-      <!-- CTA Button -->
+      <!-- CTA Button >
       <div class="hidden md:block">
-        <a href="/rejoindre" class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105 shadow-md hover:shadow-lg">
+        <a href="/contact" class="bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors transform hover:scale-105 shadow-md hover:shadow-lg">
           Rejoindre
         </a>
-      </div>
+      </div-->
 
       <!-- Mobile Menu Button -->
       <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none bg-gray-100 p-2 rounded-md">
@@ -182,6 +200,10 @@ const yamLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-ye
   }
 
   /* Active state styling */
+  .nav-active .nav-highlight {
+    width: 100%;
+  }
+  
   .font-bold .nav-highlight {
     width: 100%;
   }

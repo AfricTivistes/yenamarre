@@ -22,11 +22,24 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/yem.webp" />
     <meta name="generator" content={Astro.generator} />
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <title>{title}</title>
     <meta name="description" content={description} />
-    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYVJ1XLM6W"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VYVJ1XLM6W');
+    </script>
+
+    <!-- Netlify Identity Widget -->
+      <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,11 +48,11 @@ const {
   <body>
     <Header currentPath={currentPath} />
     <ProjectNavbar currentPath={currentPath} />
-    
+
     <main>
       <slot />
     </main>
-    
+
     <Footer currentPath={currentPath} />
   </body>
 </html>

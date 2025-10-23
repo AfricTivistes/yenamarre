@@ -1,0 +1,41 @@
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/cms"
+public_folder: "/images/cms"
+
+collections:
+  - name: "projects"
+    label: "Projets"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Logo", name: "logo", widget: "image" }
+      - { label: "URL", name: "url", widget: "string" }
+      - label: "Fonctionnalités"
+        name: "features"
+        widget: "list"
+        fields:
+          - { label: "Icône SVG", name: "icon", widget: "text" }
+          - { label: "Texte", name: "text", widget: "string" }
+
+  - name: "hero"
+    label: "Héros Personnalisés"
+    folder: "src/content/heroes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Actif", name: "active", widget: "boolean", default: false }
+      - { label: "Page", name: "page", widget: "select", options: ["index", "projets", "yenamarre", "contact"] }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Texte Surligné", name: "highlightedText", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image de fond", name: "backgroundImage", widget: "image" }
+      - { label: "Texte CTA", name: "ctaText", widget: "string", required: false }
+      - { label: "URL CTA", name: "ctaUrl", widget: "string", required: false }
+      - { label: "Afficher séparateur vague", name: "showWaveDivider", widget: "boolean", default: true }

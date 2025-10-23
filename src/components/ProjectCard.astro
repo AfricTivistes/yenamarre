@@ -4,18 +4,19 @@ export interface Props {
   description: string;
   image: string;
   url: string;
+  isExternal?: boolean;
 }
 
-const { title, description, image, url } = Astro.props;
+const { title, description, image, url, isExternal = false } = Astro.props;
 ---
 
-<a href={url} target="_blank" class="block group">
+<a href={url} target={isExternal ? "_blank" : "_self"} class="block group">
   <div class="card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-    <div class="relative h-48 overflow-hidden">
+    <div class="relative h-48 overflow-hidden bg-gray-100">
       <img 
         src={image || "/placeholder.svg"} 
         alt={title} 
-        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
         <div class="p-4 w-full">

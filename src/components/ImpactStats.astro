@@ -1,0 +1,93 @@
+
+---
+export interface StatItem {
+  number: string;
+  label: string;
+  description?: string;
+}
+
+export interface Props {
+  stats: StatItem[];
+  accentColor?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const { stats, accentColor = "yam-red", title, subtitle } = Astro.props;
+---
+
+<section class="py-16 bg-gray-50">
+  <div class="container-custom">
+    {title && (
+      <div class="text-center mb-12">
+        <h2 class={`text-4xl font-bold mb-4 text-${accentColor}`}>{title}</h2>
+        {subtitle && (
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">{subtitle}</p>
+        )}
+      </div>
+    )}
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {stats.map((stat) => (
+        <div class="text-center group">
+          <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-2">
+            <div class={`text-4xl md:text-5xl font-bold text-${accentColor} mb-4 counter-animation`} data-count={stat.number}>
+              0
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">{stat.label}</h3>
+            {stat.description && (
+              <p class="text-sm text-gray-600">{stat.description}</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animation des compteurs
+  document.addEventListener('DOMContentLoaded', () => {
+    const counters = document.querySelectorAll('.counter-animation[data-count]');
+
+    const animateCounter = (counter, target) => {
+      let currentValue = 0;
+      const duration = 2000;
+      const increment = target / (duration / 16);
+
+      const timer = setInterval(() => {
+        currentValue += increment;
+        if (currentValue >= target) {
+          currentValue = target;
+          clearInterval(timer);
+        }
+        
+        // Formatage du nombre
+        const displayValue = Math.floor(currentValue);
+        if (displayValue >= 1000) {
+          counter.textContent = (displayValue / 1000).toFixed(0) + 'K+';
+        } else {
+          counter.textContent = displayValue + '+';
+        }
+      }, 16);
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counter = entry.target;
+          const countAttr = counter.getAttribute('data-count');
+          if (countAttr) {
+            const target = parseInt(countAttr);
+            animateCounter(counter, target);
+            observer.unobserve(counter);
+          }
+        }
+      });
+    });
+
+    counters.forEach(counter => {
+      observer.observe(counter);
+    });
+  });
+</script>

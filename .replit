@@ -21,12 +21,56 @@ externalPort = 3000
 exposeLocalhost = true
 
 [[ports]]
+localPort = 34235
+externalPort = 8008
+
+[[ports]]
+localPort = 34783
+externalPort = 8099
+
+[[ports]]
+localPort = 35063
+externalPort = 8081
+
+[[ports]]
+localPort = 37987
+externalPort = 4200
+
+[[ports]]
 localPort = 38303
 externalPort = 3003
 
 [[ports]]
 localPort = 38373
 externalPort = 3002
+
+[[ports]]
+localPort = 40627
+externalPort = 5173
+
+[[ports]]
+localPort = 41115
+externalPort = 8000
+
+[[ports]]
+localPort = 41421
+externalPort = 5000
+
+[[ports]]
+localPort = 41687
+externalPort = 6000
+
+[[ports]]
+localPort = 41923
+externalPort = 8080
+
+[[ports]]
+localPort = 44419
+externalPort = 6800
+
+[[ports]]
+localPort = 44785
+externalPort = 9000
 
 [workflows]
 runButton = "Dev Server"
@@ -39,3 +83,6 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run dev"
+
+[agent]
+expertMode = true
