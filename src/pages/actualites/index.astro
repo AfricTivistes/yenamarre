@@ -7,13 +7,8 @@ import CategorySection from "../../components/CategorySection.astro";
 import TribuneLibreSection from "../../components/TribuneLibreSection.astro";
 import CategoriesSection from "../../components/CategoriesSection.astro";
 import { getCollection, getEntry } from "astro:content";
-import { Astro } from "astro:content";
 
-// Redirection vers la page 1
-return Astro.redirect("/actualites/page/1");
-
-const url = new URL(Astro.request.url);
-const currentPage = parseInt(url.searchParams.get("page") || "1", 10);
+const currentPage = 1; // Page 1 par défaut pour l'index
 
 const allPosts = (await getCollection("posts")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
