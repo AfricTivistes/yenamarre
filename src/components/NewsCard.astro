@@ -12,10 +12,10 @@ export interface Props {
 const { title, excerpt, date, category, categories, image, url } = Astro.props;
 
 // Format date
-const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
+const formattedDate = new Date(date).toLocaleDateString("fr-FR", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 });
 
 // Fonction pour déterminer la couleur de la catégorie
@@ -26,35 +26,54 @@ function getCategoryColor(cat: string) {
 }
 
 // Utiliser les catégories multiples ou la catégorie principale
-const displayCategories = categories && categories.length > 0 ? categories : [category];
+const displayCategories =
+  categories && categories.length > 0 ? categories : [category];
 ---
 
 <article class="group">
   <a href={url} class="block">
-    <div class="card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+    <div
+      class="card bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+    >
       <div class="relative h-48 overflow-hidden">
-        <img 
-          src={image || "/placeholder.svg"} 
-          alt={title} 
+        <img
+          src={image || "/placeholder.svg"}
+          alt={title}
           class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div class="absolute top-2 left-2 flex flex-wrap gap-1">
-          {displayCategories.map((cat) => (
-            <span 
-              class={`px-2 py-1 text-xs font-medium text-white rounded ${getCategoryColor(cat)}`}
-            >
-              {cat}
-            </span>
-          ))}
+          {
+            displayCategories.map((cat) => (
+              <span
+                class={`px-2 py-1 text-xs font-medium text-white rounded ${getCategoryColor(cat)}`}
+              >
+                {cat}
+              </span>
+            ))
+          }
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+        </div>
       </div>
       <div class="p-6">
-        <time datetime={date} class="text-sm text-gray-500">{formattedDate}</time>
-        <h3 class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors">{title}</h3>
-        <p class="text-gray-600 mb-4">{excerpt}</p>
+        <time datetime={date} class="text-sm text-gray-500"
+          >{formattedDate}</time
+        >
+        <h3
+          class="text-xl font-bold mt-2 mb-3 group-hover:text-yam-red transition-colors"
+          set:html={title}
+        />
+        <p
+          class="text-gray-600 mb-4"
+          set:html={excerpt.slice(0, 150) +
+            (excerpt.length > 150 ? "..." : "")}
+        />
         <div class="flex justify-end">
-          <span class="text-yam-red font-medium group-hover:underline">Lire la suite →</span>
+          <span class="text-yam-red font-medium group-hover:underline"
+            >Lire la suite →</span
+          >
         </div>
       </div>
     </div>

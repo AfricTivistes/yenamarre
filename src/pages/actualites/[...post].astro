@@ -1,155 +1,302 @@
-
 ---
-import MainLayout from '../../layouts/MainLayout.astro';
-import ArticleSidebar from '../../components/ArticleSidebar.astro';
-import SocialShare from '../../components/SocialShare.astro';
-import RelatedArticles from '../../components/RelatedArticles.astro';
-import Gallery from '../../components/Gallery.astro';
-import { getLiveCollection } from 'astro:content';
-import { load } from 'cheerio';
+import MainLayout from "../../layouts/MainLayout.astro";
+import ArticleSidebar from "../../components/ArticleSidebar.astro";
+import SocialShare from "../../components/SocialShare.astro";
+import RelatedArticles from "../../components/RelatedArticles.astro";
+import Gallery from "../../components/Gallery.astro";
+import { getCollection, getEntry } from "astro:content";
+import he from "he";
+import { load } from "cheerio";
 
-export const prerender = false;
+
+
+function formatDate(dateInput) {
+  if (!dateInput) return "Date inconnue";
+  const date = new Date(dateInput);
+  if (isNaN(date.getTime())) return "Date invalide";
+  return date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function getISODate(dateInput) {
+  if (!dateInput) return null;
+  const date = new Date(dateInput);
+  return isNaN(date.getTime()) ? null : date.toISOString().split("T")[0];
+}
+
+
+function getCategoryNames(categoryIds = [], categoryMap) {
+  if (!Array.isArray(categoryIds) || categoryIds.length === 0)
+    return ["Actualité"];
+  return categoryIds
+    .map((cat) => {
+      const id = String(cat?.id ?? cat);
+      return categoryMap.get(id) ?? null;
+    })
+    .filter(Boolean);
+}
+
 
 export async function getStaticPaths() {
-  const { entries: allPosts, error } = await getLiveCollection('posts');
-
-  if (error) {
-    console.error(`Error loading posts: ${error.message}`);
-    return [];
-  }
-
-  return allPosts.map((post) => ({
-    params: { 
-      post: post.data.slug 
-    },
-    props: { 
-      post 
-    },
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { post: post.data.slug },
+    props: { post },
   }));
 }
 
-// Handle SSR mode - fetch the post dynamically if not in props
-let post = Astro.props.post;
 
-if (!post) {
-  const slug = Astro.params.post;
-  const { entries: allPosts, error } = await getLiveCollection('posts');
+const { post } = Astro.props;
+if (!post || !post.data?.date) return Astro.redirect("/actualites");
 
-  if (error) {
-    console.error(`Error loading posts: ${error.message}`);
-    return Astro.redirect('/actualites');
-  }
 
-  post = allPosts.find(p => p.data.slug === slug);
+const allPosts = await getCollection("posts");
+const allCategories = await getCollection("categories");
 
-  if (!post) {
-    return Astro.redirect('/actualites');
-  }
-}
+const categoryMap = new Map(
+  allCategories.map((cat) => [
+    String(cat.id ?? cat.data.slug),
+    cat.data.name ?? cat.data.slug,
+  ])
+);
 
-// Extract images from content
-const $ = load(post.data.content);
-const images = $('img').map((i, el) => ({
-  src: $(el).attr('src') || '',
-  alt: $(el).attr('alt') || `Image ${i + 1}`,
-  width: parseInt($(el).attr('width') || '1200'),
-  height: parseInt($(el).attr('height') || '800')
-})).get().filter(img => img.src);
 
-// Remove images from content to avoid duplication
-$('img').remove();
+const currentPost = allPosts.find(
+  (p) => p.data.slug === post.data.slug || String(p.id) === String(post.id)
+);
+if (!currentPost || !currentPost.data?.date)
+  return Astro.redirect("/actualites");
 
-// Convert YouTube links to embedded videos
+
+const featuredImageEntry = currentPost.data.featured_media
+  ? await getEntry(currentPost.data.featured_media)
+  : null;
+
+
+const $ = load(currentPost.data.content?.rendered || "");
+
+
+const images = $("img")
+  .map((i, el) => ({
+    src: $(el).attr("src") || "",
+    alt: $(el).attr("alt") || `Image ${i + 1}`,
+    width: parseInt($(el).attr("width") || "1200", 10),
+    height: parseInt($(el).attr("height") || "800", 10),
+  }))
+  .get()
+  .filter((img) => img.src);
+
+
+$("img").remove();
+
+
 let htmlContent = $.html();
-
-// Regex to match YouTube URLs (youtube.com/watch?v= and youtu.be/)
-const youtubeRegex = /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)(?:[?&][^\s]*)?/gi;
-
+const youtubeRegex =
+  /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/gi;
 htmlContent = htmlContent.replace(youtubeRegex, (match, videoId) => {
-  return `<div class="video-container my-6">
-    <iframe 
-      width="100%" 
-      height="480" 
-      src="https://www.youtube.com/embed/${videoId}" 
-      title="YouTube video player" 
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      allowfullscreen
-      class="rounded-lg shadow-lg"
-    ></iframe>
-  </div>`;
+  return `
+    <div class="video-container my-8">
+      <iframe 
+        class="w-full aspect-video rounded-lg shadow-lg"
+        src="https://www.youtube.com/embed/${videoId}"
+        title="Vidéo YouTube"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>`.trim();
 });
 
-const contentWithoutImages = htmlContent;
+function decodeAndStripHtml(html = "") {
+  const stripped = html.replace(/<[^>]*>?/gm, "").trim();
+  return he.decode(stripped);
+}
 
-const { entries: allPosts } = await getLiveCollection('posts');
-const relatedPosts = allPosts
-  .filter(p => {
-    // Vérifier si l'article a des catégories communes
-    const hasCommonCategory = 
-      p.data.category === post.data.category ||
-      (post.data.categories && p.data.categories && 
-       post.data.categories.some(cat => p.data.categories.includes(cat)));
 
-    return hasCommonCategory && p.data.id !== post.data.id;
+const categoryNames = getCategoryNames(
+  currentPost.data.categories,
+  categoryMap
+);
+const primaryCategoryName = categoryNames[0] || "Actualité";
+
+const formattedDate = formatDate(currentPost.data.date);
+const isoDate = getISODate(currentPost.data.date);
+
+const transformedPost = {
+  id: String(currentPost.id),
+  slug: currentPost.data.slug,
+  title: currentPost.data.title?.rendered || "Article sans titre",
+  date: isoDate,
+  formattedDate,
+  excerpt: currentPost.data.excerpt?.rendered
+    ? decodeAndStripHtml(currentPost.data.excerpt.rendered)
+    : "",
+  image:
+    featuredImageEntry?.data.source_url ||
+    "https://placehold.co/1200x600?text=Y+EN+MARRE",
+  category: primaryCategoryName,
+  categories: categoryNames,
+  content: htmlContent,
+};
+
+
+const relatedRaw = allPosts
+  .filter((p) => {
+    const pCategories = p.data.categories ?? [];
+    const currentCategories = currentPost.data.categories ?? [];
+    return (
+      String(p.id) !== String(currentPost.id) &&
+      p.data.slug !== currentPost.data.slug &&
+      pCategories.some((cat) =>
+        currentCategories.some((c) => String(c.id) === String(cat.id))
+      )
+    );
   })
-  .slice(0, 3)
-  .map(p => ({
-    id: p.data.id,
-    title: p.data.title,
-    excerpt: p.data.excerpt || p.data.content.slice(0, 150) + '...',
-    date: p.data.date,
-    category: p.data.category,
-    image: p.data.image,
-    url: `/actualites/${p.data.slug}`,
-  }));
+  .slice(0, 3);
+
+const relatedArticles = await Promise.all(
+  relatedRaw.map(async (p) => {
+    const imgEntry = p.data.featured_media
+      ? await getEntry(p.data.featured_media)
+      : null;
+
+    const cats = getCategoryNames(p.data.categories, categoryMap);
+    return {
+      id: String(p.id),
+      title: p.data.title?.rendered || "Sans titre",
+      excerpt: p.data.excerpt?.rendered
+        ? decodeAndStripHtml(p.data.excerpt.rendered)
+        : "",
+      image:
+        imgEntry?.data.source_url ||
+        "https://placehold.co/600x400?text=Article",
+      category: cats[0] || "Actualité",
+      categories: cats,
+      date: getISODate(p.data.date),
+      formattedDate: formatDate(p.data.date),
+      url: `/actualites/${p.data.slug}`,
+    };
+  })
+);
+
+const recentRaw = allPosts
+  .filter((p) => String(p.id) !== String(currentPost.id))
+  .sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  )
+  .slice(0, 5);
+
+const recentArticles = await Promise.all(
+  recentRaw.map(async (p) => {
+    const imgEntry = p.data.featured_media
+      ? await getEntry(p.data.featured_media)
+      : null;
+
+    const cats = getCategoryNames(p.data.categories, categoryMap);
+    return {
+      id: String(p.id),
+      title: p.data.title?.rendered || "Sans titre",
+      date: getISODate(p.data.date),
+      formattedDate: formatDate(p.data.date),
+      category: cats[0] || "Actualité",
+      categories: cats,
+      image:
+        imgEntry?.data.source_url ||
+        "https://placehold.co/300x200?text=Article",
+      slug: p.data.slug,
+    };
+  })
+);
 ---
 
-<MainLayout title={`${post.data.title} - Y'EN A MARRE`} currentPath="/actualites">
+<MainLayout
+  title={`${transformedPost.title} - Y'EN A MARRE`}
+  description={transformedPost.excerpt}
+  image={transformedPost.image}
+>
   <!-- Hero Section -->
   <section class="relative min-h-[60vh] bg-gray-900 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src={post.data.image || 'https://placehold.co/1200x600?text=Y+EN+MARRE'}
-        alt={post.data.title}
+        src={transformedPost.image}
+        alt={transformedPost.title}
         class="w-full h-full object-cover object-center"
         style="object-position: center 30%;"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60"
+      >
+      </div>
     </div>
 
     <div class="container-custom relative z-10 h-full flex items-end py-20">
       <div class="max-w-4xl text-white">
+        <!-- Breadcrumb multi-catégories -->
         <nav class="flex items-center space-x-2 text-sm mb-6">
-          <a href="/" class="text-gray-300 hover:text-white transition-colors">Accueil</a>
+          <a href="/" class="text-gray-300 hover:text-white">Accueil</a>
           <span class="text-gray-400">/</span>
-          <a href="/actualites" class="text-gray-300 hover:text-white transition-colors">Actualités</a>
+          <a href="/actualites" class="text-gray-300 hover:text-white"
+            >Actualités</a
+          >
           <span class="text-gray-400">/</span>
-          <span class="text-yam-red font-medium">{post.data.category}</span>
+          <span class="text-yam-red font-medium">
+            {transformedPost.categories.join(" / ")}
+          </span>
         </nav>
 
-        <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white mb-4">
-          {post.data.category}
+        <!-- Badges multi-catégories -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          {
+            transformedPost.categories.map((cat) => (
+              <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yam-red text-white">
+                {cat}
+              </div>
+            ))
+          }
         </div>
 
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-          {post.data.title}
+        <h1
+          class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
+          set:html={transformedPost.title}
+        >
+          
         </h1>
 
-        <div class="flex flex-wrap items-center gap-6 text-gray-200">
-          <time datetime={post.data.date} class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <div class="flex items-center gap-6 text-gray-200">
+          <time datetime={transformedPost.date} class="flex items-center">
+            <svg
+              class="h-5 w-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
             </svg>
-            {post.data.formattedDate}
+            {transformedPost.formattedDate}
           </time>
         </div>
       </div>
     </div>
 
     <div class="absolute bottom-0 left-0 right-0">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" class="w-full h-auto">
-        <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 120"
+        class="w-full h-auto"
+      >
+        <path
+          fill="#ffffff"
+          fill-opacity="1"
+          d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
+        ></path>
       </svg>
     </div>
   </section>
@@ -159,56 +306,51 @@ const relatedPosts = allPosts
     <div class="container-custom">
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-
-          <!-- Article principal -->
+          <!-- Contenu principal -->
           <div class="lg:col-span-2">
-            <!-- Article content -->
-            <div class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-montserrat prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-yam-red prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-l-yam-red prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg">
-              <div set:html={contentWithoutImages}></div>
+            <div
+              class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-montserrat prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-yam-red prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-l-yam-red prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg"
+            >
+              <div set:html={transformedPost.content} />
             </div>
 
-            <!-- Gallery for extracted images -->
-            {images.length > 0 && (
-              <div class="mt-8">
-                <Gallery images={images} />
-              </div>
-            )}
+            <!-- Galerie -->
+            {
+              images.length > 0 && (
+                <div class="mt-12 -mx-4">
+                  <Gallery images={images} />
+                </div>
+              )
+            }
 
-            <!-- Social sharing -->
-            <SocialShare />
+            <!-- Partage -->
+            <div class="mt-12 pt-8 border-t border-gray-200">
+              <SocialShare title={transformedPost.title} url={Astro.url} />
+            </div>
           </div>
 
-          <!-- Sidebar avec articles récents -->
+          <!-- Sidebar -->
           <ArticleSidebar
-            articles={allPosts.map(p => ({
-              id: p.data.id,
-              title: p.data.title,
-              date: p.data.date,
-              formattedDate: p.data.formattedDate,
-              category: p.data.category,
-              image: p.data.image,
-              slug: p.data.slug
-            }))}
-            currentArticleId={post.data.id}
+            articles={recentArticles}
+            currentArticleId={transformedPost.id}
           />
-
         </div>
       </div>
     </div>
   </article>
 
-  <!-- Related Articles -->
-  <RelatedArticles articles={relatedPosts} />
+  <!-- Articles similaires -->
+  {relatedArticles.length > 0 && <RelatedArticles articles={relatedArticles} />}
 
+  <!-- Style vidéo -->
   <style>
     .video-container {
       position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      padding-bottom: 56.25%;
       height: 0;
       overflow: hidden;
       max-width: 100%;
     }
-    
     .video-container iframe {
       position: absolute;
       top: 0;
@@ -218,47 +360,27 @@ const relatedPosts = allPosts
     }
   </style>
 
-  <!-- Back to articles -->
+  <!-- Retour -->
   <section class="py-12 bg-white">
-    <div class="container-custom">
-      <div class="max-w-4xl mx-auto text-center">
-        <a
-          href="/actualites"
-          class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-red-500/30 group"
+    <div class="container-custom text-center">
+      <a
+        href="/actualites"
+        class="inline-flex items-center bg-yam-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all hover:shadow-lg group"
+      >
+        <svg
+          class="h-5 w-5 mr-2 transform transition-transform group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transform transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Retour aux actualités
-        </a>
-      </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Retour aux actualités
+      </a>
     </div>
   </section>
 </MainLayout>
-
-<script>
-  // Copy link functionality
-  document.addEventListener('DOMContentLoaded', function() {
-    const shareButtons = document.querySelectorAll('button');
-    const copyButton = Array.from(shareButtons).find(btn => btn.querySelector('svg[stroke]'));
-
-    if (copyButton) {
-      copyButton.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-          const originalHTML = copyButton.innerHTML;
-          copyButton.innerHTML = `
-            <svg class="w-5 h-5 group-hover:scale-110 transition-transform text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-          `;
-          setTimeout(() => {
-            copyButton.innerHTML = originalHTML;
-          }, 2000);
-        } catch (err) {
-          console.error('Erreur lors de la copie:', err);
-        }
-      });
-    }
-  });
-</script>

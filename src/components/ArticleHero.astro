@@ -46,8 +46,7 @@ const {
       </h1>
 
       {excerpt && (
-        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-          {excerpt}
+        <p class="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed" set:html={excerpt}>
         </p>
       )}
 

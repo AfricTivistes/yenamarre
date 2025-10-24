@@ -1,49 +1,96 @@
 ---
-import Header from "../components/Header.astro"
-import ProjectNavbar from "../components/ProjectNavbar.astro"
-import Footer from "../components/Footer.astro"
-import "../styles/global.css"
+import Header from "../components/Header.astro";
+import ProjectNavbar from "../components/ProjectNavbar.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
 
 export interface Props {
-  title: string
-  description?: string
-  currentPath?: string
+  title: string;
+  description?: string;
+  currentPath?: string;
 }
 
 const {
   title,
   description = "Y'EN A MARRE - Mouvement citoyen sénégalais pour la démocratie et la bonne gouvernance",
   currentPath = "",
-} = Astro.props
+} = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/yem.webp" />
     <meta name="generator" content={Astro.generator} />
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"
+    ></script>
+
+    <!-- HTML Meta Tags -->
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://yenamarre.sn" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Y'EN A MARRE - Mouvement citoyen sénégalais"
+    />
+    <meta
+      property="og:description"
+      content="Y'EN A MARRE - Mouvement citoyen sénégalais pour la démocratie et la bonne gouvernance"
+    />
+    <meta
+      property="og:image"
+      content="https://opengraph.b-cdn.net/production/images/3e44fc58-9b13-495b-b130-2cf5433ea35d.png?token=-OS0BCTEWhifw-chj-hTrQlZHWbyZvpeqDbikPoVn0g&height=615&width=1200&expires=33297309839"
+    />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="yenamarre.sn" />
+    <meta property="twitter:url" content="https://yenamarre.sn" />
+    <meta
+      name="twitter:title"
+      content="Y'EN A MARRE - Mouvement citoyen sénégalais"
+    />
+    <meta
+      name="twitter:description"
+      content="Y'EN A MARRE - Mouvement citoyen sénégalais pour la démocratie et la bonne gouvernance"
+    />
+    <meta
+      name="twitter:image"
+      content="https://opengraph.b-cdn.net/production/images/3e44fc58-9b13-495b-b130-2cf5433ea35d.png?token=-OS0BCTEWhifw-chj-hTrQlZHWbyZvpeqDbikPoVn0g&height=615&width=1200&expires=33297309839"
+    />
+
+    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
+
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYVJ1XLM6W"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VYVJ1XLM6W"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-VYVJ1XLM6W');
+      gtag("config", "G-VYVJ1XLM6W");
     </script>
 
     <!-- Netlify Identity Widget -->
-      <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script
+      type="text/javascript"
+      src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <Header currentPath={currentPath} />

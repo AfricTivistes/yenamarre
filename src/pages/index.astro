@@ -1,105 +1,142 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import HeroSection from '../components/HeroSection.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import NewsCard from '../components/NewsCard.astro';
-import FeatureCard from '../components/FeatureCard.astro';
-import StatsCounter from '../components/StatsCounter.astro';
-import CategoryCard from '../components/CategoryCard.astro';
-import TribuneLibreSection from '../components/TribuneLibreSection.astro';
-import CategoriesSection from '../components/CategoriesSection.astro';
-import { getLiveCollection } from 'astro:content';
-import { getProjects } from '../utils/cms';
+import MainLayout from "../layouts/MainLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import NewsCard from "../components/NewsCard.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+import StatsCounter from "../components/StatsCounter.astro";
+import CategoryCard from "../components/CategoryCard.astro";
+import TribuneLibreSection from "../components/TribuneLibreSection.astro";
+import CategoriesSection from "../components/CategoriesSection.astro";
+import { getCollection, getEntry } from "astro:content";
+import { getProjects } from "../utils/cms";
 
 // Récupérer les projets depuis le CMS
 const cmsProjects = getProjects();
 
+const allCategories = await getCollection("categories");
 
-// Récupérer les articles WordPress
-const { entries: allPosts, error } = await getLiveCollection('posts');
-if (error) {
-  console.error(`Error loading posts: ${error.message}`);
-}
+const allPosts = (await getCollection("posts")).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+// Create category map
+const categoryMap = new Map(
+  allCategories.map((cat) => [
+    String(cat.data.id),
+    cat.data.name ?? cat.data.slug ?? "Actualité",
+  ])
+);
+
+const newsArticles = await Promise.all(
+  allPosts.map(async (post) => {
+    const imageEntry = post.data.featured_media
+      ? await getEntry(post.data.featured_media)
+      : null;
+
+    const categoryNames = post.data.categories?.map(
+      (cat) => categoryMap.get(String(cat.id)) ?? "Actualité"
+    ) ?? ["Actualité"];
+
+    return {
+      id: String(post.id),
+      url: `/actualites/${post.data.slug}`,
+      title: post.data.title?.rendered,
+      date: new Date(post.data.date),
+      excerpt: post.data.excerpt?.rendered ?? "",
+      image:
+        imageEntry?.data?.source_url ??
+        "https://placehold.co/800x600?text=Y+EN+MARRE",
+      category: categoryNames,
+      featured: post.data.sticky ?? false,
+      content: post.data.content?.rendered ?? "",
+    };
+  })
+);
 
 // Organiser les articles par catégorie
 const newsByCategory = {
-  'communique-de-presse': allPosts
-    ? allPosts
-      .filter(post =>
-        post.data.category === 'Communiqué de presse' ||
-        post.data.categories?.includes('Communiqué de presse')
-      )
-      .slice(0, 2)
-      .map(post => ({
-        id: post.data.id,
-        title: post.data.title,
-        date: post.data.date,
-        slug: post.data.slug,
-      }))
-    : [],
-  'yen-a-marre': allPosts
-    ? allPosts
-      .filter(post =>
-        post.data.category === "Y'EN A MARRE" ||
-        post.data.categories?.includes("Y'EN A MARRE")
-      )
-      .slice(0, 2)
-      .map(post => ({
-        id: post.data.id,
-        title: post.data.title,
-        date: post.data.date,
-        slug: post.data.slug,
-      }))
-    : [],
-  'dox-ak-sa-gox': allPosts
-    ? allPosts
-      .filter(post =>
-        post.data.category === 'Dox Ak Sa Gox' ||
-        post.data.categories?.includes('Dox Ak Sa Gox')
-      )
-      .slice(0, 2)
-      .map(post => ({
-        id: post.data.id,
-        title: post.data.title,
-        date: post.data.date,
-        slug: post.data.slug,
-      }))
-    : [],
-  'tribune-libre': allPosts
-    ? allPosts
-      .filter(post =>
-        post.data.category === 'Tribune libre' ||
-        post.data.categories?.includes('Tribune libre')
-      )
-      .slice(0, 2)
-      .map(post => ({
-        id: post.data.id,
-        title: post.data.title,
-        excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
-        date: post.data.date,
-        category: post.data.category,
-        categories: post.data.categories || [],
-        image: post.data.image,
-        url: `/actualites/${post.data.slug}`,
-      }))
-    : [],
+  "communique-de-presse": newsArticles
+    .filter((post) => post.category.includes("Communiqué de presse"))
+    .slice(0, 2)
+    .map((post) => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt || post.content.slice(0, 150) + "...",
+      date: post.date,
+      category: post.category[0] || "Actualité",
+      categories: post.category,
+      image: post.image,
+      url: post.url,
+    })),
+  "yam-dans-la-presse": newsArticles
+    .filter((post) => post.category.includes("YAM dans la presse"))
+    .slice(0, 2)
+    .map((post) => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt || post.content.slice(0, 150) + "...",
+      date: post.date,
+      category: post.category[0] || "Actualité",
+      categories: post.category,
+      image: post.image,
+      url: post.url,
+    })),
+  "dox-ak-sa-gox": newsArticles
+    .filter((post) => post.category.includes("Dox Ak Sa Gox"))
+    .slice(0, 2)
+    .map((post) => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt || post.content.slice(0, 150) + "...",
+      date: post.date,
+      category: post.category[0] || "Actualité",
+      categories: post.category,
+      image: post.image,
+      url: post.url,
+    })),
+  "tribune-libre": newsArticles
+    .filter((post) => post.category.includes("Tribune libre"))
+    .slice(0, 2)
+    .map((post) => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt || post.content.slice(0, 150) + "...",
+      date: post.date,
+      category: post.category[0] || "Actualité",
+      categories: post.category,
+      image: post.image,
+      url: post.url,
+    })),
 };
 
 // Articles récents pour la section actualités
 const recentNews = allPosts
-  ? allPosts
-    .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
-    .slice(0, 3)
-    .map(post => ({
-      id: post.data.id,
-      title: post.data.title,
-      excerpt: post.data.excerpt || post.data.content.slice(0, 150) + '...',
-      date: post.data.date,
-      category: post.data.category,
-      categories: post.data.categories || [],
-      image: post.data.image,
-      url: `/actualites/${post.data.slug}`,
-    }))
+  ? await Promise.all(
+      allPosts.slice(0, 3).map(async (post) => {
+        const imageEntry = post.data.featured_media
+          ? await getEntry(post.data.featured_media)
+          : null;
+
+        const categoryNames = post.data.categories?.map(
+          (cat) => categoryMap.get(String(cat?.id)) ?? "Actualité"
+        ) ?? ["Actualité"];
+
+        return {
+          id: String(post.id),
+          url: `/actualites/${post.data.slug}`,
+          title: post.data.title?.rendered,
+          date: new Date(post.data.date),
+          excerpt: post.data.excerpt?.rendered ?? "",
+          image:
+            imageEntry?.data?.source_url ??
+            "https://placehold.co/800x600?text=Y+EN+MARRE",
+          category: categoryNames,
+          featured: post.data.sticky ?? false,
+          content: post.data.content?.rendered ?? "",
+        };
+      })
+    )
   : [];
 ---
 
@@ -122,7 +159,9 @@ const recentNews = allPosts
       <div class="text-center max-w-3xl mx-auto mb-16">
         <h2 class="text-3xl md:text-5xl font-bold mb-6">Notre mission</h2>
         <p class="text-xl text-gray-700">
-          Nous luttons pour un Sénégal où tous les citoyens peuvent jouir pleinement de leurs droits et participer activement à la construction d'une société démocratique et juste.
+          Nous luttons pour un Sénégal où tous les citoyens peuvent jouir
+          pleinement de leurs droits et participer activement à la construction
+          d'une société démocratique et juste.
         </p>
       </div>
 
@@ -158,14 +197,20 @@ const recentNews = allPosts
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-5xl font-bold mb-6">Notre impact</h2>
         <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-          Depuis notre création, nous avons mobilisé des milliers de citoyens et mené des dizaines de campagnes pour promouvoir la démocratie et la bonne gouvernance au Sénégal.
+          Depuis notre création, nous avons mobilisé des milliers de citoyens et
+          mené des dizaines de campagnes pour promouvoir la démocratie et la
+          bonne gouvernance au Sénégal.
         </p>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <StatsCounter number="12" label="Années d'activisme" color="yam-red" />
         <StatsCounter number="50" label="Campagnes menées" color="yam-red" />
-        <StatsCounter number="100000" label="Citoyens mobilisés" color="yam-red" />
+        <StatsCounter
+          number="100000"
+          label="Citoyens mobilisés"
+          color="yam-red"
+        />
         <StatsCounter number="14" label="Régions touchées" color="yam-red" />
       </div>
     </div>
@@ -178,140 +223,165 @@ const recentNews = allPosts
         <div>
           <h2 class="text-3xl md:text-5xl font-bold mb-4">Nos projets</h2>
           <p class="text-xl text-gray-600 max-w-2xl">
-            Découvrez les différentes initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique.
+            Découvrez les différentes initiatives de Y'EN A MARRE pour
+            promouvoir la démocratie, la bonne gouvernance et l'engagement
+            civique.
           </p>
         </div>
-        <a href="/projets" class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center">
+        <a
+          href="/projets"
+          class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center"
+        >
           Voir tous les projets
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
           </svg>
         </a>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {cmsProjects.slice(0, 4).map((projet) => (
-          <ProjectCard
-            title={projet.title}
-            description={projet.description}
-            image={projet.logo}
-            url={projet.url || '#'}
-            isExternal={projet.url ? projet.url.startsWith('http') : false}
-          />
-        ))}
+        {
+          cmsProjects
+            .slice(0, 4)
+            .map((projet) => (
+              <ProjectCard
+                title={projet.title}
+                description={projet.description}
+                image={projet.logo}
+                url={projet.url || "#"}
+                isExternal={projet.url ? projet.url.startsWith("http") : false}
+              />
+            ))
+        }
       </div>
     </div>
   </section>
 
-  <!-- Appel à l'action avec design moderne >
-  <section class="py-16 bg-yam-red text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/images/groupe2.webp')] opacity-10"></div>
-    <div class="container-custom text-center relative z-10">
-      <h2 class="text-3xl md:text-5xl font-bold mb-6">Passez à l'action maintenant</h2>
-      <p class="text-xl max-w-3xl mx-auto mb-8">
-        Ensemble, nous pouvons faire la différence. Rejoignez Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique au Sénégal.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="/rejoindre" class="btn bg-white text-yam-red hover:bg-gray-100 font-bold py-4 px-8 text-lg rounded-lg transition-all hover:shadow-lg">
-          Rejoignez-nous
-        </a>
-      </div>
-    </div>
-  </section-->
+  <!-- Tribune libre - Section mise en avant -->
+  <TribuneLibreSection
+    tribuneArticles={newsByCategory["tribune-libre"] || []}
+  />
 
-
-
-      <!-- Tribune libre - Section mise en avant -->
-      <TribuneLibreSection tribuneArticles={newsByCategory['tribune-libre'] || []} />
-
-      <!-- Utilisation du composant CategoriesSection -->
-      <CategoriesSection
-        title="Nos actualités par catégorie"
-        subtitle="Explorez nos différents types de contenus pour rester informé de toutes nos activités."
-        categories={[
-          {
-            name: "Communiqués de presse",
-            slug: "communique-de-presse",
-            description: "Positions officielles du mouvement",
-            bgGradient: "bg-gradient-to-r from-yam-red to-red-600",
-            textColor: "text-yam-red",
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <!-- Utilisation du composant CategoriesSection -->
+  <CategoriesSection
+    title="Nos actualités par catégorie"
+    subtitle="Explorez nos différents types de contenus pour rester informé de toutes nos activités."
+    categories={[
+      {
+        name: "Communiqués de presse",
+        slug: "communique-de-presse",
+        description: "Positions officielles du mouvement",
+        bgGradient: "bg-gradient-to-r from-yam-red to-red-600",
+        textColor: "text-yam-red",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
             </svg>`,
-            news: newsByCategory['communique-de-presse'] || []
-          },
-          {
-            name: "YAM dans la presse",
-            slug: "yen-a-marre",
-            description: "Couverture médiatique",
-            bgGradient: "bg-gradient-to-r from-gray-600 to-gray-700",
-            textColor: "text-gray-700",
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        news: newsByCategory["communique-de-presse"] || [],
+      },
+      {
+        name: "YAM dans la presse",
+        slug: "yam-dans-la-presse",
+        description: "Couverture médiatique",
+        bgGradient: "bg-gradient-to-r from-gray-600 to-gray-700",
+        textColor: "text-gray-700",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
             </svg>`,
-            news: newsByCategory['yen-a-marre'] || []
-          },
-          {
-            name: "Dox Ak Sa Gox",
-            slug: "dox-ak-sa-gox",
-            description: "Photos, vidéos et podcasts",
-            bgGradient: "bg-gradient-to-r from-gray-500 to-gray-600",
-            textColor: "text-gray-600",
-            icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        news: newsByCategory["yam-dans-la-presse"] || [],
+      },
+      {
+        name: "Dox Ak Sa Gox",
+        slug: "dox-ak-sa-gox",
+        description: "Photos, vidéos et podcasts",
+        bgGradient: "bg-gradient-to-r from-gray-500 to-gray-600",
+        textColor: "text-gray-600",
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>`,
-            news: newsByCategory['dox-ak-sa-gox'] || []
-          }
-        ]}
-      />
-    </div>
-
+        news: newsByCategory["dox-ak-sa-gox"] || [],
+      },
+    ]}
+  />
+  <!-- Section Actualités récentes -->
 
   <!-- Actualités récentes avec design moderne -->
   <section class="py-16 md:py-24">
     <div class="container-custom">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
         <div>
-          <h2 class="text-3xl md:text-5xl font-bold mb-4">Actualités récentes</h2>
+          <h2 class="text-3xl md:text-5xl font-bold mb-4">
+            Actualités récentes
+          </h2>
           <p class="text-xl text-gray-600 max-w-2xl">
             Restez informé des dernières activités et campagnes de Y'EN A MARRE.
           </p>
         </div>
-        <a href="/actualites" class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center">
+        <a
+          href="/actualites"
+          class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center"
+        >
           Voir toutes les actualités
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
           </svg>
         </a>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8">
-        {recentNews.map((article) => (
-          <NewsCard
-            title={article.title}
-            excerpt={article.excerpt}
-            date={article.date}
-            category={article.category}
-            categories={article.categories}
-            image={article.image}
-            url={article.url}
-          />
-        ))}
+        {
+          recentNews.map((article) => (
+            <NewsCard
+              title={article.title}
+              excerpt={article.excerpt}
+              date={article.date}
+              category={article.category}
+              categories={article.categories}
+              image={article.image}
+              url={article.url}
+            />
+          ))
+        }
       </div>
     </div>
   </section>
 
   <!-- Newsletter avec design moderne -->
   <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/images/rassemblement2.webp')] opacity-5"></div>
+    <div
+      class="absolute inset-0 bg-[url('/images/rassemblement2.webp')] opacity-5"
+    >
+    </div>
     <div class="container-custom relative z-10">
       <div class="max-w-3xl mx-auto text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">Restez informé</h2>
         <p class="text-lg mb-8">
-          Inscrivez-vous à notre newsletter pour recevoir les dernières actualités et informations sur nos campagnes.
+          Inscrivez-vous à notre newsletter pour recevoir les dernières
+          actualités et informations sur nos campagnes.
         </p>
 
-        <form class="flex flex-col md:flex-row gap-4 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+        <form
+          class="flex flex-col md:flex-row gap-4 bg-white/5 p-3 rounded-lg backdrop-blur-sm"
+        >
           <input
             type="email"
             placeholder="Votre adresse email"
@@ -327,50 +397,51 @@ const recentNews = allPosts
         </form>
 
         <p class="text-sm mt-4 text-gray-400">
-          En vous inscrivant, vous acceptez de recevoir nos emails et confirmez avoir lu notre politique de confidentialité.
+          En vous inscrivant, vous acceptez de recevoir nos emails et confirmez
+          avoir lu notre politique de confidentialité.
         </p>
       </div>
     </div>
   </section>
-</MainLayout>
 
-<script>
-// Animation des compteurs
-document.addEventListener('DOMContentLoaded', () => {
-  const counters = document.querySelectorAll('.counter-item [data-count]');
+  <script>
+    // Animation des compteurs
+    document.addEventListener("DOMContentLoaded", () => {
+      const counters = document.querySelectorAll(".counter-item [data-count]");
 
-  const animateCounter = (counter: HTMLElement, target: number) => {
-    let currentValue = 0;
-    const duration = 2000; // 2 secondes
-    const stepTime = duration / target;
+      const animateCounter = (counter: HTMLElement, target: number) => {
+        let currentValue = 0;
+        const duration = 2000; // 2 secondes
+        const stepTime = duration / target;
 
-    const timer = setInterval(() => {
-      currentValue += Math.ceil(target / 100);
-      if (currentValue >= target) {
-        currentValue = target;
-        clearInterval(timer);
-      }
-      counter.textContent = currentValue.toLocaleString();
-    }, stepTime);
-  };
+        const timer = setInterval(() => {
+          currentValue += Math.ceil(target / 100);
+          if (currentValue >= target) {
+            currentValue = target;
+            clearInterval(timer);
+          }
+          counter.textContent = currentValue.toLocaleString();
+        }, stepTime);
+      };
 
-  // Observer pour déclencher l'animation
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const counter = entry.target as HTMLElement;
-        const countAttr = counter.getAttribute('data-count');
-        if (countAttr) {
-          const target = parseInt(countAttr);
-          animateCounter(counter, target);
-          observer.unobserve(counter);
-        }
-      }
+      // Observer pour déclencher l'animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const counter = entry.target as HTMLElement;
+            const countAttr = counter.getAttribute("data-count");
+            if (countAttr) {
+              const target = parseInt(countAttr);
+              animateCounter(counter, target);
+              observer.unobserve(counter);
+            }
+          }
+        });
+      });
+
+      counters.forEach((counter) => {
+        observer.observe(counter);
+      });
     });
-  });
-
-  counters.forEach(counter => {
-    observer.observe(counter);
-  });
-});
-</script>
+  </script>
+</MainLayout>
