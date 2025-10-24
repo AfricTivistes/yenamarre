@@ -1,19 +1,27 @@
+
 ---
-import MainLayout from "../../layouts/MainLayout.astro";
-import ArticleHero from "../../components/ArticleHero.astro";
-import ArticleGrid from "../../components/ArticleGrid.astro";
-import ArticlePagination from "../../components/ArticlePagination.astro";
-import CategorySection from "../../components/CategorySection.astro";
-import TribuneLibreSection from "../../components/TribuneLibreSection.astro";
-import CategoriesSection from "../../components/CategoriesSection.astro";
+import MainLayout from "../../../layouts/MainLayout.astro";
+import ArticleHero from "../../../components/ArticleHero.astro";
+import ArticlePagination from "../../../components/ArticlePagination.astro";
+import TribuneLibreSection from "../../../components/TribuneLibreSection.astro";
+import CategoriesSection from "../../../components/CategoriesSection.astro";
 import { getCollection, getEntry } from "astro:content";
-import { Astro } from "astro:content";
 
-// Redirection vers la page 1
-return Astro.redirect("/actualites/page/1");
+export async function getStaticPaths() {
+  const allPosts = (await getCollection("posts")).sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
 
-const url = new URL(Astro.request.url);
-const currentPage = parseInt(url.searchParams.get("page") || "1", 10);
+  const articlesPerPage = 9;
+  const totalPages = Math.ceil(allPosts.length / articlesPerPage);
+
+  return Array.from({ length: totalPages }, (_, i) => ({
+    params: { page: String(i + 1) },
+  }));
+}
+
+const { page } = Astro.params;
+const currentPage = parseInt(page || "1", 10);
 
 const allPosts = (await getCollection("posts")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
@@ -21,7 +29,6 @@ const allPosts = (await getCollection("posts")).sort(
 
 const allCategories = await getCollection("categories");
 
-// Create category map
 const categoryMap = new Map(
   allCategories.map((cat) => [
     String(cat.data.id),
@@ -29,7 +36,6 @@ const categoryMap = new Map(
   ])
 );
 
-// Transform posts to news articles
 const newsArticles = await Promise.all(
   allPosts.map(async (post) => {
     const imageEntry = post.data.featured_media
@@ -121,7 +127,6 @@ const newsByCategory = {
     })),
 };
 
-// Categories configuration for component
 const categoriesData = [
   {
     name: "Communiqués de presse",
@@ -196,7 +201,6 @@ const categoriesData = [
     )
   }
 
-  <!-- Articles récents -->
   <section class="py-16 md:py-24 bg-white">
     <div class="container-custom">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -305,7 +309,6 @@ const categoriesData = [
 
   <CategoriesSection categories={categoriesData} />
 
-  <!-- Newsletter -->
   <section class="py-16 bg-gray-900 text-white relative overflow-hidden">
     <div
       class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract+pattern+dots')] opacity-5"
