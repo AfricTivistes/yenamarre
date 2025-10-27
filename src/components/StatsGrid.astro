@@ -1,0 +1,27 @@
+
+---
+import StatsCounter from "./StatsCounter.astro";
+
+export interface Stat {
+  number: string;
+  label: string;
+  color?: string;
+}
+
+export interface Props {
+  stats: Stat[];
+  color?: string;
+}
+
+const { stats, color = "yam-red" } = Astro.props;
+---
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 lg:gap-8 text-center px-4 sm:px-6 md:px-2">
+  {stats.map((stat) => (
+    <StatsCounter 
+      number={stat.number} 
+      label={stat.label} 
+      color={stat.color || color} 
+    />
+  ))}
+</div>
