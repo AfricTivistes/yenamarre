@@ -1,7 +1,7 @@
 ---
-active: true
+active: false
 page: index
-title: "Appel à Candidature pour "
+title: Appel à Candidature pour
 highlightedText: Citizen Mic
 description: 🎤 Citizen Mic est de retour pour sa 2ème édition. Une invitation à
   utiliser le micro pour stimuler le changement.
