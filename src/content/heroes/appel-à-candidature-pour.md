@@ -1,5 +1,5 @@
 ---
-active: false
+active: true
 page: index
 title: Appel à Candidature pour
 highlightedText: Citizen Mic
