@@ -3,7 +3,7 @@ title: Citizen Mic
 description: Un lieu où s'expriment librement opinions, visions et solutions,
   pour faire naître un mouvement collectif de changement positif.
 logo: /images/citizenMic.jpeg
-url: citizenmic.yenamarre.sn
+url: https://citizenmic.yenamarre.sn/
 features:
   - icon: <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-700"
       fill="none" viewBox="0 0 24 24" stroke="currentColor"><path
