@@ -17,7 +17,7 @@ const cmsProjects = getProjects();
 const allCategories = await getCollection("categories");
 
 const allPosts = (await getCollection("posts")).sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 
 // Create category map
@@ -25,7 +25,7 @@ const categoryMap = new Map(
   allCategories.map((cat) => [
     String(cat.data.id),
     cat.data.name ?? cat.data.slug ?? "Actualité",
-  ])
+  ]),
 );
 
 const newsArticles = await Promise.all(
@@ -35,7 +35,7 @@ const newsArticles = await Promise.all(
       : null;
 
     const categoryNames = post.data.categories?.map(
-      (cat) => categoryMap.get(String(cat.id)) ?? "Actualité"
+      (cat) => categoryMap.get(String(cat.id)) ?? "Actualité",
     ) ?? ["Actualité"];
 
     return {
@@ -51,7 +51,7 @@ const newsArticles = await Promise.all(
       featured: post.data.sticky ?? false,
       content: post.data.content?.rendered ?? "",
     };
-  })
+  }),
 );
 
 // Organiser les articles par catégorie
@@ -119,7 +119,7 @@ const recentNews = allPosts
           : null;
 
         const categoryNames = post.data.categories?.map(
-          (cat) => categoryMap.get(String(cat?.id)) ?? "Actualité"
+          (cat) => categoryMap.get(String(cat?.id)) ?? "Actualité",
         ) ?? ["Actualité"];
 
         return {
@@ -135,7 +135,7 @@ const recentNews = allPosts
           featured: post.data.sticky ?? false,
           content: post.data.content?.rendered ?? "",
         };
-      })
+      }),
     )
   : [];
 ---
@@ -144,8 +144,8 @@ const recentNews = allPosts
   <!-- Hero Section avec design moderne -->
   <HeroSection
     page="index"
-    title="Il n'y a pas de destin forclos, il n'y a que des"
-    highlightedText="responsabilités désertées."
+    title="« Il n'y a pas de destin forclos, il n'y a que des "
+    highlightedText="responsabilités désertées »"
     description="Un mouvement citoyen qui lutte pour la démocratie, la bonne gouvernance et l'engagement civique depuis 2011."
     backgroundImage="/images/rassemblement1.webp"
     ctaText="En savoir plus"
