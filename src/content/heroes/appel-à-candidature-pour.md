@@ -1,5 +1,5 @@
 ---
-active: true
+active: false
 page: index
 title: TAXAW SAYTU
 highlightedText: ÑAARI AT CI NGUUR GI
