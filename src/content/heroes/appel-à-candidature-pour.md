@@ -11,6 +11,6 @@ description: >-
 
   du nouveau régime.
 backgroundImage: /images/cms/whatsapp-image-2026-04-09-at-15.07.04-1-.jpeg
-ctaUrl: https://citizenmic.yenamarre.sn/inscription/
+ctaUrl: ""
 showWaveDivider: true
 ---
