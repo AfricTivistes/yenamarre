@@ -76,7 +76,7 @@ const newsByCategory = {
       image: post.image,
       url: post.url,
     })),
-  "yam-dans-la-presse": newsArticles
+  "yem-dans-la-presse": newsArticles
     .filter((post) => post.category.includes("YAM dans la presse"))
     .slice(0, 2)
     .map((post) => ({
@@ -137,14 +137,14 @@ const categoriesData = [
   },
   {
     name: "YAM dans la presse",
-    slug: "yam-dans-la-presse",
+    slug: "yem-dans-la-presse",
     description: "Notre couverture médiatique nationale et internationale",
     bgGradient: "bg-gradient-to-r from-gray-600 to-gray-700",
     textColor: "text-gray-700",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
     </svg>`,
-    news: newsByCategory["yam-dans-la-presse"]?.map((news) => ({
+    news: newsByCategory["yem-dans-la-presse"]?.map((news) => ({
       id: news.id,
       title: news.title,
       date: news.date,
@@ -202,25 +202,6 @@ const categoriesData = [
             Découvrez nos dernières publications et prises de position.
           </p>
         </div>
-        <a
-          href="/actualites/tous-les-articles"
-          class="text-yam-red font-bold text-lg hover:underline mt-4 md:mt-0 group flex items-center"
-        >
-          Voir tous les articles
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 ml-1 transform transition-transform group-hover:translate-x-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-          </svg>
-        </a>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -288,6 +269,29 @@ const categoriesData = [
         totalArticles={totalArticles}
         basePath="/actualites"
       />
+    </div>
+  </section>
+
+  <!-- Section Catégories -->
+  <section class="py-12 bg-gray-50">
+    <div class="container-custom">
+      <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Parcourir par catégorie</h2>
+      <div class="flex flex-wrap gap-4 justify-center">
+        {allCategories.map((cat) => {
+          const count = allPosts.filter((p) =>
+            p.data.categories?.some((c) => String(c.id) === String(cat.data.id))
+          ).length;
+          return (
+            <a
+              href={`/actualites/categories/${cat.data.slug}`}
+              class="px-6 py-3 rounded-full font-medium bg-white border border-gray-200 text-gray-700 hover:bg-yam-red hover:text-white hover:border-yam-red transition-colors shadow-sm"
+            >
+              {cat.data.name ?? cat.data.slug}
+              <span class="ml-2 text-sm opacity-70">({count})</span>
+            </a>
+          );
+        })}
+      </div>
     </div>
   </section>
 
