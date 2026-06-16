@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "localite": "THIÈS",
+    "region": "Thiès",
+    "lat": 14.7833,
+    "lng": -16.9000,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 2,
+    "localite": "POROKHANE",
+    "region": "Thiès",
+    "lat": 14.7833,
+    "lng": -16.9667,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 3,
+    "localite": "BAMBEY",
+    "region": "Diourbel",
+    "lat": 14.7000,
+    "lng": -16.4667,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 4,
+    "localite": "LOUGA",
+    "region": "Louga",
+    "lat": 15.3167,
+    "lng": -15.6333,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 5,
+    "localite": "TAMBA",
+    "region": "Tambacounda",
+    "lat": 13.7667,
+    "lng": -13.6833,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 6,
+    "localite": "KOLDA",
+    "region": "Kolda",
+    "lat": 12.9000,
+    "lng": -14.9500,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 7,
+    "localite": "BIGNONA",
+    "region": "Ziguinchor",
+    "lat": 12.8085,
+    "lng": -16.2333,
+    "coordinator": "",
+    "formers": []
+  },
+  {
+    "id": 8,
+    "localite": "DIOULOULOU",
+    "region": "Ziguinchor",
+    "lat": 12.5833,
+    "lng": -16.2333,
+    "coordinator": "",
+    "formers": []
+  }
+]

@@ -1,0 +1,94 @@
+---
+import bureaux from '../data/bureaux.json';
+const bureauxJson = JSON.stringify(bureaux);
+const regions = ["Thies", "Tambacounda", "Kolda", "Ziguinchor", "Louga", "Diourbel"];
+const regionsJson = JSON.stringify(regions);
+---
+
+<div class="py-16 bg-gray-50" id="bureaux">
+  <div class="container-custom">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Nos bureaux</h2>
+      <p class="text-xl text-gray-600">Présence dans 6 régions du Sénégal</p>
+    </div>
+    <div id="bureaux-map" class="rounded-xl overflow-hidden shadow-xl" style="height: 500px;"></div>
+    <p class="text-sm text-gray-500 mt-3 text-center">Cliquer sur une région pour filtrer les bureaux</p>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" is:inline></script>
+<script define:vars={{ bureauxJson, regionsJson }} is:inline>
+  const bureaux = JSON.parse(bureauxJson);
+  const activeRegions = JSON.parse(regionsJson);
+  let selectedRegion = null;
+  let markers = [];
+
+  const map = L.map('bureaux-map').setView([14.0, -14.5], 6);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO',
+    maxZoom: 18
+  }).addTo(map);
+
+  // Charger GeoJSON régions Sénégal
+  fetch('/data/senegal-regions.geojson')
+    .then(r => r.json())
+    .then(data => {
+      L.geoJSON(data, {
+        style: feature => {
+          const nom = feature.properties.NAME_1;
+          const actif = activeRegions.includes(nom);
+          return {
+            fillColor: actif ? '#16a34a' : '#d1d5db',
+            fillOpacity: actif ? 0.35 : 0.2,
+            color: actif ? '#15803d' : '#9ca3af',
+            weight: 1.5
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          const nom = feature.properties.NAME_1;
+          if (!activeRegions.includes(nom)) return;
+          layer.on('click', () => {
+            selectedRegion = selectedRegion === nom ? null : nom;
+            updateMarkers();
+          });
+          layer.bindTooltip(nom, { sticky: true });
+        }
+      }).addTo(map);
+    })
+    .catch(err => console.error('Erreur chargement GeoJSON:', err));
+
+  const greenIcon = L.divIcon({
+    html: '<div style="background:#16a34a;width:12px;height:12px;border-radius:50%;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>',
+    iconSize: [12, 12],
+    className: ''
+  });
+
+  function addMarkers() {
+    bureaux.forEach(b => {
+      const m = L.marker([b.lat, b.lng], { icon: greenIcon });
+      let popup = `<strong>${b.localite}</strong><br>Région: ${b.region}`;
+      if (b.coordinator) popup += `<br>Coordinateur: ${b.coordinator}`;
+      if (b.formers && b.formers.length > 0) popup += `<br>Formateurs: ${b.formers.join(', ')}`;
+      m.bindPopup(popup);
+      m.regionName = b.region;
+      m.addTo(map);
+      markers.push(m);
+    });
+  }
+
+  function normalize(s) {
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  function updateMarkers() {
+    markers.forEach(m => {
+      if (!selectedRegion || normalize(m.regionName) === normalize(selectedRegion)) {
+        map.addLayer(m);
+      } else {
+        map.removeLayer(m);
+      }
+    });
+  }
+
+  addMarkers();
+</script>

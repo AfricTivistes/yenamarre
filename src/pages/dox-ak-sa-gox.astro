@@ -1,17 +1,22 @@
-
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ProjectNavbar from '../components/ProjectNavbar.astro';
+import BureauxMap from '../components/BureauxMap.astro';
 
 const navItems = [
   { name: 'Présentation', url: '/dox-ak-sa-gox#presentation' },
   { name: 'Objectifs', url: '/dox-ak-sa-gox#objectifs' },
   { name: 'Activités', url: '/dox-ak-sa-gox#activites' },
+  { name: 'Nos bureaux', url: '/dox-ak-sa-gox#bureaux' },
   { name: 'Impact', url: '/dox-ak-sa-gox#impact' },
 ];
 ---
 
 <MainLayout title="Dox ak Sa Gox - Y'EN A MARRE" currentPath="/dox-ak-sa-gox">
+  <Fragment slot="head">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  </Fragment>
+
   <!-- Hero Section -->
   <section class="relative min-h-[70vh] bg-gradient-to-br from-green-600 to-green-800 overflow-hidden">
     <div class="absolute inset-0 bg-[url('/images/rassemblement1.webp')] bg-cover bg-center opacity-20"></div>
@@ -40,7 +45,6 @@ const navItems = [
 
   <!-- Project Navigation -->
   <ProjectNavbar navItems={navItems} />
-
 
   <!-- Objectifs Section -->
   <section id="objectifs" class="py-16 md:py-24 bg-gray-50">
@@ -166,6 +170,7 @@ const navItems = [
     </div>
   </section>
 
+  <!-- Bureaux Map Section -->
+  <BureauxMap />
 
- 
 </MainLayout>
