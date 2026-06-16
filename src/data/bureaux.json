@@ -5,8 +5,12 @@
     "region": "Thiès",
     "lat": 14.7833,
     "lng": -16.9000,
-    "coordinator": "",
-    "formers": []
+    "address": "Pas de local",
+    "coordinators": [],
+    "formers": [
+      { "nom": "Abdou Salam Pène", "phone": "77 779 94 20" },
+      { "nom": "Mandiaye Camara", "phone": "77 422 10 50" }
+    ]
   },
   {
     "id": 2,
@@ -14,7 +18,11 @@
     "region": "Thiès",
     "lat": 14.7833,
     "lng": -16.9667,
-    "coordinator": "",
+    "address": "Tally Bou Bess, après la pharmacie",
+    "coordinators": [
+      { "nom": "Djibril Ndiaye", "phone": "77 576 47 36" },
+      { "nom": "Seydou Diallo", "phone": "77 052 69 16" }
+    ],
     "formers": []
   },
   {
@@ -23,8 +31,15 @@
     "region": "Diourbel",
     "lat": 14.7000,
     "lng": -16.4667,
-    "coordinator": "",
-    "formers": []
+    "address": "Léona Sud",
+    "coordinators": [
+      { "nom": "Alioune Thiaw", "phone": "77 455 07 35" },
+      { "nom": "Mamadou Niang", "phone": "77 354 48 28" }
+    ],
+    "formers": [
+      { "nom": "Abdoulaye Ndiaye", "phone": "78 019 84 33" },
+      { "nom": "Serigne Mbacké Faye", "phone": "77 481 37 60" }
+    ]
   },
   {
     "id": 4,
@@ -32,8 +47,15 @@
     "region": "Louga",
     "lat": 15.3167,
     "lng": -15.6333,
-    "coordinator": "",
-    "formers": []
+    "address": "Keur Serigne Bara, en face de la mosquée",
+    "coordinators": [
+      { "nom": "Malick Ka", "phone": "77 839 92 92" },
+      { "nom": "Dame Diop", "phone": "77 825 39 70" }
+    ],
+    "formers": [
+      { "nom": "Mamadou Alioune Cissé", "phone": "77 098 57 51" },
+      { "nom": "Samba Ndiaye", "phone": "78 567 90 26" }
+    ]
   },
   {
     "id": 5,
@@ -41,7 +63,11 @@
     "region": "Tambacounda",
     "lat": 13.7667,
     "lng": -13.6833,
-    "coordinator": "",
+    "address": "Sarré Guilele",
+    "coordinators": [
+      { "nom": "Seydou Nguette", "phone": "78 173 34 27" },
+      { "nom": "Ndiassé Gassama", "phone": "77 576 47 36" }
+    ],
     "formers": []
   },
   {
@@ -50,8 +76,15 @@
     "region": "Kolda",
     "lat": 12.9000,
     "lng": -14.9500,
-    "coordinator": "",
-    "formers": []
+    "address": "Sikilo Est Imm KASSE",
+    "coordinators": [
+      { "nom": "Yelli Lô", "phone": "77 510 67 13" },
+      { "nom": "Salif Fall Sy", "phone": "77 121 28 56" }
+    ],
+    "formers": [
+      { "nom": "Aïssatou Sadio Diallo", "phone": "78 631 45 47" },
+      { "nom": "Fatoumata Binta Diallo", "phone": "78 337 81 87" }
+    ]
   },
   {
     "id": 7,
@@ -59,8 +92,14 @@
     "region": "Ziguinchor",
     "lat": 12.8085,
     "lng": -16.2333,
-    "coordinator": "",
-    "formers": []
+    "address": "Avenue Émile Badiane, derrière la clinique Fogny",
+    "coordinators": [
+      { "nom": "Fanta Dramé", "phone": "78 463 25 22" }
+    ],
+    "formers": [
+      { "nom": "Almamy Diémé", "phone": "77 267 17 47" },
+      { "nom": "Bruce Cédric Coly", "phone": "77 598 53 52" }
+    ]
   },
   {
     "id": 8,
@@ -68,7 +107,12 @@
     "region": "Ziguinchor",
     "lat": 12.5833,
     "lng": -16.2333,
-    "coordinator": "",
-    "formers": []
+    "address": "Pas de local",
+    "coordinators": [
+      { "nom": "Landing Sané Ministre Thiané", "phone": "78 157 51 13" }
+    ],
+    "formers": [
+      { "nom": "Ousmane Bâ", "phone": "77 932 74 20" }
+    ]
   }
 ]

@@ -5,14 +5,22 @@ const regions = ["Thies", "Tambacounda", "Kolda", "Ziguinchor", "Louga", "Diourb
 const regionsJson = JSON.stringify(regions);
 ---
 
-<div class="py-16 bg-gray-50" id="bureaux">
+<div class="py-0 bg-white" id="bureaux">
   <div class="container-custom">
     <div class="text-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Nos bureaux</h2>
       <p class="text-xl text-gray-600">Présence dans 6 régions du Sénégal</p>
     </div>
-    <div id="bureaux-map" class="rounded-xl overflow-hidden shadow-xl" style="height: 500px;"></div>
-    <p class="text-sm text-gray-500 mt-3 text-center">Cliquer sur une région pour filtrer les bureaux</p>
+    <div class="grid lg:grid-cols-5 gap-8 items-start">
+      <!-- Carte : 3/5 -->
+      <div class="lg:col-span-3">
+        <div id="bureaux-map" class="rounded-xl overflow-hidden shadow-xl sticky top-24" style="height: 520px;"></div>
+      </div>
+      <!-- Accordion : 2/5 -->
+      <div class="lg:col-span-2 space-y-3" id="bureaux-list">
+        <!-- généré par JS -->
+      </div>
+    </div>
   </div>
 </div>
 
@@ -35,7 +43,7 @@ const regionsJson = JSON.stringify(regions);
     .then(data => {
       L.geoJSON(data, {
         style: feature => {
-          const nom = feature.properties.NAME_1;
+          const nom = feature.properties.shapeName;
           const actif = activeRegions.includes(nom);
           return {
             fillColor: actif ? '#16a34a' : '#d1d5db',
@@ -45,11 +53,12 @@ const regionsJson = JSON.stringify(regions);
           };
         },
         onEachFeature: (feature, layer) => {
-          const nom = feature.properties.NAME_1;
+          const nom = feature.properties.shapeName;
           if (!activeRegions.includes(nom)) return;
           layer.on('click', () => {
             selectedRegion = selectedRegion === nom ? null : nom;
             updateMarkers();
+            updateAccordion();
           });
           layer.bindTooltip(nom, { sticky: true });
         }
@@ -66,11 +75,14 @@ const regionsJson = JSON.stringify(regions);
   function addMarkers() {
     bureaux.forEach(b => {
       const m = L.marker([b.lat, b.lng], { icon: greenIcon });
-      let popup = `<strong>${b.localite}</strong><br>Région: ${b.region}`;
-      if (b.coordinator) popup += `<br>Coordinateur: ${b.coordinator}`;
-      if (b.formers && b.formers.length > 0) popup += `<br>Formateurs: ${b.formers.join(', ')}`;
+      let popup = `<div class="min-w-[200px]"><strong class="text-base">${b.localite}</strong><span class="ml-1 text-xs text-green-600">${b.region}</span>`;
+      if (b.address && b.address !== 'Pas de local') popup += `<p class="text-xs text-gray-500 mt-1">${b.address}</p>`;
+      if (b.coordinators.length) popup += `<div class="mt-2 text-xs"><span class="font-semibold">Coordinateurs</span><br>${b.coordinators.map(c => `${c.nom} — <a href="tel:+221${c.phone.replace(/\s/g,'')}">${c.phone}</a>`).join('<br>')}</div>`;
+      if (b.formers.length) popup += `<div class="mt-1 text-xs"><span class="font-semibold">Formateurs</span><br>${b.formers.map(f => `${f.nom} — <a href="tel:+221${f.phone.replace(/\s/g,'')}">${f.phone}</a>`).join('<br>')}</div>`;
+      popup += '</div>';
       m.bindPopup(popup);
       m.regionName = b.region;
+      m.bureauId = b.id;
       m.addTo(map);
       markers.push(m);
     });
@@ -90,5 +102,77 @@ const regionsJson = JSON.stringify(regions);
     });
   }
 
+  function buildAccordion() {
+    const list = document.getElementById('bureaux-list');
+    bureaux.forEach(b => {
+      const hasCoords = b.coordinators.length > 0;
+      const hasFormers = b.formers.length > 0;
+      const coordsHtml = hasCoords
+        ? b.coordinators.map(c => `<div class="flex items-center gap-2 text-sm"><span class="font-medium">${c.nom}</span><a href="tel:+221${c.phone.replace(/\s/g,'')}" class="text-green-600 hover:underline">${c.phone}</a></div>`).join('')
+        : '<p class="text-sm text-gray-400 italic">Pas de coordinateur</p>';
+      const formersHtml = hasFormers
+        ? `<div class="mt-2 border-t pt-2"><p class="text-xs text-gray-500 uppercase font-semibold mb-1">Formateurs</p>${b.formers.map(f => `<div class="flex items-center gap-2 text-sm"><span>${f.nom}</span><a href="tel:+221${f.phone.replace(/\s/g,'')}" class="text-green-600 hover:underline">${f.phone}</a></div>`).join('')}</div>`
+        : '';
+      const addrHtml = b.address && b.address !== 'Pas de local'
+        ? `<div class="flex items-start gap-2 text-sm text-gray-500 mt-2"><svg class="h-4 w-4 mt-0.5 shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>${b.address}</span></div>`
+        : '';
+
+      const item = document.createElement('div');
+      item.className = 'bureau-item bg-white rounded-xl shadow hover:shadow-md transition-shadow overflow-hidden';
+      item.dataset.id = b.id;
+      item.dataset.region = b.region;
+      item.innerHTML = `
+        <button onclick="toggleBureau(${b.id})" class="w-full flex items-center justify-between p-4 text-left">
+          <div>
+            <span class="font-bold text-gray-900">${b.localite}</span>
+            <span class="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">${b.region}</span>
+          </div>
+          <svg id="chevron-${b.id}" class="h-5 w-5 text-gray-400 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div id="details-${b.id}" class="hidden px-4 pb-4 border-t">
+          ${addrHtml}
+          <div class="mt-2">${coordsHtml}</div>
+          ${formersHtml}
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  window.toggleBureau = function(id) {
+    const b = bureaux.find(x => x.id === id);
+    const details = document.getElementById(`details-${id}`);
+    const chevron = document.getElementById(`chevron-${id}`);
+    const isOpen = !details.classList.contains('hidden');
+
+    // Fermer tous
+    document.querySelectorAll('[id^="details-"]').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('[id^="chevron-"]').forEach(el => el.classList.remove('rotate-180'));
+
+    if (!isOpen) {
+      details.classList.remove('hidden');
+      chevron.classList.add('rotate-180');
+      // Fly to marker
+      map.flyTo([b.lat, b.lng], 10, { duration: 1 });
+      // Open popup
+      const marker = markers.find(m => m.bureauId === id);
+      if (marker) setTimeout(() => marker.openPopup(), 800);
+    }
+  };
+
+  function updateAccordion() {
+    document.querySelectorAll('.bureau-item').forEach(item => {
+      const region = item.dataset.region;
+      if (!selectedRegion || normalize(region) === normalize(selectedRegion)) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
   addMarkers();
+  buildAccordion();
 </script>
