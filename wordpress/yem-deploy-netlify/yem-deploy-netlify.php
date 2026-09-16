@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: YEM — Déploiement Netlify
- * Description: Relance automatiquement le build du site yenamarre.sn (Netlify) quand un contenu est modifié dans WordPress. Bouton « Publier le site » dans la barre d'admin.
- * Version: 1.0.0
+ * Plugin Name: Yenamarre.sn — Déploiement automatique
+ * Description: Pour le site Y'EN A MARRE uniquement (yenamarre.sn). Relance automatiquement la mise à jour du site public sur Netlify quand un contenu est modifié dans WordPress. À activer seulement sur le site yenamarre du réseau, pas sur tout le réseau.
+ * Version: 1.1.0
  * Author: Y'EN A MARRE
  * Requires PHP: 7.4
  */
@@ -93,7 +93,7 @@ foreach (['created_term', 'edited_term', 'delete_term'] as $hook) {
 /* ---------- Réglages › Déploiement du site ---------- */
 
 add_action('admin_menu', function () {
-    add_options_page('Déploiement du site', 'Déploiement du site', 'manage_options', 'yem-deploy', 'yem_deploy_page');
+    add_options_page('Déploiement yenamarre.sn', 'Déploiement yenamarre.sn', 'manage_options', 'yem-deploy', 'yem_deploy_page');
 });
 
 add_action('admin_init', function () {
@@ -111,8 +111,8 @@ function yem_deploy_page() {
     $last = get_option(YEM_DEPLOY_OPTION_LAST);
     ?>
     <div class="wrap">
-        <h1>Déploiement du site</h1>
-        <p>Chaque modification de contenu relance la mise à jour du site public (délai d'environ 2 minutes). Les modifications rapprochées sont regroupées.</p>
+        <h1>Déploiement de yenamarre.sn</h1>
+        <p>Chaque modification de contenu de ce site WordPress relance la mise à jour de <strong>yenamarre.sn</strong> (délai d'environ 2 minutes). Les modifications rapprochées sont regroupées.</p>
         <form method="post" action="options.php">
             <?php settings_fields('yem_deploy'); ?>
             <table class="form-table" role="presentation">
@@ -132,7 +132,7 @@ function yem_deploy_page() {
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <input type="hidden" name="action" value="yem_deploy_now">
             <?php wp_nonce_field('yem_deploy_now'); ?>
-            <?php submit_button('Publier le site maintenant', 'secondary'); ?>
+            <?php submit_button('Publier yenamarre.sn maintenant', 'secondary'); ?>
         </form>
     </div>
     <?php
@@ -156,7 +156,7 @@ add_action('admin_bar_menu', function ($bar) {
         return;
     }
     $url = wp_nonce_url(admin_url('admin-post.php?action=yem_deploy_now'), 'yem_deploy_now');
-    $bar->add_node(['id' => 'yem-deploy', 'title' => '🚀 Publier le site', 'href' => $url]);
+    $bar->add_node(['id' => 'yem-deploy', 'title' => '🚀 Publier yenamarre.sn', 'href' => $url]);
 }, 100);
 
 add_action('admin_notices', function () {
@@ -167,6 +167,6 @@ add_action('admin_notices', function () {
     printf(
         '<div class="notice notice-%s is-dismissible"><p>%s</p></div>',
         $ok ? 'success' : 'error',
-        $ok ? 'Mise à jour du site lancée : visible dans environ 2 minutes.' : 'Impossible de lancer la mise à jour : vérifiez l’URL du build hook (Réglages › Déploiement du site).'
+        $ok ? 'Mise à jour de yenamarre.sn lancée : visible dans environ 2 minutes.' : 'Impossible de lancer la mise à jour : vérifiez l’URL du build hook (Réglages › Déploiement yenamarre.sn).'
     );
 });
