@@ -4,6 +4,43 @@ import ProjectNavbar from "../../components/ProjectNavbar.astro";
 import Timeline from "../../components/Timeline.astro";
 import ImpactStats from "../../components/ImpactStats.astro";
 import { getTimelineEvents } from "../../loaders/utils.ts";
+import { getMembres } from "../../utils/wp-contenus";
+import { getPageAcf, field } from '../../utils/wp';
+
+// Textes éditables dans WordPress (page « Historique », slug `historique`).
+// Champ vide ou WordPress injoignable → texte par défaut ci-dessous.
+const TEXTES: Record<string, string> = {
+  hero_titre: "Notre Histoire",
+  hero_texte: "Depuis 2011, Y'EN A MARRE écrit l'histoire de l'engagement citoyen au Sénégal. Les moments clés qui ont marqué l'histoire de Y'EN A MARRE et son impact sur la société sénégalaise.",
+  frise_titre: "Chronologie du Mouvement",
+  stat1_nombre: "12",
+  stat1_label: "Années d'activisme",
+  stat1_description: "Plus d'une décennie d'engagement",
+  stat2_nombre: "100000",
+  stat2_label: "Citoyens mobilisés",
+  stat2_description: "À travers tout le Sénégal",
+  stat3_nombre: "50",
+  stat3_label: "Campagnes menées",
+  stat3_description: "Pour la démocratie et la bonne gouvernance",
+  stat4_nombre: "14",
+  stat4_label: "Régions touchées",
+  stat4_description: "Présence sur tout le territoire national",
+  impact_titre: "Notre Impact en Chiffres",
+  impact_sous_titre: "Plus d'une décennie d'engagement au service de la démocratie et de la bonne gouvernance",
+  heritage_titre: "Notre Héritage",
+  heritage_texte: "Plus qu'un mouvement politique, Y'EN A MARRE a créé une nouvelle culture citoyenne au Sénégal. Nous avons démontré que la jeunesse peut être un acteur de changement positif et que l'engagement citoyen est la clé du développement.",
+  heritage1_titre: "Éveil des consciences",
+  heritage1_texte: "Nous avons éveillé la conscience politique de milliers de jeunes Sénégalais",
+  heritage2_titre: "Nouveau modèle citoyen",
+  heritage2_texte: "Le concept NTS (Nouveau Type de Sénégalais) inspire une nouvelle génération",
+  heritage3_titre: "Rayonnement continental",
+  heritage3_texte: "Notre modèle inspire des mouvements citoyens à travers l'Afrique",
+  heritage_image: "/images/rassemblement2.webp",
+  heritage_annee: "2011",
+  heritage_annee_label: "Année de création",
+};
+const textesWp = await getPageAcf('historique');
+const t = (key: string): string => field(textesWp, key, TEXTES[key]);
 
 const navItems = [
   { name: 'Accueil', href: '/yenamarre' },
@@ -17,28 +54,28 @@ const timelineItems = await getTimelineEvents();
 
 const impactStats = [
   {
-    number: "12",
-    label: "Années d'activisme",
-    description: "Plus d'une décennie d'engagement"
+    number: t('stat1_nombre'),
+    label: t('stat1_label'),
+    description: t('stat1_description')
   },
   {
-    number: "100000",
-    label: "Citoyens mobilisés",
-    description: "À travers tout le Sénégal"
+    number: t('stat2_nombre'),
+    label: t('stat2_label'),
+    description: t('stat2_description')
   },
   {
-    number: "50",
-    label: "Campagnes menées",
-    description: "Pour la démocratie et la bonne gouvernance"
+    number: t('stat3_nombre'),
+    label: t('stat3_label'),
+    description: t('stat3_description')
   },
   {
-    number: "14",
-    label: "Régions touchées",
-    description: "Présence sur tout le territoire national"
+    number: t('stat4_nombre'),
+    label: t('stat4_label'),
+    description: t('stat4_description')
   }
 ];
 
-const founders = [
+const defaultFounders = [
   {
     name: "Thiat",
     role: "Rappeur et activiste",
@@ -64,6 +101,9 @@ const founders = [
     image: "/images/rassemblement1.webp"
   }
 ];
+
+// Fondateurs gérés dans WordPress (menu Membres), repli sur la liste ci-dessus.
+const founders = await getMembres("fondateur", defaultFounders);
 ---
 
 <MainLayout title="Histoire de Y'EN A MARRE" currentPath="/yenamarre/historique">
@@ -74,11 +114,10 @@ const founders = [
     <div class="absolute inset-0 bg-[url('/images/rassemblement1.webp')] opacity-10"></div>
     <div class="container-custom relative z-10">
       <div class="text-center max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-6xl font-bold mb-6">Notre Histoire</h1>
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">{t('hero_titre')}</h1>
         <div class="w-24 h-1 bg-white mx-auto mb-8"></div>
         <p class="text-xl md:text-2xl text-gray-200 leading-relaxed">
-          Depuis 2011, Y'EN A MARRE écrit l'histoire de l'engagement citoyen au Sénégal. 
-         Les moments clés qui ont marqué l'histoire de Y'EN A MARRE et son impact sur la société sénégalaise.
+          {t('hero_texte')}
         </p>
       </div>
     </div>
@@ -106,7 +145,7 @@ const founders = [
   <section class="py-20 bg-gray-50">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-6 text-yam-red">Chronologie du Mouvement</h2>
+        <h2 class="text-4xl font-bold mb-6 text-yam-red">{t('frise_titre')}</h2>
 
       
       <Timeline items={timelineItems} accentColor="bg-yam-red" />
@@ -116,8 +155,8 @@ const founders = [
   <!-- Impact Stats -->
   <ImpactStats 
     stats={impactStats}
-    title="Notre Impact en Chiffres"
-    subtitle="Plus d'une décennie d'engagement au service de la démocratie et de la bonne gouvernance"
+    title={t('impact_titre')}
+    subtitle={t('impact_sous_titre')}
     accentColor="yam-red"
   />
   
@@ -135,14 +174,12 @@ const founders = [
       <div class="grid lg:grid-cols-2 gap-16 items-center">
         <div class="space-y-8">
           <div>
-            <h2 class="text-4xl font-bold mb-6 text-yam-red">Notre Héritage</h2>
+            <h2 class="text-4xl font-bold mb-6 text-yam-red">{t('heritage_titre')}</h2>
             <div class="w-16 h-1 bg-yam-red mb-6"></div>
           </div>
           
           <p class="text-lg text-gray-700 leading-relaxed">
-            Plus qu'un mouvement politique, Y'EN A MARRE a créé une nouvelle culture citoyenne au Sénégal. 
-            Nous avons démontré que la jeunesse peut être un acteur de changement positif et que 
-            l'engagement citoyen est la clé du développement.
+            {t('heritage_texte')}
           </p>
           
           <div class="space-y-6">
@@ -153,9 +190,9 @@ const founders = [
                 </svg>
               </div>
               <div>
-                <h3 class="text-xl font-bold mb-2">Éveil des consciences</h3>
+                <h3 class="text-xl font-bold mb-2">{t('heritage1_titre')}</h3>
                 <p class="text-gray-700">
-                  Nous avons éveillé la conscience politique de milliers de jeunes Sénégalais
+                  {t('heritage1_texte')}
                 </p>
               </div>
             </div>
@@ -167,9 +204,9 @@ const founders = [
                 </svg>
               </div>
               <div>
-                <h3 class="text-xl font-bold mb-2">Nouveau modèle citoyen</h3>
+                <h3 class="text-xl font-bold mb-2">{t('heritage2_titre')}</h3>
                 <p class="text-gray-700">
-                  Le concept NTS (Nouveau Type de Sénégalais) inspire une nouvelle génération
+                  {t('heritage2_texte')}
                 </p>
               </div>
             </div>
@@ -181,9 +218,9 @@ const founders = [
                 </svg>
               </div>
               <div>
-                <h3 class="text-xl font-bold mb-2">Rayonnement continental</h3>
+                <h3 class="text-xl font-bold mb-2">{t('heritage3_titre')}</h3>
                 <p class="text-gray-700">
-                  Notre modèle inspire des mouvements citoyens à travers l'Afrique
+                  {t('heritage3_texte')}
                 </p>
               </div>
             </div>
@@ -192,14 +229,14 @@ const founders = [
         
         <div class="relative">
           <img 
-            src="/images/rassemblement2.webp" 
+            src={t('heritage_image')} 
             alt="Héritage Y'EN A MARRE" 
             class="w-full h-auto rounded-2xl shadow-2xl"
           />
           <div class="absolute -bottom-6 -right-6 bg-yam-red text-white p-6 rounded-lg shadow-lg">
             <div class="text-center">
-              <div class="text-3xl font-bold">2011</div>
-              <div class="text-sm">Année de création</div>
+              <div class="text-3xl font-bold">{t('heritage_annee')}</div>
+              <div class="text-sm">{t('heritage_annee_label')}</div>
             </div>
           </div>
         </div>

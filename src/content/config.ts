@@ -1,32 +1,29 @@
+import { defineCollection, z } from "astro:content";
 import { wpCollections } from "dewp/loaders";
+import { wpTypeLoader } from "./../loaders/wp-type-loader";
 
-export const collections = wpCollections({
-  endpoint: "https://yem.yenamarre.sn/yenamarre/wp-json/",
-});
+const endpoint = "https://yem.yenamarre.sn/yenamarre/wp-json/";
 
-const WP_BASE_URL = "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2";
+const wp = wpCollections({ endpoint });
 
-export interface WordPressContent {
-  id: number;
-  slug: string;
-  title: { rendered: string };
-  content: { rendered: string };
-  excerpt?: { rendered: string };
-  date: string;
-  type: string;
-  status: string;
-  featured_media?: number;
-  categories?: number[];
-  meta?: Record<string, any>;
-  link: string;
-}
+// Types de contenu WordPress lus au build (Projets, Membres, Bureaux, FAQ, menus).
+const wpType = (restBase: string) =>
+  defineCollection({ loader: wpTypeLoader({ endpoint, restBase }) });
 
-export interface MediaItem {
-  id: number;
-  source_url: string;
-  alt_text: string;
-  media_details: {
-    width: number;
-    height: number;
-  };
-}
+export const collections = {
+  ...wp,
+  // Le schéma dewp des pages supprime le champ `acf` : on l'ajoute pour
+  // pouvoir lire les champs ACF des pages WordPress.
+  pages: defineCollection({
+    loader: (wp.pages as { loader: any }).loader,
+    schema: (wp.pages.schema as z.AnyZodObject).extend({
+      acf: z.any().optional(),
+    }),
+  }),
+  projets: wpType("projet"),
+  membres: wpType("membre"),
+  bureaux: wpType("bureau"),
+  faqs: wpType("faq"),
+  // Menus de navigation (Apparence › Éditeur › Navigation)
+  navigations: wpType("navigation"),
+};

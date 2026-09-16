@@ -1,9 +1,21 @@
 ---
+import { getSiteSettings, field } from "../utils/wp";
+import { getMenu } from "../utils/wp-menus";
+
 export interface Props {
   currentPath?: string;
 }
 
 const { currentPath = "" } = Astro.props;
+
+// Menu principal éditable dans WordPress (Apparence › Éditeur › Navigation)
+const menu = await getMenu("menu-principal");
+
+// Réseaux sociaux éditables dans WordPress (page « Réglages du site »).
+const settings = await getSiteSettings();
+const facebookUrl = field(settings, "reseau_facebook", "https://www.facebook.com/YenamarreSenegal?mibextid=wwXIfr&rdid=F1uxGNdLjq79T343&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1ECuWoaHRK%2F%3Fmibextid%3DwwXIfr#");
+const xUrl = field(settings, "reseau_x", "https://x.com/yenamarre_nts?s=21&t=mFXqvOy5agR8QxDPpKZo5Q");
+const instagramUrl = field(settings, "reseau_instagram", "https://www.instagram.com/yem_nts?utm_source=qr");
 
 // Determine project-specific styling
 let buttonClass = "bg-yam-red text-white hover:bg-red-700";
@@ -55,95 +67,39 @@ const isProjectPage =
       <!-- Main Navigation -->
       <div class="pb-4 border-b border-gray-200">
         <div class="space-y-3">
-          <a
-            href="/"
-            class={`block px-3 py-2 rounded-lg ${isActive("/")} hover:bg-gray-100 hover:text-yam-red`}
-          >
-            Accueil
-          </a>
-
-          <a
-            href="/yenamarre"
-            class={`block px-3 py-2 rounded-lg ${isActive("/yenamarre")} hover:bg-gray-100 hover:text-yam-red`}
-          >
-            À propos
-          </a>
-
-          <!-- Projets avec sous-menu -->
-          <div class="space-y-2">
-            <div class={`px-3 py-2 ${isActive("/projets")} font-semibold`}>
-              Projets
-            </div>
-            <div class="ml-4 space-y-2 border-l-2 border-gray-200 pl-2">
+          {menu.map((item) =>
+            item.enfants.length > 0 ? (
+              <div class="space-y-2">
+                <div class={`px-3 py-2 ${isActive(item.url)} font-semibold`}>
+                  {item.label}
+                </div>
+                <div class="ml-4 space-y-2 border-l-2 border-gray-200 pl-2">
+                  {item.enfants.map((enfant) => (
+                    <a
+                      href={enfant.url}
+                      target={enfant.externe ? "_blank" : undefined}
+                      class={`block px-3 py-2 rounded-lg ${isActive(enfant.url)} hover:bg-gray-100 hover:text-yam-red flex items-center`}
+                    >
+                      {enfant.image && (
+                        <span class="w-5 h-5 mr-2">
+                          <img src={enfant.image} alt={enfant.label} class="w-full h-full object-contain" />
+                        </span>
+                      )}
+                      {enfant.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
               <a
-                href="/dox-ak-sa-gox"
-                class={`block px-3 py-2 rounded-lg ${isActive("/ltc")} hover:bg-gray-100 hover:text-yam-red flex items-center`}
+                href={item.url}
+                target={item.externe ? "_blank" : undefined}
+                class={`block px-3 py-2 rounded-lg ${isActive(item.url)} hover:bg-gray-100 hover:text-yam-red`}
               >
-                <span class="w-5 h-5 mr-2">
-                  <img
-                    src="/images/doxaksagox.jpg"
-                    alt="Dox ak Sa Gox"
-                    class="w-full h-full object-contain"
-                  />
-                </span>
-                Dox ak Sa Gox
+                {item.label}
               </a>
-              <a
-                href="#"
-                class={`block px-3 py-2 rounded-lg ${isActive("/ltc")} hover:bg-gray-100 hover:text-yam-red flex items-center`}
-              >
-                <span class="w-5 h-5 mr-2">
-                  <img
-                    src="/images/logo-ltc.jpeg"
-                    alt="LTC"
-                    class="w-full h-full object-contain"
-                  />
-                </span>
-                La Télé Citoyenne (LTC)
-              </a>
-              <a
-                href="#"
-                class={`block px-3 py-2 rounded-lg ${isActive("/karibu")} hover:bg-gray-100 hover:text-karibu-green flex items-center`}
-              >
-                <span class="w-5 h-5 mr-2">
-                  <img
-                    src="/images/citizenMic.jpeg"
-                    alt="Citizen Mic"
-                    class="w-full h-full object-contain"
-                  />
-                </span>
-                Citizen Mic
-              </a>
-              <a
-                href="https://karibu.yenamarre.sn/"
-                target="_blank"
-                class={`block px-3 py-2 rounded-lg ${isActive("/karibu")} hover:bg-gray-100 hover:text-karibu-green flex items-center`}
-              >
-                <span class="w-5 h-5 mr-2">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-karibu-fkSP6Sl0AUSZtdNJdL0POuaoH1uL4F.png"
-                    alt="Karibu"
-                    class="w-full h-full object-contain"
-                  />
-                </span>
-                Karibu
-              </a>
-            </div>
-          </div>
-
-          <a
-            href="/actualites"
-            class={`block px-3 py-2 rounded-lg ${isActive("/actualites")} hover:bg-gray-100 hover:text-yam-red`}
-          >
-            Actualités
-          </a>
-
-          <a
-            href="/contact"
-            class={`block px-3 py-2 rounded-lg ${isActive("/contact")} hover:bg-gray-100 hover:text-yam-red`}
-          >
-            Contact
-          </a>
+            )
+          )}
         </div>
       </div>
 
@@ -178,7 +134,7 @@ const isProjectPage =
       <!-- Social Links -->
       <div class="pt-4 flex justify-center space-x-4">
         <a
-          href="https://www.facebook.com/YenamarreSenegal?mibextid=wwXIfr&rdid=F1uxGNdLjq79T343&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1ECuWoaHRK%2F%3Fmibextid%3DwwXIfr#"
+          href={facebookUrl}
           target="_blank"
           aria-label="Facebook"
           class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors"
@@ -195,7 +151,7 @@ const isProjectPage =
           </svg>
         </a>
         <a
-          href="https://x.com/yenamarre_nts?s=21&t=mFXqvOy5agR8QxDPpKZo5Q"
+          href={xUrl}
           target="_blank"
           aria-label="Twitter"
           class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors"
@@ -212,7 +168,7 @@ const isProjectPage =
           </svg>
         </a>
         <a
-          href="https://www.instagram.com/yem_nts?utm_source=qr"
+          href={instagramUrl}
           target="_blank"
           aria-label="Instagram"
           class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors"

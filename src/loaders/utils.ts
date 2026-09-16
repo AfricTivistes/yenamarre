@@ -10,6 +10,11 @@ interface WordPressEvent {
   slug: string;
   title: { rendered: string };
   content: { rendered: string };
+  // Champs ACF (groupe « Événement de la frise »)
+  acf?: {
+    timeline_event_date?: string;
+    timeline_event_highlight?: string | boolean;
+  };
   meta?: {
     timeline_event_date?: string;
     timeline_event_highlight?: string | boolean;
@@ -19,7 +24,7 @@ interface WordPressEvent {
 export async function getTimelineEvents(): Promise<TimelineItem[]> {
   try {
     const response = await fetch(
-      "https://yem.yenamarre.sn/yenamarre/wp-json/wp/v2/timeline_event?per_page=100&_embed=true",
+      `${import.meta.env.WORDPRESS_API_URL || "https://yem.yenamarre.sn/yenamarre/wp-json"}/wp/v2/timeline_event?per_page=100&_embed=true`,
     );
 
     if (!response.ok) {
@@ -29,26 +34,29 @@ export async function getTimelineEvents(): Promise<TimelineItem[]> {
     const events: WordPressEvent[] = await response.json();
 
 
-    const timelineItems: TimelineItem[] = events.map((event) => ({
-      date: event.meta?.timeline_event_date || "",
-      title: event.title.rendered
-        .replace(/<\/?[^>]+(>|$)/g, "")
-        .replace(/&#39;/g, "'")
-        .replace(/&rsquo;/g, "'")
-        .replace(/&lsquo;/g, "'")
-        .replace(/&quot;/g, '"')
-        .replace(/&amp;/g, "&"),
-      description: event.content.rendered
-        .replace(/<\/?[^>]+(>|$)/g, "")
-        .replace(/&#39;/g, "'")
-        .replace(/&rsquo;/g, "'")
-        .replace(/&lsquo;/g, "'")
-        .replace(/&quot;/g, '"')
-        .replace(/&amp;/g, "&"),
-      highlight:
-        event.meta?.timeline_event_highlight === "1" ||
-        event.meta?.timeline_event_highlight === true,
-    }));
+    const timelineItems: TimelineItem[] = events.map((event) => {
+      const champs = event.acf && !Array.isArray(event.acf) ? event.acf : event.meta;
+      return {
+        date: champs?.timeline_event_date || "",
+        title: event.title.rendered
+          .replace(/<\/?[^>]+(>|$)/g, "")
+          .replace(/&#39;/g, "'")
+          .replace(/&rsquo;/g, "'")
+          .replace(/&lsquo;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, "&"),
+        description: event.content.rendered
+          .replace(/<\/?[^>]+(>|$)/g, "")
+          .replace(/&#39;/g, "'")
+          .replace(/&rsquo;/g, "'")
+          .replace(/&lsquo;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, "&"),
+        highlight:
+          champs?.timeline_event_highlight === "1" ||
+          champs?.timeline_event_highlight === true,
+      };
+    });
 
     // Trier les événements par date (format "JJ Mois AAAA")
     const sortedItems = timelineItems
