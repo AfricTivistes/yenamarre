@@ -20,9 +20,12 @@ const props = Astro.props;
 const WP_HERO_PAGES: Record<string, string> = { index: 'home' };
 
 // 1. Hero WordPress (si activé), 2. héros Decap CMS actif, 3. props.
+// Si l'interrupteur WordPress est décoché, le hero n'est pas affiché.
 const wpSlug = props.page ? WP_HERO_PAGES[props.page] : undefined;
 const wp = wpSlug ? await getPageAcf(wpSlug) : {};
 const wpActif = wp.hero_actif === true || wp.hero_actif === 1 || wp.hero_actif === '1';
+// Interrupteur « Afficher le hero » décoché dans WordPress → section masquée.
+const masque = wpSlug !== undefined && 'hero_actif' in wp && !wpActif;
 
 // Vérifier s'il y a un héros personnalisé actif pour cette page
 const customHero = !wpActif && props.page ? getActiveHero(props.page) : null;
@@ -47,6 +50,7 @@ const ctaUrl = field(w, 'hero_cta_url', base.ctaUrl);
 const showWaveDivider = wpActif && w.hero_vague != null ? Boolean(w.hero_vague) : base.showWaveDivider;
 ---
 
+{!masque && (
 <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">
   <!-- Image d'arrière-plan -->
   <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style={`background-image: url('${backgroundImage}');`}></div>
@@ -90,3 +94,4 @@ const showWaveDivider = wpActif && w.hero_vague != null ? Boolean(w.hero_vague) 
     </div>
   )}
 </section>
+)}

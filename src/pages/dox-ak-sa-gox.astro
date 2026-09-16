@@ -83,7 +83,8 @@ const activites = [
     icon: getIcon(f('act2_icone')),
   },
   {
-    titre: f('act3_titre'),
+    // Le champ WordPress a été créé sous le nom « act3_Titre » : on accepte les deux.
+    titre: f('act3_titre') || f('act3_Titre'),
     texte: f('act3_texte'),
     gradient: 'from-orange-600 to-orange-700',
     icon: getIcon(f('act3_icone')),
