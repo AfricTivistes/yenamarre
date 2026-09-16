@@ -3,6 +3,51 @@ import MainLayout from '../../layouts/MainLayout.astro';
 import ProjectNavbar from '../../components/ProjectNavbar.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { getProjets } from '../../utils/wp-contenus';
+import { getPageAcf, field } from '../../utils/wp';
+
+// Textes éditables dans WordPress (page « Qui sommes-nous », slug `qui-sommes-nous`).
+// Champ vide ou WordPress injoignable → texte par défaut ci-dessous.
+const TEXTES: Record<string, string> = {
+  hero_titre: "Y'EN A MARRE",
+  hero_sous_titre: "Le mouvement citoyen du Sénégal",
+  hero_texte: "Depuis 2011, Y'EN A MARRE lutte pour la démocratie, la bonne gouvernance et l'engagement civique au Sénégal.",
+  hero_bouton1: "Notre Vision",
+  hero_bouton2: "Notre Histoire",
+  hero_badge: "Depuis 2011",
+  vision_titre: "Notre Vision & Mission",
+  vision_intro: "Construire une société sénégalaise démocratique, transparente et participative où chaque citoyen peut exercer pleinement ses droits.",
+  vision_sous_titre: "Notre Vision",
+  vision_texte: "Un Sénégal où la jeunesse est actrice du changement social et politique, où la démocratie est effective et où la bonne gouvernance est la norme.",
+  mission_sous_titre: "Notre Mission",
+  mission_texte: "Mobiliser, éduquer et organiser la société civile, particulièrement les jeunes, pour promouvoir la démocratie participative, la bonne gouvernance et l'engagement citoyen.",
+  vision_image: "/images/yem_sign.webp",
+  valeurs_titre: "Nos Valeurs Fondamentales",
+  valeurs_intro: "Les principes qui guident notre action et notre engagement quotidien.",
+  valeur1_titre: "Intégrité",
+  valeur1_texte: "Agir avec honnêteté, transparence et cohérence dans toutes nos actions.",
+  valeur2_titre: "Solidarité",
+  valeur2_texte: "Construire des liens forts entre citoyens pour un engagement collectif.",
+  valeur3_titre: "Justice",
+  valeur3_texte: "Lutter pour l'égalité, l'équité et le respect des droits de tous.",
+  valeur4_titre: "Innovation",
+  valeur4_texte: "Adopter des approches créatives pour relever les défis de notre époque.",
+  combats_titre: "Nos Combats",
+  combats_intro: "Depuis 2011, nous menons des combats concrets pour transformer la société sénégalaise.",
+  combat1_titre: "Nouveau Type de Sénégalais",
+  combat1_texte: "Promouvoir une nouvelle citoyenneté axée sur la justice, l'équité et le progrès social.",
+  combat2_titre: "Plan Daas Fanaanal",
+  combat2_texte: "Inciter les jeunes à s'inscrire sur les listes électorales pour l'élection présidentielle de 2011",
+  combat3_titre: "Faux pas Forcé",
+  combat3_texte: "s'oppose à la troisième candidature d'Abdoulaye Wade avec le programme 'Doggali'.",
+  projets_titre: "Nos Projets Phares",
+  projets_intro: "Découvrez nos programmes concrets qui transforment les communautés à travers tout le Sénégal.",
+  organisation_titre: "Structure Organisationnelle",
+  organisation_intro: "Y'EN A MARRE s'organise selon un modèle démocratique et participatif qui garantit la représentativité et l'efficacité de l'action.",
+  organigramme_image: "/images/organigramme_yem.png",
+  organigramme_legende: "Structure organisationnelle de Y'EN A MARRE",
+};
+const textesWp = await getPageAcf('qui-sommes-nous');
+const t = (key: string): string => field(textesWp, key, TEXTES[key]);
 
 const navItems = [
   { name: 'Accueil', href: '/yenamarre', current: true },
@@ -35,20 +80,20 @@ const cmsProjects = await getProjets();
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div class="text-white space-y-6">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-yam-red">
-            Y'EN A MARRE
-            <span class="block text-white text-3xl md:text-4xl mt-2">Le mouvement citoyen du Sénégal</span>
+            {t('hero_titre')}
+            <span class="block text-white text-3xl md:text-4xl mt-2">{t('hero_sous_titre')}</span>
           </h1>
 
           <p class="text-lg md:text-xl text-gray-300">
-            Depuis 2011, Y'EN A MARRE lutte pour la démocratie, la bonne gouvernance et l'engagement civique au Sénégal.
+            {t('hero_texte')}
           </p>
 
           <div class="flex flex-wrap gap-4 mt-8">
             <a href="#vision" class="btn bg-transparent border-2 border-white text-white hover:bg-white/10 transform transition-all hover:scale-105 py-3 px-6 rounded-lg" >
-              Notre Vision
+              {t('hero_bouton1')}
             </a>
             <a href="/yenamarre/historique" class="btn bg-yam-red text-white hover:bg-red-700 transform transition-all hover:scale-105 hover:shadow-lg py-3 px-6 rounded-lg" >
-              Notre Histoire
+              {t('hero_bouton2')}
             </a>
           </div>
         </div>
@@ -62,7 +107,7 @@ const cmsProjects = await getProjets();
             />
           </div>
           <div class="absolute -bottom-4 -right-4 bg-yam-red text-white px-6 py-3 rounded-lg font-bold shadow-lg">
-            Depuis 2011
+            {t('hero_badge')}
           </div>
         </div>
       </div>
@@ -80,10 +125,10 @@ const cmsProjects = await getProjets();
   <section id="vision" class="py-20 bg-white">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-6">Notre Vision & Mission</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">{t('vision_titre')}</h2>
         <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-600 max-w-4xl mx-auto">
-          Construire une société sénégalaise démocratique, transparente et participative où chaque citoyen peut exercer pleinement ses droits.
+          {t('vision_intro')}
         </p>
       </div>
 
@@ -96,10 +141,10 @@ const cmsProjects = await getProjets();
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              Notre Vision
+              {t('vision_sous_titre')}
             </h3>
             <p class="text-lg text-gray-700 leading-relaxed">
-              Un Sénégal où la jeunesse est actrice du changement social et politique, où la démocratie est effective et où la bonne gouvernance est la norme.
+              {t('vision_texte')}
             </p>
           </div>
 
@@ -108,18 +153,17 @@ const cmsProjects = await getProjets();
               <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-yam-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              Notre Mission
+              {t('mission_sous_titre')}
             </h3>
             <p class="text-lg text-gray-700 leading-relaxed">
-              Mobiliser, éduquer et organiser la société civile, particulièrement les jeunes, 
-              pour promouvoir la démocratie participative, la bonne gouvernance et l'engagement citoyen.
+              {t('mission_texte')}
             </p>
           </div>
         </div>
 
         <div class="relative">
           <img 
-            src="/images/yem_sign.webp" 
+            src={t('vision_image')} 
             alt="Vision Y'EN A MARRE" 
             class="w-full h-auto rounded-2xl shadow-2xl"
           />
@@ -130,10 +174,10 @@ const cmsProjects = await getProjets();
 
     <div class="mt-10 container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-6 text-yam-red">Nos Valeurs Fondamentales</h2>
+        <h2 class="text-4xl font-bold mb-6 text-yam-red">{t('valeurs_titre')}</h2>
         <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Les principes qui guident notre action et notre engagement quotidien.
+          {t('valeurs_intro')}
         </p>
       </div>
 
@@ -144,9 +188,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-3">Intégrité</h3>
+          <h3 class="text-xl font-bold mb-3">{t('valeur1_titre')}</h3>
           <p class="text-gray-600">
-            Agir avec honnêteté, transparence et cohérence dans toutes nos actions.
+            {t('valeur1_texte')}
           </p>
         </div>
 
@@ -156,9 +200,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-3">Solidarité</h3>
+          <h3 class="text-xl font-bold mb-3">{t('valeur2_titre')}</h3>
           <p class="text-gray-600">
-            Construire des liens forts entre citoyens pour un engagement collectif.
+            {t('valeur2_texte')}
           </p>
         </div>
 
@@ -168,9 +212,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-3">Justice</h3>
+          <h3 class="text-xl font-bold mb-3">{t('valeur3_titre')}</h3>
           <p class="text-gray-600">
-            Lutter pour l'égalité, l'équité et le respect des droits de tous.
+            {t('valeur3_texte')}
           </p>
         </div>
 
@@ -180,9 +224,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-3">Innovation</h3>
+          <h3 class="text-xl font-bold mb-3">{t('valeur4_titre')}</h3>
           <p class="text-gray-600">
-            Adopter des approches créatives pour relever les défis de notre époque.
+            {t('valeur4_texte')}
           </p>
         </div>
       </div>
@@ -195,10 +239,10 @@ const cmsProjects = await getProjets();
     <div class="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=1200&query=Abstract pattern red and black')] opacity-10"></div>
     <div class="container-custom relative z-10">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-6">Nos Combats</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">{t('combats_titre')}</h2>
         <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-300 max-w-4xl mx-auto">
-          Depuis 2011, nous menons des combats concrets pour transformer la société sénégalaise.
+          {t('combats_intro')}
         </p>
       </div>
 
@@ -209,9 +253,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-4">Nouveau Type de Sénégalais</h3>
+          <h3 class="text-xl font-bold mb-4">{t('combat1_titre')}</h3>
           <p class="text-gray-300 leading-relaxed">
-            Promouvoir une nouvelle citoyenneté axée sur la justice, l'équité et le progrès social.
+            {t('combat1_texte')}
           </p>
         </div>
 
@@ -221,9 +265,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-4">Plan Daas Fanaanal</h3>
+          <h3 class="text-xl font-bold mb-4">{t('combat2_titre')}</h3>
           <p class="text-gray-300 leading-relaxed">
-            Inciter les jeunes à s'inscrire sur les listes électorales pour l'élection présidentielle de 2011
+            {t('combat2_texte')}
           </p>
         </div>
 
@@ -233,9 +277,9 @@ const cmsProjects = await getProjets();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold mb-4">Faux pas Forcé</h3>
+          <h3 class="text-xl font-bold mb-4">{t('combat3_titre')}</h3>
           <p class="text-gray-300 leading-relaxed">
-            s'oppose à la troisième candidature d'Abdoulaye Wade avec le programme 'Doggali'.
+            {t('combat3_texte')}
           </p>
         </div>
       </div>
@@ -246,10 +290,10 @@ const cmsProjects = await getProjets();
   <section class="py-20 bg-gray-50">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yam-red">Nos Projets Phares</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-yam-red">{t('projets_titre')}</h2>
         <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-600 max-w-4xl mx-auto">
-          Découvrez nos programmes concrets qui transforment les communautés à travers tout le Sénégal.
+          {t('projets_intro')}
         </p>
       </div>
 
@@ -271,11 +315,10 @@ const cmsProjects = await getProjets();
   <section id="organisation" class="py-20 bg-white">
     <div class="container-custom">
       <div class="text-center mb-16">
-        <h2 class="text-4xl font-bold mb-6 text-yam-red">Structure Organisationnelle</h2>
+        <h2 class="text-4xl font-bold mb-6 text-yam-red">{t('organisation_titre')}</h2>
         <div class="w-24 h-1 bg-yam-red mx-auto mb-8"></div>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Y'EN A MARRE s'organise selon un modèle démocratique et participatif 
-          qui garantit la représentativité et l'efficacité de l'action.
+          {t('organisation_intro')}
         </p>
       </div>
 
@@ -283,13 +326,13 @@ const cmsProjects = await getProjets();
       <div class="max-w-6xl mx-auto">
         <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8 overflow-hidden">
           <img 
-            src="/images/organigramme_yem.png" 
+            src={t('organigramme_image')} 
             alt="Organigramme Y'EN A MARRE - Structure organisationnelle du mouvement" 
             class="w-full h-auto object-contain rounded-xl transition-transform hover:scale-105"
           />
           <div class="mt-6 text-center">
             <p class="text-sm text-gray-600 italic">
-              Structure organisationnelle de Y'EN A MARRE
+              {t('organigramme_legende')}
             </p>
           </div>
         </div>
