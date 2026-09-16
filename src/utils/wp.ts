@@ -13,6 +13,14 @@ export async function getPageAcf(slug: string): Promise<Acf> {
   return raw && !Array.isArray(raw) && typeof raw === 'object' ? raw : {};
 }
 
+/**
+ * Réglages globaux du site : champs ACF de la page WordPress
+ * « Réglages du site » (slug `reglages-du-site`).
+ */
+export function getSiteSettings(): Promise<Acf> {
+  return getPageAcf('reglages-du-site');
+}
+
 /** Valeur WordPress non vide, sinon repli sur `fallback`. */
 export function field(acf: Acf, key: string, fallback: string): string {
   const v = acf[key];

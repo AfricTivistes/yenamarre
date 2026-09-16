@@ -1,9 +1,17 @@
 ---
+import { getSiteSettings, field } from "../utils/wp";
+
 export interface Props {
   currentPath?: string;
 }
 
 const { currentPath = "" } = Astro.props;
+
+// Réseaux sociaux éditables dans WordPress (page « Réglages du site »).
+const settings = await getSiteSettings();
+const facebookUrl = field(settings, "reseau_facebook", "https://www.facebook.com/YenamarreSenegal?mibextid=wwXIfr&rdid=F1uxGNdLjq79T343&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1ECuWoaHRK%2F%3Fmibextid%3DwwXIfr#");
+const xUrl = field(settings, "reseau_x", "https://x.com/yenamarre_nts?s=21&t=mFXqvOy5agR8QxDPpKZo5Q");
+const instagramUrl = field(settings, "reseau_instagram", "https://www.instagram.com/yem_nts?utm_source=qr");
 
 // Determine project-specific styling
 let buttonClass = "bg-yam-red text-white hover:bg-red-700";
@@ -178,7 +186,7 @@ const isProjectPage =
       <!-- Social Links -->
       <div class="pt-4 flex justify-center space-x-4">
         <a
-          href="https://www.facebook.com/YenamarreSenegal?mibextid=wwXIfr&rdid=F1uxGNdLjq79T343&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1ECuWoaHRK%2F%3Fmibextid%3DwwXIfr#"
+          href={facebookUrl}
           target="_blank"
           aria-label="Facebook"
           class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors"
@@ -195,7 +203,7 @@ const isProjectPage =
           </svg>
         </a>
         <a
-          href="https://x.com/yenamarre_nts?s=21&t=mFXqvOy5agR8QxDPpKZo5Q"
+          href={xUrl}
           target="_blank"
           aria-label="Twitter"
           class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors"
@@ -212,7 +220,7 @@ const isProjectPage =
           </svg>
         </a>
         <a
-          href="https://www.instagram.com/yem_nts?utm_source=qr"
+          href={instagramUrl}
           target="_blank"
           aria-label="Instagram"
           class="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors"
