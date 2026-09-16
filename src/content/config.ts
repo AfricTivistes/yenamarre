@@ -6,7 +6,7 @@ const endpoint = "https://yem.yenamarre.sn/yenamarre/wp-json/";
 
 const wp = wpCollections({ endpoint });
 
-// Types de contenu créés dans WordPress (menus Projets, Membres, Bureaux, FAQ).
+// Types de contenu WordPress lus au build (Projets, Membres, Bureaux, FAQ, menus).
 const wpType = (restBase: string) =>
   defineCollection({ loader: wpTypeLoader({ endpoint, restBase }) });
 
@@ -24,4 +24,6 @@ export const collections = {
   membres: wpType("membre"),
   bureaux: wpType("bureau"),
   faqs: wpType("faq"),
+  // Menus de navigation (Apparence › Éditeur › Navigation)
+  navigations: wpType("navigation"),
 };

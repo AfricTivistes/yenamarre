@@ -1,5 +1,6 @@
 ---
 import { getSiteSettings, field } from "../utils/wp";
+import { getMenu } from "../utils/wp-menus";
 
 export interface Props {
   currentPath?: string;
@@ -13,6 +14,11 @@ const facebookUrl = field(settings, "reseau_facebook", "#");
 const xUrl = field(settings, "reseau_x", "https://x.com/yenamarre_nts?s=21&t=mFXqvOy5agR8QxDPpKZo5Q");
 const instagramUrl = field(settings, "reseau_instagram", "https://www.instagram.com/yem_nts?utm_source=qr");
 const youtubeUrl = field(settings, "reseau_youtube", "https://www.youtube.com/channel/UCWkHjPJOt6K7kKyQ7kw5CwQ");
+
+// Menus du footer éditables dans WordPress (Apparence › Éditeur › Navigation).
+const liensRapides = await getMenu("footer-liens-rapides");
+const nosProjets = await getMenu("footer-nos-projets");
+const liensLegaux = await getMenu("footer-liens-legaux");
 
 // Determine project-specific styling
 let projectLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-yen-a-marre-99viuAdBsKGYkpE7Ox6BCY4aqAHYO1.webp";
@@ -80,11 +86,9 @@ if (currentPath.startsWith("/karibu")) {
       <div>
         <h3 class="text-lg font-bold mb-4">Liens Rapides</h3>
         <ul class="space-y-2">
-          <li><a href="/" class={hoverColor}>Accueil</a></li>
-          <li><a href={currentPath.startsWith("/karibu") ? "/a-propos/karibu" : currentPath.startsWith("/ltc") ? "/a-propos/ltc" : "/a-propos/yenamarre"} class={hoverColor}>À propos</a></li>
-          <li><a href="/actualites" class={hoverColor}>Actualités</a></li>
-          <li><a href="/contact" class={hoverColor}>Contact</a></li>
-          <li><a href="/rejoindre" class={hoverColor}>Rejoignez-nous</a></li>
+          {liensRapides.map((item) => (
+            <li><a href={item.url} target={item.externe ? "_blank" : undefined} class={hoverColor}>{item.label}</a></li>
+          ))}
         </ul>
       </div>
 
@@ -92,11 +96,9 @@ if (currentPath.startsWith("/karibu")) {
       <div>
         <h3 class="text-lg font-bold mb-4">Nos Projets</h3>
         <ul class="space-y-2">
-          <li><a href="/yenamarre" class={hoverColor}>Y'EN A MARRE</a></li>
-          <li><a href="/ltc" class={hoverColor}>La Télé Citoyenne</a></li>
-          <li><a href="/karibu" class={hoverColor}>Karibu</a></li>
-          <li><a href="/projets/dox-ak-sa-gox" class={hoverColor}>Dox Ak Sa Gox</a></li>
-          <li><a href="/projets/citizen-mic" class={hoverColor}>Citizen Mic</a></li>
+          {nosProjets.map((item) => (
+            <li><a href={item.url} target={item.externe ? "_blank" : undefined} class={hoverColor}>{item.label}</a></li>
+          ))}
         </ul>
       </div>
 
@@ -123,8 +125,9 @@ if (currentPath.startsWith("/karibu")) {
     <div class="border-t border-gray-800 mt-12 pt-6 text-sm text-center md:flex md:justify-between md:text-left">
       <p>&copy; {new Date().getFullYear()} {projectName}. Tous droits réservés.</p>
       <div class="mt-4 md:mt-0 space-x-4">
-        <a href="/mentions-legales" class={hoverColor}>Mentions légales</a>
-        <a href="/politique-de-confidentialite" class={hoverColor}>Politique de confidentialité</a>
+        {liensLegaux.map((item) => (
+          <a href={item.url} target={item.externe ? "_blank" : undefined} class={hoverColor}>{item.label}</a>
+        ))}
       </div>
     </div>
   </div>
