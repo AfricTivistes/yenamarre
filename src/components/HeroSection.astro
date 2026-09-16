@@ -1,6 +1,7 @@
 
 ---
 import { getActiveHero } from '../utils/cms';
+import { getPageAcf, field } from '../utils/wp';
 
 export interface Props {
   title: string;
@@ -15,17 +16,35 @@ export interface Props {
 
 const props = Astro.props;
 
+// Page WordPress portant le groupe ACF « Hero » pour chaque page Astro.
+const WP_HERO_PAGES: Record<string, string> = { index: 'home' };
+
+// 1. Hero WordPress (si activé), 2. héros Decap CMS actif, 3. props.
+const wpSlug = props.page ? WP_HERO_PAGES[props.page] : undefined;
+const wp = wpSlug ? await getPageAcf(wpSlug) : {};
+const wpActif = wp.hero_actif === true || wp.hero_actif === 1 || wp.hero_actif === '1';
+
 // Vérifier s'il y a un héros personnalisé actif pour cette page
-const customHero = props.page ? getActiveHero(props.page) : null;
+const customHero = !wpActif && props.page ? getActiveHero(props.page) : null;
 
 // Utiliser les données du CMS si disponibles, sinon utiliser les props
-const title = customHero?.title || props.title;
-const highlightedText = customHero?.highlightedText || props.highlightedText;
-const description = customHero?.description || props.description;
-const backgroundImage = customHero?.backgroundImage || props.backgroundImage;
-const ctaText = customHero?.ctaText || props.ctaText || "En savoir plus";
-const ctaUrl = customHero?.ctaUrl || props.ctaUrl || "/yenamarre";
-const showWaveDivider = customHero?.showWaveDivider !== undefined ? customHero.showWaveDivider : (props.showWaveDivider ?? true);
+const base = {
+  title: customHero?.title || props.title,
+  highlightedText: customHero?.highlightedText || props.highlightedText,
+  description: customHero?.description || props.description,
+  backgroundImage: customHero?.backgroundImage || props.backgroundImage,
+  ctaText: customHero?.ctaText || props.ctaText || "En savoir plus",
+  ctaUrl: customHero?.ctaUrl || props.ctaUrl || "/yenamarre",
+  showWaveDivider: customHero?.showWaveDivider !== undefined ? customHero.showWaveDivider : (props.showWaveDivider ?? true),
+};
+const w = wpActif ? wp : {};
+const title = field(w, 'hero_titre', base.title);
+const highlightedText = field(w, 'hero_texte_surligne', base.highlightedText);
+const description = field(w, 'hero_description', base.description);
+const backgroundImage = field(w, 'hero_image', field(w, 'hero_image_url', base.backgroundImage));
+const ctaText = field(w, 'hero_cta_texte', base.ctaText);
+const ctaUrl = field(w, 'hero_cta_url', base.ctaUrl);
+const showWaveDivider = wpActif && w.hero_vague != null ? Boolean(w.hero_vague) : base.showWaveDivider;
 ---
 
 <section class="relative min-h-[90vh] bg-gradient-to-br from-gray-900 to-black overflow-hidden">

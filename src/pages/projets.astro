@@ -1,10 +1,10 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ProjectDetailCard from '../components/ProjectDetailCard.astro';
-import { getProjects } from '../utils/cms';
+import { getProjets } from '../utils/wp-contenus';
 
-// Charger les projets depuis le CMS
-const cmsProjects = getProjects();
+// Charger les projets depuis WordPress (repli : Decap CMS)
+const cmsProjects = await getProjets();
 
 // Projets par défaut
 const defaultProjects = [

@@ -4,6 +4,7 @@ import ProjectNavbar from "../../components/ProjectNavbar.astro";
 import Timeline from "../../components/Timeline.astro";
 import ImpactStats from "../../components/ImpactStats.astro";
 import { getTimelineEvents } from "../../loaders/utils.ts";
+import { getMembres } from "../../utils/wp-contenus";
 
 const navItems = [
   { name: 'Accueil', href: '/yenamarre' },
@@ -38,7 +39,7 @@ const impactStats = [
   }
 ];
 
-const founders = [
+const defaultFounders = [
   {
     name: "Thiat",
     role: "Rappeur et activiste",
@@ -64,6 +65,9 @@ const founders = [
     image: "/images/rassemblement1.webp"
   }
 ];
+
+// Fondateurs gérés dans WordPress (menu Membres), repli sur la liste ci-dessus.
+const founders = await getMembres("fondateur", defaultFounders);
 ---
 
 <MainLayout title="Histoire de Y'EN A MARRE" currentPath="/yenamarre/historique">

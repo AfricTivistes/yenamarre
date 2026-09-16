@@ -1,6 +1,7 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import { getSiteSettings, field } from '../utils/wp';
+import { getFaqs } from '../utils/wp-contenus';
 
 // Coordonnées et réseaux éditables dans WordPress (page « Réglages du site »).
 const settings = await getSiteSettings();
@@ -15,6 +16,13 @@ const facebookUrl = field(settings, 'reseau_facebook', 'https://www.facebook.com
 const xUrl = field(settings, 'reseau_x', 'https://x.com/yenamarre_nts?s=21&t=mFXqvOy5agR8QxDPpKZo5Q');
 const instagramUrl = field(settings, 'reseau_instagram', 'https://www.instagram.com/yem_nts?utm_source=qr');
 const youtubeUrl = field(settings, 'reseau_youtube', 'https://www.youtube.com/@Yenamarresenegal');
+
+// Questions fréquentes gérées dans WordPress (menu FAQ), repli sur ces textes.
+const faqs = await getFaqs([
+  { question: "Comment rejoindre Y'EN A MARRE ?", reponse: 'Vous pouvez nous contacter via ce formulaire ou participer à nos événements publics.' },
+  { question: 'Organisez-vous des formations ?', reponse: 'Oui, nous proposons des formations civiques et des ateliers de sensibilisation.' },
+  { question: 'Comment soutenir vos actions ?', reponse: 'Plusieurs moyens existent : bénévolat, dons, partage de nos contenus, participation aux événements.' },
+]);
 ---
 
 <MainLayout title="Contact - Y'EN A MARRE" currentPath="/contact">
@@ -302,20 +310,12 @@ const youtubeUrl = field(settings, 'reseau_youtube', 'https://www.youtube.com/@Y
       </div>
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
-          <h3 class="font-bold text-lg mb-3 text-yam-red">Comment rejoindre Y'EN A MARRE ?</h3>
-          <p class="text-gray-600 text-sm">Vous pouvez nous contacter via ce formulaire ou participer à nos événements publics.</p>
-        </div>
-        
-        <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
-          <h3 class="font-bold text-lg mb-3 text-yam-red">Organisez-vous des formations ?</h3>
-          <p class="text-gray-600 text-sm">Oui, nous proposons des formations civiques et des ateliers de sensibilisation.</p>
-        </div>
-        
-        <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
-          <h3 class="font-bold text-lg mb-3 text-yam-red">Comment soutenir vos actions ?</h3>
-          <p class="text-gray-600 text-sm">Plusieurs moyens existent : bénévolat, dons, partage de nos contenus, participation aux événements.</p>
-        </div>
+        {faqs.map((faq) => (
+          <div class="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all">
+            <h3 class="font-bold text-lg mb-3 text-yam-red">{faq.question}</h3>
+            <p class="text-gray-600 text-sm">{faq.reponse}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
