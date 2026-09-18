@@ -6,6 +6,7 @@ import ImpactStats from "../../components/ImpactStats.astro";
 import { getTimelineEvents } from "../../loaders/utils.ts";
 import { getMembres } from "../../utils/wp-contenus";
 import { getPageAcf, field } from '../../utils/wp';
+import { getChiffresImpact } from '../../utils/stats';
 
 // Textes éditables dans WordPress (page « Historique », slug `historique`).
 // Champ vide ou WordPress injoignable → texte par défaut ci-dessous.
@@ -13,18 +14,6 @@ const TEXTES: Record<string, string> = {
   hero_titre: "Notre Histoire",
   hero_texte: "Depuis 2011, Y'EN A MARRE écrit l'histoire de l'engagement citoyen au Sénégal. Les moments clés qui ont marqué l'histoire de Y'EN A MARRE et son impact sur la société sénégalaise.",
   frise_titre: "Chronologie du Mouvement",
-  stat1_nombre: "12",
-  stat1_label: "Années d'activisme",
-  stat1_description: "Plus d'une décennie d'engagement",
-  stat2_nombre: "100000",
-  stat2_label: "Citoyens mobilisés",
-  stat2_description: "À travers tout le Sénégal",
-  stat3_nombre: "50",
-  stat3_label: "Campagnes menées",
-  stat3_description: "Pour la démocratie et la bonne gouvernance",
-  stat4_nombre: "14",
-  stat4_label: "Régions touchées",
-  stat4_description: "Présence sur tout le territoire national",
   impact_titre: "Notre Impact en Chiffres",
   impact_sous_titre: "Plus d'une décennie d'engagement au service de la démocratie et de la bonne gouvernance",
   heritage_titre: "Notre Héritage",
@@ -52,28 +41,8 @@ const navItems = [
 
 const timelineItems = await getTimelineEvents();
 
-const impactStats = [
-  {
-    number: t('stat1_nombre'),
-    label: t('stat1_label'),
-    description: t('stat1_description')
-  },
-  {
-    number: t('stat2_nombre'),
-    label: t('stat2_label'),
-    description: t('stat2_description')
-  },
-  {
-    number: t('stat3_nombre'),
-    label: t('stat3_label'),
-    description: t('stat3_description')
-  },
-  {
-    number: t('stat4_nombre'),
-    label: t('stat4_label'),
-    description: t('stat4_description')
-  }
-];
+// Chiffres d'impact : page WordPress « Historique », repris aussi par l'accueil.
+const impactStats = await getChiffresImpact();
 
 const defaultFounders = [
   {

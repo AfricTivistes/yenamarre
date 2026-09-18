@@ -11,6 +11,7 @@ import CategoriesSection from "../components/CategoriesSection.astro";
 import { getCollection, getEntry } from "astro:content";
 import { getProjets } from "../utils/wp-contenus";
 import { getPageAcf, field } from '../utils/wp';
+import { getChiffresImpact } from '../utils/stats';
 
 // Textes éditables dans WordPress (page « home », slug `home`).
 // Champ vide ou WordPress injoignable → texte par défaut ci-dessous.
@@ -25,14 +26,6 @@ const TEXTES: Record<string, string> = {
   mission3_texte: "Nous luttons contre la corruption et promouvons la transparence et la responsabilité dans la gestion des affaires publiques.",
   impact_titre: "Notre impact",
   impact_texte: "Depuis notre création, nous avons mobilisé des milliers de citoyens et mené des dizaines de campagnes pour promouvoir la démocratie et la bonne gouvernance au Sénégal.",
-  stat1_nombre: "12",
-  stat1_label: "Années d'activisme",
-  stat2_nombre: "50",
-  stat2_label: "Campagnes menées",
-  stat3_nombre: "100000",
-  stat3_label: "Citoyens mobilisés",
-  stat4_nombre: "14",
-  stat4_label: "Régions touchées",
   projets_titre: "Nos projets",
   projets_texte: "Découvrez les différentes initiatives de Y'EN A MARRE pour promouvoir la démocratie, la bonne gouvernance et l'engagement civique.",
   actus_titre: "Actualités récentes",
@@ -42,6 +35,9 @@ const TEXTES: Record<string, string> = {
 };
 const textesWp = await getPageAcf('home');
 const t = (key: string): string => field(textesWp, key, TEXTES[key]);
+
+// Chiffres « Notre impact » : mêmes chiffres que la page Historique (source unique).
+const chiffres = await getChiffresImpact();
 
 // Récupérer les projets depuis WordPress (repli : Decap CMS)
 const cmsProjects = await getProjets();
@@ -232,14 +228,9 @@ const recentNews = allPosts
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <StatsCounter number={t('stat1_nombre')} label={t('stat1_label')} color="yam-red" />
-        <StatsCounter number={t('stat2_nombre')} label={t('stat2_label')} color="yam-red" />
-        <StatsCounter
-          number={t('stat3_nombre')}
-          label={t('stat3_label')}
-          color="yam-red"
-        />
-        <StatsCounter number={t('stat4_nombre')} label={t('stat4_label')} color="yam-red" />
+        {chiffres.map((chiffre) => (
+          <StatsCounter number={chiffre.number} label={chiffre.label} color="yam-red" />
+        ))}
       </div>
     </div>
   </section>

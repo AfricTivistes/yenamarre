@@ -1,4 +1,6 @@
 ---
+import { parseStat } from "../utils/stats";
+
 export interface Props {
   number: string;
   label: string;
@@ -6,49 +8,45 @@ export interface Props {
 }
 
 const { number, label, color = "yam-red" } = Astro.props;
+const chiffre = parseStat(number);
 ---
 
 <div class="counter-item bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-all">
-  <div class="text-4xl md:text-6xl font-bold mb-2" class:list={[`text-${color}`]} data-count={number}>0</div>
+  <div class="text-4xl md:text-6xl font-bold mb-2" class:list={[`text-${color}`]} data-count={chiffre.nombre ?? undefined} data-avant={chiffre.avant} data-apres={chiffre.apres}>{chiffre.affichage}</div>
   <p class="text-lg text-gray-700">{label}</p>
 </div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const counters = document.querySelectorAll('.counter-item [data-count]');
+    const counters = document.querySelectorAll<HTMLElement>('.counter-item [data-count]');
 
-    const animateCounter = (counter: HTMLElement, target: number) => {
-      let currentValue = 0;
-      const duration = 2000; // 2 secondes
-      const stepTime = duration / target;
-
-      const timer = setInterval(() => {
-        currentValue += Math.ceil(target / 100);
-        if (currentValue >= target) {
-          currentValue = target;
-          clearInterval(timer);
-        }
-        counter.textContent = currentValue.toLocaleString();
-      }, stepTime);
+    // Anime uniquement la partie numérique ; le texte autour (« Plus de », « + »…)
+    // est conservé. Le texte final est déjà rendu côté serveur.
+    const animer = (el: HTMLElement) => {
+      const cible = parseInt(el.dataset.count || '', 10);
+      if (!Number.isFinite(cible) || cible <= 0) return;
+      const avant = el.dataset.avant || '';
+      const apres = el.dataset.apres || '';
+      const duree = 2000;
+      const debut = performance.now();
+      const etape = (maintenant: number) => {
+        const progression = Math.min((maintenant - debut) / duree, 1);
+        const valeur = Math.round(cible * progression);
+        el.textContent = `${avant}${valeur.toLocaleString('fr-FR')}${apres}`;
+        if (progression < 1) requestAnimationFrame(etape);
+      };
+      requestAnimationFrame(etape);
     };
 
-    // Observer pour déclencher l'animation
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const counter = entry.target as HTMLElement;
-          const countAttr = counter.getAttribute('data-count');
-          if (countAttr) {
-            const target = parseInt(countAttr);
-            animateCounter(counter, target);
-            observer.unobserve(counter);
-          }
+          animer(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
         }
       });
     });
 
-    counters.forEach(counter => {
-      observer.observe(counter);
-    });
+    counters.forEach((counter) => observer.observe(counter));
   });
 </script>
