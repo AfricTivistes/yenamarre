@@ -1,5 +1,7 @@
 
 ---
+import { parseStat } from "../utils/stats";
+
 export interface StatItem {
   number: string;
   label: string;
@@ -31,9 +33,14 @@ const { stats, accentColor = "yam-red", title, subtitle } = Astro.props;
       {stats.map((stat) => (
         <div class="text-center group">
           <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-2">
-            <div class={`text-4xl md:text-5xl font-bold text-${accentColor} mb-4 counter-animation`} data-count={stat.number}>
-              0
-            </div>
+            {(() => {
+              const chiffre = parseStat(stat.number);
+              return (
+                <div class={`text-4xl md:text-5xl font-bold text-${accentColor} mb-4 counter-animation`} data-count={chiffre.nombre ?? undefined} data-avant={chiffre.avant} data-apres={chiffre.apres}>
+                  {chiffre.affichage}
+                </div>
+              );
+            })()}
             <h3 class="text-lg font-bold text-gray-900 mb-2">{stat.label}</h3>
             {stat.description && (
               <p class="text-sm text-gray-600">{stat.description}</p>
@@ -46,48 +53,36 @@ const { stats, accentColor = "yam-red", title, subtitle } = Astro.props;
 </section>
 
 <script>
-  // Animation des compteurs
+  // Animation des compteurs : seule la partie numérique est animée, le texte
+  // autour (« Plus de », « + »…) est conservé. Texte final rendu côté serveur.
   document.addEventListener('DOMContentLoaded', () => {
-    const counters = document.querySelectorAll('.counter-animation[data-count]');
+    const counters = document.querySelectorAll<HTMLElement>('.counter-animation[data-count]');
 
-    const animateCounter = (counter, target) => {
-      let currentValue = 0;
-      const duration = 2000;
-      const increment = target / (duration / 16);
-
-      const timer = setInterval(() => {
-        currentValue += increment;
-        if (currentValue >= target) {
-          currentValue = target;
-          clearInterval(timer);
-        }
-        
-        // Formatage du nombre
-        const displayValue = Math.floor(currentValue);
-        if (displayValue >= 1000) {
-          counter.textContent = (displayValue / 1000).toFixed(0) + 'K+';
-        } else {
-          counter.textContent = displayValue + '+';
-        }
-      }, 16);
+    const animer = (el: HTMLElement) => {
+      const cible = parseInt(el.dataset.count || '', 10);
+      if (!Number.isFinite(cible) || cible <= 0) return;
+      const avant = el.dataset.avant || '';
+      const apres = el.dataset.apres || '';
+      const duree = 2000;
+      const debut = performance.now();
+      const etape = (maintenant: number) => {
+        const progression = Math.min((maintenant - debut) / duree, 1);
+        const valeur = Math.round(cible * progression);
+        el.textContent = `${avant}${valeur.toLocaleString('fr-FR')}${apres}`;
+        if (progression < 1) requestAnimationFrame(etape);
+      };
+      requestAnimationFrame(etape);
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const counter = entry.target;
-          const countAttr = counter.getAttribute('data-count');
-          if (countAttr) {
-            const target = parseInt(countAttr);
-            animateCounter(counter, target);
-            observer.unobserve(counter);
-          }
+          animer(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
         }
       });
     });
 
-    counters.forEach(counter => {
-      observer.observe(counter);
-    });
+    counters.forEach((counter) => observer.observe(counter));
   });
 </script>
